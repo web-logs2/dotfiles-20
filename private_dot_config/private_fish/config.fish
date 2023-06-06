@@ -6,7 +6,7 @@ function hasCommand
   which $argv[1] >/dev/null 2>&1
 end
 
-set -gx PATH "$HOME/.pyenv/shims" "$HOME/bin" "$HOME/.cargo/bin" "$HOME/.local/bin" "$HOME/.pyenv/bin" "$HOME/.local/share/pnpm" "$PATH"
+set -gx PATH "/opt/homebrew/bin" "$HOME/.pyenv/shims" "$HOME/bin" "$HOME/.cargo/bin" "$HOME/.local/bin" "$HOME/.pyenv/bin" "$HOME/.local/share/pnpm" "$PATH"
 
 if status is-interactive
     fish_vi_key_bindings
@@ -21,6 +21,7 @@ if status is-interactive
     alias svc="sudo systemctl"
     alias vi="nvim"
     alias tm="tmux attach || tmux new"
+    alias code-leet="code --remote ssh-remote+home.lubui.com /home/urie/workplace/leetcode"
 
     # Commands to run in interactive sessions can go here
     hasCommand pyenv && pyenv init - | source
