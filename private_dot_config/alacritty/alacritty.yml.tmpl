@@ -8,8 +8,8 @@
 #
 # All imports must either be absolute paths starting with `/`, or paths relative
 # to the user's home directory starting with `~/`.
-#import:
-#  - /path/to/alacritty.yml
+import:
+  - ~/.config/alacritty/themes/themes/iterm.yaml
 
 # Any items in the `env` entry below will be added as
 # environment variables. Some entries may override variables
@@ -170,7 +170,7 @@ font:
     #style: Bold Italic
 
   # Point size
-  size: 15.0
+  size: {{ if eq .chezmoi.os "darwin" }}14.0{{else}}12.0{{end}}
 
   # Offset is the extra space around each character. `offset.y` can be thought
   # of as modifying the line spacing, and `offset.x` as modifying the letter

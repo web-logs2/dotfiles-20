@@ -24,6 +24,7 @@ if status is-interactive
     alias vi="nvim"
     alias tm="tmux attach || tmux new"
     alias code-leet="code --remote ssh-remote+home.lubui.com /home/urie/workplace/leetcode"
+    alias ce="chezmoi edit --apply"
 
     # Commands to run in interactive sessions can go here
     hasCommand pyenv && pyenv init - | source
