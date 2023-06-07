@@ -13,6 +13,7 @@ if status is-interactive
 
     set -gx EDITOR nvim
     hasCommand code && set -gx EDITOR "code -w"
+    set -gx XDG_CONFIG_HOME "$HOME/.config"
 
     set -gx JOSHUTO_CONFIG_HOME ~/dotfiles/joshuto/config
 

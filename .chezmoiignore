@@ -1,0 +1,12 @@
+{{ if ne .chezmoi.os "darwin" }}
+*/yabai/*
+*/skhd/*
+{{ end }}
+
+{{ if ne .chezmoi.os "linux" }}
+
+{{ end }}
+
+{{ if eq .chezmoi.username "bytedance" "yangrui.0" }}
+.gitconfig
+{{ end }}
