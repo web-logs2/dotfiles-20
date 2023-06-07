@@ -12,6 +12,8 @@ if status is-interactive
     fish_vi_key_bindings
 
     set -gx EDITOR nvim
+    hasCommand code && set -gx EDITOR "code -w"
+
     set -gx JOSHUTO_CONFIG_HOME ~/dotfiles/joshuto/config
 
     alias lzd=lazydocker
