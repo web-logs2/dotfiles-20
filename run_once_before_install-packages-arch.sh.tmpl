@@ -1,5 +1,5 @@
-{{ $osName := index .chezmoi.osRelease "name" }}
-{{ if eq $osName "Arch Linux" }}
+{{- $osName := index .chezmoi.osRelease "name" -}}
+{{- if eq $osName "Arch Linux" -}}
 #!/bin/bash
 
 sudo pacman -Syyu
@@ -16,9 +16,7 @@ git \
 git-delta \
 go \
 iperf3 \
-joshuto \
 jq \
-lazydocker \
 lazygit \
 lsof \
 neovim \
@@ -37,5 +35,4 @@ unzip \
 wget \
 zoxide
 
-EOF
 {{end}}
