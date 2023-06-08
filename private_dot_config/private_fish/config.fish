@@ -15,6 +15,8 @@ if status is-interactive
     hasCommand code && set -gx EDITOR "code -w"
     set -gx XDG_CONFIG_HOME "$HOME/.config"
 
+    alias ..="cd .."
+
     alias lzd=lazydocker
     alias lg=lazygit
     #alias r=joshuto
