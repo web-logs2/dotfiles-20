@@ -1,0 +1,29 @@
+{{- if eq .chezmoi.os "darwin" -}}
+#!/bin/bash
+
+brew bundle --no-lock --file=/dev/stdin <<EOF
+
+tap "homebrew/bundle"
+tap "homebrew/cask"
+tap "homebrew/core"
+tap "homebrew/services"
+
+brew "git"
+brew "bat"
+brew "chezmoi"
+brew "fd"
+brew "fish"
+brew "fzf"
+brew "iperf3"
+brew "lazygit"
+brew "neovim"
+brew "pyenv"
+brew "tmux"
+
+cask "alacritty"
+cask "slowquitapps"
+cask "google-chrome"
+cask "android-platform-tools"
+
+EOF
+{{ end -}}
