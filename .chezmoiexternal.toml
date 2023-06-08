@@ -2,3 +2,8 @@
 refreshPeriod = "0"
 type = "git-repo"
 url = "https://github.com/alacritty/alacritty-theme.git"
+
+[".config/oh-my-tmux"]
+refreshPeriod = "0"
+type = "git-repo"
+url = "https://github.com/gpakosz/.tmux.git"

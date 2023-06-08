@@ -1,4 +1,14 @@
+gui:
+  timeFormat: '2006-01-02'
+  shortTimeFormat: '15:04'
+  language: 'auto'
+  showBranchCommitHash: false
+  showBottomLine: false
+  showIcons: true
+  border: 'single' # one of 'single' | 'double' | 'rounded' | 'hidden'
 git:
   paging:
     colorArg: always
     pager: delta --dark --paging=never
+disableStartupPopups: true
+notARepository: 'quit' # one of: 'prompt' | 'create' | 'skip' | 'quit'
