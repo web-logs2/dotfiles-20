@@ -15,8 +15,6 @@ if status is-interactive
     hasCommand code && set -gx EDITOR "code -w"
     set -gx XDG_CONFIG_HOME "$HOME/.config"
 
-    set -gx JOSHUTO_CONFIG_HOME ~/dotfiles/joshuto/config
-
     alias lzd=lazydocker
     alias lg=lazygit
     #alias r=joshuto
@@ -32,7 +30,7 @@ if status is-interactive
     hasCommand zoxide && zoxide init fish | source
     
     if test "$TMUX" != ""
-      alias ssh="TERM=xterm command ssh"  
+      alias ssh="TERM=xterm-256color command ssh"  
     end
 
     # pnpm
