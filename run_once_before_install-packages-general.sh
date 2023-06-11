@@ -79,6 +79,7 @@ install_for_arch() {
         unzip \
         wget \
         ripgrep \
+        openssl \
         zoxide
 }
 
