@@ -30,6 +30,7 @@ brew "neovim"
 brew "pyenv"
 brew "tmux"
 brew "go"
+brew "ripgrep"
 
 cask "font-fira-mono-nerd-font"
 cask "alacritty"
@@ -77,6 +78,7 @@ install_for_arch() {
         otf-firamono-nerd \
         unzip \
         wget \
+        ripgrep \
         zoxide
 }
 
