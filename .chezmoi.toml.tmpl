@@ -2,4 +2,17 @@
 autoCommit = false
 autoPush = false
 [diff]
-# pager = "delta"
+pager = "delta"
+[data]
+
+{{ if eq .chezmoi.fqdnHostname "C02DT7HGMD6R" }}
+skhd.disableFocus = true
+{{ end }}
+
+{{ if eq .chezmoi.fqdnHostname "home.lubui.com" }}
+alacritty.fontSize = 12.0
+{{ end }}
+
+{{ if eq .chezmoi.fqdnHostname "yangruideMac-mini.local" }}
+
+{{ end }}
