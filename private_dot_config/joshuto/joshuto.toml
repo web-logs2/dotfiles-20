@@ -17,7 +17,7 @@ show_hidden = false
 show_icons = true
 tilde_in_titlebar = true
 # none, absolute, relative
-line_number_style = "none"
+line_number_style = "absolute"
 
 [display.sort]
 # lexical, mtime, natural
@@ -27,7 +27,7 @@ directories_first = true
 reverse = false
 
 [preview]
-max_preview_size = 2097152 # 2MB
+max_preview_size = 2097152                           # 2MB
 preview_script = "~/.config/joshuto/preview_file.sh"
 
 [tab]

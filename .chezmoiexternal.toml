@@ -2,3 +2,8 @@
 refreshPeriod = "0"
 type = "git-repo"
 url = "https://github.com/alacritty/alacritty-theme.git"
+
+[".config/nvim"]
+refreshPeriod = "0"
+type = "git-repo"
+url = "https://github.com/NvChad/NvChad.git"
