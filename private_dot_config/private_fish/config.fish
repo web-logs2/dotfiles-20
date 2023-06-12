@@ -2,23 +2,6 @@ function hasCommand
   which $argv[1] >/dev/null 2>&1
 end
 
-function tm
-  if test -z "$TMUX"
-    tmux attach || tmux new
-  else
-    echo already in tmux session
-    return 1
-  end
-end
-
-# function ssh
-#   if test "$TMUX" != ""
-#     TERM=xterm-256color command ssh $argv
-#   else
-#     command ssh $argv
-#   end
-# end
-
 set -gx PATH "/opt/homebrew/bin" "$HOME/.pyenv/shims" "$HOME/bin" "$HOME/.cargo/bin" "$HOME/.local/bin" "$HOME/.pyenv/bin" "$HOME/.local/share/pnpm" "$PATH"
 
 if status is-interactive
@@ -36,7 +19,8 @@ if status is-interactive
   alias dc=docker-compose
   alias svc="sudo systemctl"
   alias vi="nvim"
-  alias code-leet="code --remote ssh-remote+home.lubui.com /home/urie/workplace/leetcode"
+  alias code-note='code --folder-uri "vscode-remote://ssh-remote+home.lubui.com/home/urie/workspace/ts/code-notes-vitepress/docs"'
+  # alias code-home="code --remote ssh-remote+home.lubui.com ~"
   alias ce="chezmoi edit --apply"
 
   # Commands to run in interactive sessions can go here
@@ -49,6 +33,17 @@ if status is-interactive
     set -gx PATH "$PNPM_HOME" $PATH
   end
   # pnpm end
+
+  if hasCommand tmux
+    function tm
+      if test -z "$TMUX"
+        tmux attach || tmux new
+      else
+        echo already in tmux session
+        return 1
+      end
+    end
+  end
 
   if hasCommand joshuto
     function r
