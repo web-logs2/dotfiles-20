@@ -2,7 +2,7 @@ function hasCommand
   which $argv[1] >/dev/null 2>&1
 end
 
-set -gx PATH "/opt/homebrew/bin" "$HOME/.pyenv/shims" "$HOME/bin" "$HOME/.cargo/bin" "$HOME/.local/bin" "$HOME/.pyenv/bin" "$HOME/.local/share/pnpm" "$PATH"
+set -gx PATH "$HOME/go/bin" "/opt/homebrew/bin" "$HOME/.pyenv/shims" "$HOME/bin" "$HOME/.cargo/bin" "$HOME/.local/bin" "$HOME/.pyenv/bin" "$HOME/.local/share/pnpm" "$PATH"
 
 if status is-interactive
   fish_vi_key_bindings
@@ -51,7 +51,7 @@ if status is-interactive
       mkdir -p /tmp/$USER
       set OUTPUT_FILE "/tmp/$USER/joshuto-cwd-$ID"
       if not joshuto --output-file "$OUTPUT_FILE" $argv
-        set JOSHUTO_CWD $(cat "$OUTPUT_FILE")
+        set JOSHUTO_CWD (cat "$OUTPUT_FILE")
         cd "$JOSHUTO_CWD"
       end
     end

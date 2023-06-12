@@ -31,6 +31,7 @@ brew "pyenv"
 brew "tmux"
 brew "go"
 brew "ripgrep"
+brew "gum"
 
 cask "font-fira-mono-nerd-font"
 cask "alacritty"
@@ -44,6 +45,17 @@ cask "neteasemusic"
 cask "visual-studio-code"
 
 EOF
+
+}
+
+install_yay_for_arch() {
+    mkdir -p ~/install
+    cd ~/install
+    git clone https://aur.archlinux.org/yay.git
+    cd yay
+    makepkg -si
+    yay -Y --gendb
+    yay
 }
 
 install_for_arch() {
@@ -58,6 +70,7 @@ install_for_arch() {
         fish \
         fzf \
         git \
+        base-devel \
         git-delta \
         go \
         iperf3 \
@@ -80,7 +93,35 @@ install_for_arch() {
         wget \
         ripgrep \
         openssl \
+        gum \
         zoxide
+    hasCommand yay || install_yay_for_arch
+    hasCommand joshuto || yay -S joshuto
+    hasCommand lazydocker || yay -S lazydocker
+}
+
+install_golang_by_g() {
+    # sudo add-apt-repository -y ppa:longsleep/golang-backports
+    # sudo apt-get install -y golang-go
+    curl -sSL https://raw.githubusercontent.com/voidint/g/master/install.sh | bash
+    unalias g
+    source "$HOME/.g/env"
+    export G_MIRROR=https://golang.google.cn/dl/
+    # TODO
+    # install golang complete
+    go version
+    go env -w GOPROXY=https://goproxy.cn/,direct
+}
+
+install_for_debian() {
+    sudo apt install -y \
+        software-properties-common
+
+    hasCommand go || install_golang_by_g
+}
+
+install_cargo_pkg() {
+    hasCommand joshuto || cargo install --git https://github.com/kamiyaa/joshuto.git
 }
 
 install_vim_plug() {
@@ -91,15 +132,53 @@ install_vim_plug() {
     fi
 }
 
+install_rust() {
+    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+    export PATH="$PATH:/home/urie/.cargo/bin"
+}
+
+install_cargo_pkg() {
+    hasCommand joshuto || cargo install --git https://github.com/kamiyaa/joshuto.git --force
+}
+
+install_go_pkg() {
+    hasCommand lazygit || go install github.com/jesseduffield/lazygit@latest
+    hasCommand lazydocker || go install github.com/jesseduffield/lazydocker@latest
+}
+
 main() {
     install_vim_plug
     if [ "$(uname)" == "Darwin" ]; then
         install_for_darwin
     elif [ "$(uname)" == "Linux" ]; then
         is_os_name "Arch Linux" && install_for_arch
+        is_os_name "Ubuntu" && install_for_debian
     else
         echo "Your platform ($(uname)) is not supported."
+        exit 1
     fi
+    hasCommand cargo || install_rust
+    hasCommand cargo && install_cargo_pkg
+
+    hasCommand go && install_go_pkg
+
+    echo "pre_init done"
 }
 
-main
+read -r -p "Whether to install packages? [Y/n] " input
+
+case $input in
+[yY][eE][sS] | [yY] | '')
+    main
+    ;;
+
+[nN][oO] | [nN])
+    echo "Packages installation skipped..."
+    exit 0
+    ;;
+
+*)
+    echo "Invalid input..."
+    exit 1
+    ;;
+esac
