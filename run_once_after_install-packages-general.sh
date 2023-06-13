@@ -32,6 +32,7 @@ brew "tmux"
 brew "go"
 brew "ripgrep"
 brew "gum"
+brew "zoxide"
 
 cask "font-fira-mono-nerd-font"
 cask "alacritty"
@@ -116,6 +117,7 @@ install_golang() {
 
 install_for_debian() {
     sudo apt install -y \
+        bat \
         software-properties-common
 
     hasCommand go || install_golang_by_g
@@ -124,6 +126,7 @@ install_for_debian() {
 install_cargo_pkg() {
     hasCommand joshuto || cargo install --git https://github.com/kamiyaa/joshuto.git
     hasCommand git-delta || cargo install git-delta
+    hasCommand zoxide || cargo install zoxide --locked
 }
 
 install_vim_plug() {
