@@ -123,6 +123,7 @@ install_for_debian() {
 
 install_cargo_pkg() {
     hasCommand joshuto || cargo install --git https://github.com/kamiyaa/joshuto.git
+    hasCommand git-delta || cargo install git-delta
 }
 
 install_vim_plug() {
