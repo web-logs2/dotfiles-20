@@ -33,6 +33,7 @@ brew "go"
 brew "ripgrep"
 brew "gum"
 brew "zoxide"
+brew "lego"
 
 cask "font-fira-mono-nerd-font"
 cask "alacritty"
@@ -95,6 +96,7 @@ install_for_arch() {
         ripgrep \
         openssl \
         gum \
+        lego \
         zoxide
     hasCommand yay || install_yay_for_arch
     hasCommand joshuto || yay -S joshuto
@@ -150,6 +152,7 @@ install_cargo_pkg() {
 install_go_pkg() {
     hasCommand lazygit || go install github.com/jesseduffield/lazygit@latest
     hasCommand lazydocker || go install github.com/jesseduffield/lazydocker@latest
+    hasCommand lego || go install github.com/go-acme/lego/v4/cmd/lego@latest
 }
 
 main() {
