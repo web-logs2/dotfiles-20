@@ -100,16 +100,17 @@ install_for_arch() {
     hasCommand lazydocker || yay -S lazydocker
 }
 
-install_golang_by_g() {
-    # sudo add-apt-repository -y ppa:longsleep/golang-backports
-    # sudo apt-get install -y golang-go
-    curl -sSL https://raw.githubusercontent.com/voidint/g/master/install.sh | bash
-    unalias g
-    source "$HOME/.g/env"
+install_golang() {
+    sudo add-apt-repository -y ppa:longsleep/golang-backports
+    sudo apt-get install -y golang-go
+    # curl -sSL https://raw.githubusercontent.com/voidint/g/master/install.sh | bash
+    # unalias g
+    # source "$HOME/.g/env"
     export G_MIRROR=https://golang.google.cn/dl/
     # TODO
     # install golang complete
     go version
+    go env -w GO111MODULE=on
     go env -w GOPROXY=https://goproxy.cn/,direct
 }
 
@@ -139,6 +140,7 @@ install_rust() {
 
 install_cargo_pkg() {
     hasCommand joshuto || cargo install --git https://github.com/kamiyaa/joshuto.git --force
+    hasCommand git-delta || cargo install git-delta
 }
 
 install_go_pkg() {
