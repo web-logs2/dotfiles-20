@@ -181,7 +181,7 @@ main() {
         exit 1
     fi
 
-    if hasCommand cargo; then
+    if ! hasCommand cargo; then
         install_rust
     else
         install_cargo_pkg
