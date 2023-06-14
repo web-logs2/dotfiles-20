@@ -122,7 +122,7 @@ install_for_debian() {
         bat \
         software-properties-common
 
-    hasCommand go || install_golang_by_g
+    hasCommand go || install_golang
 }
 
 install_cargo_pkg() {
@@ -142,6 +142,7 @@ install_vim_plug() {
 install_rust() {
     curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
     export PATH="$PATH:/home/urie/.cargo/bin"
+    source "$HOME/.cargo/env"
 }
 
 install_cargo_pkg() {
