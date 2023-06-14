@@ -198,17 +198,18 @@ install_python_pkg() {
 
 install_node_pkg() {
     if ! hasCommand node; then
-        if ! hasCommand nvm; then
-            export NVM_DIR="$HOME/.config/nvm"
-            if [ ! -d "$NVM_DIR" ]; then
-                curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
-            fi
-            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
+        export NVM_DIR="$HOME/.config/nvm"
+        if [ ! -d "$NVM_DIR" ]; then
+            curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
         fi
-        nvm install node --lts # install latest node
-        nvm use --lts          # use latest node
+        [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
+        if ! hasCommand node; then
+            nvm install node --lts # install latest node
+            nvm use --lts          # use latest node
 
-        echo $'\n'"set -gx PATH '$NVM_BIN' "'$PATH'$'\n' >>~/.config/fish/custom.fish # add nvm to fish
+            echo $'\n'"set -gx PATH '$NVM_BIN' "'$PATH'$'\n' >>~/.config/fish/custom.fish # add nvm to fish
+        fi
+
     fi
 
     hasCommand pnpm || npm install -g pnpm
