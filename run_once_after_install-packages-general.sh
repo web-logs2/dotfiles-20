@@ -104,26 +104,37 @@ install_for_arch() {
     fi
 }
 
-install_golang() {
-    sudo add-apt-repository -y ppa:longsleep/golang-backports
-    sudo apt-get install -y golang-go
-    # curl -sSL https://raw.githubusercontent.com/voidint/g/master/install.sh | bash
-    # unalias g
-    # source "$HOME/.g/env"
-    export G_MIRROR=https://golang.google.cn/dl/
-    # TODO
-    # install golang complete
-    go version
-    go env -w GO111MODULE=on
-    go env -w GOPROXY=https://goproxy.cn/,direct
-}
-
 install_for_debian() {
     sudo apt install -y \
         bat \
+        fzf \
+        cmake \
         software-properties-common
 
-    hasCommand go || install_golang
+    if hasCommand batcat && ! hasCommand bat; then
+        sudo ln -s "$(which batcat)" /usr/local/bin/bat
+    fi
+
+    if ! hasCommand nvim; then
+        mkdir -p ~/install
+        git clone https://github.com/neovim/neovim.git --depth 1
+        make CMAKE_BUILD_TYPE=RelWithDebInfo
+        sudo make install
+    fi
+
+    if ! hasCommand go; then
+        sudo add-apt-repository -y ppa:longsleep/golang-backports
+        sudo apt-get install -y golang-go
+        # curl -sSL https://raw.githubusercontent.com/voidint/g/master/install.sh | bash
+        # unalias g
+        # source "$HOME/.g/env"
+        export G_MIRROR=https://golang.google.cn/dl/
+        # TODO
+        # install golang complete
+        go version
+        go env -w GO111MODULE=on
+        go env -w GOPROXY=https://goproxy.cn/,direct
+    fi
 }
 
 install_cargo_pkg() {
@@ -159,7 +170,7 @@ install_go_pkg() {
 }
 
 main() {
-    install_vim_plug
+    # install_vim_plug
     if [ "$(uname)" == "Darwin" ]; then
         install_for_darwin
     elif [ "$(uname)" == "Linux" ]; then
@@ -169,8 +180,12 @@ main() {
         echo "Your platform ($(uname)) is not supported."
         exit 1
     fi
-    hasCommand cargo || install_rust
-    hasCommand cargo && install_cargo_pkg
+
+    if hasCommand cargo; then
+        install_rust
+    else
+        install_cargo_pkg
+    fi
 
     hasCommand go && install_go_pkg
 
