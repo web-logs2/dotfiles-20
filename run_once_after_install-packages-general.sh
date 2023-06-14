@@ -50,16 +50,6 @@ EOF
 
 }
 
-install_yay_for_arch() {
-    mkdir -p ~/install
-    cd ~/install
-    git clone https://aur.archlinux.org/yay.git
-    cd yay
-    makepkg -si
-    yay -Y --gendb
-    yay
-}
-
 install_for_arch() {
     sudo pacman -Syyu
     sudo pacman --needed -Sy \
@@ -98,9 +88,20 @@ install_for_arch() {
         gum \
         lego \
         zoxide
-    hasCommand yay || install_yay_for_arch
-    hasCommand joshuto || yay -S joshuto
-    hasCommand lazydocker || yay -S lazydocker
+
+    if ! hasCommand yay; then
+        mkdir -p ~/install && cd ~/install
+        git clone https://aur.archlinux.org/yay.git
+        cd yay
+        makepkg -si
+        yay -Y --gendb
+        yay
+    fi
+
+    if hasCommand yay; then
+        hasCommand joshuto || yay -S joshuto
+        hasCommand lazydocker || yay -S lazydocker
+    fi
 }
 
 install_golang() {
