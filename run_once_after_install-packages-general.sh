@@ -148,6 +148,7 @@ install_rust() {
 install_cargo_pkg() {
     hasCommand joshuto || cargo install --git https://github.com/kamiyaa/joshuto.git --force
     hasCommand delta || cargo install git-delta
+    hasCommand btm || cargo install bottom --locked
 }
 
 install_go_pkg() {
