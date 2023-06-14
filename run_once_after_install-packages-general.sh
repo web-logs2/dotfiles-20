@@ -151,22 +151,68 @@ install_vim_plug() {
     fi
 }
 
-install_rust() {
-    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
-    export PATH="$PATH:/home/urie/.cargo/bin"
-    source "$HOME/.cargo/env"
-}
-
 install_cargo_pkg() {
+    if ! hasCommand cargo; then
+        curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+        source "$HOME/.cargo/env"
+    fi
+
     hasCommand joshuto || cargo install --git https://github.com/kamiyaa/joshuto.git --force
     hasCommand delta || cargo install git-delta
     hasCommand btm || cargo install bottom --locked
 }
 
 install_go_pkg() {
+    if ! hasCommand go; then
+        echo has no go, skip install go pkg
+        return 0
+    fi
     hasCommand lazygit || go install github.com/jesseduffield/lazygit@latest
     hasCommand lazydocker || go install github.com/jesseduffield/lazydocker@latest
     hasCommand lego || go install github.com/go-acme/lego/v4/cmd/lego@latest
+}
+
+install_python_pkg() {
+    if ! hasCommand python; then
+        echo has no python, skip install python pkg
+        return 0
+    fi
+
+    if ! hasCommand pyenv; then
+        curl https://pyenv.run | bash
+    fi
+
+    if ! hasCommand pip; then
+        curl -s 'https://bootstrap.pypa.io/get-pip.py' | python
+    fi
+
+    if ! hasCommand pipx; then
+        python -m pip install --user pipx
+        python -m pipx ensurepath
+    fi
+
+    hasCommand pipenv || pip install --user pipenv
+    hasCommand mycli || pipx install mycli
+    hasCommand tldr || pipx install tldr
+}
+
+install_node_pkg() {
+    if ! hasCommand node; then
+        if ! hasCommand nvm; then
+            export NVM_DIR="$HOME/.config/nvm"
+            if [ ! -d "$NVM_DIR" ]; then
+                curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
+            fi
+            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
+        fi
+        nvm install node --lts # install latest node
+        nvm use --lts          # use latest node
+
+        echo $'\n'"set -gx PATH '$NVM_BIN' "'$PATH'$'\n' >>~/.config/fish/custom.fish # add nvm to fish
+    fi
+
+    hasCommand pnpm || npm install -g pnpm
+    hasCommand http-server || pnpm install -g http-server
 }
 
 main() {
@@ -181,13 +227,13 @@ main() {
         exit 1
     fi
 
-    if ! hasCommand cargo; then
-        install_rust
-    else
-        install_cargo_pkg
-    fi
+    install_cargo_pkg
 
-    hasCommand go && install_go_pkg
+    install_go_pkg
+
+    install_python_pkg
+
+    install_node_pkg
 
     echo "pre_init done"
 }
