@@ -1,6 +1,7 @@
 [default_view]
 keymap = [
 	# 自定义配置
+	{ keys = ["h"], command = "toggle_hidden" },
 	{ keys = ["z"], command = ":z" },
 	{ keys = ["escape"], command = "quit --output-current-directory" },
 	{ keys = ["{"], command = "cursor_move_up 5" },
@@ -8,7 +9,8 @@ keymap = [
 	{ keys = ["v", "i"], command = ":shell nvim " },
 	{ keys = ["l", "g"], command = ":shell lazygit" },
 	{ keys = ["c", "o"], command = ":shell code " },
-	{ keys = ["ctrl+q"], command = "quit --output-current-directory" },
+	{ keys = ["Q"], command = "close_tab" },
+	{ keys = ["q"], command = "quit --output-current-directory" },
 	{ keys = ["1"], command = "numbered_command 1" },
 	{ keys = ["2"], command = "numbered_command 2" },
 	{ keys = ["3"], command = "numbered_command 3" },
@@ -24,11 +26,8 @@ keymap = [
 	{ keys = ["ctrl+t"], command = "new_tab" },
 	{ keys = ["W"], command = "close_tab" },
 	{ keys = ["ctrl+w"], command = "close_tab" },
-	{ keys = ["q"], command = "close_tab" },
-	{ keys = ["Q"], command = "quit --output-current-directory" },
 	{ keys = ["R"], command = "reload_dirlist" },
 	# { keys = [ "z", "h" ],		command = "toggle_hidden" },
-	{ keys = ["ctrl+h"], command = "toggle_hidden" },
 	{ keys = ["\t"], command = "tab_switch 1" },
 	{ keys = ["backtab"], command = "tab_switch -1" },
 	{ keys = ["alt+1"], command = "tab_switch_index 1" },
@@ -51,7 +50,7 @@ keymap = [
 	# vim-like keybindings
 	{ keys = ["j"], command = "cursor_move_down" },
 	{ keys = ["k"], command = "cursor_move_up" },
-	{ keys = ["h"], command = "cd .." },
+	# { keys = ["h"], command = "cd .." },
 	# { keys = [ "l" ],		command = "open" },
 	{ keys = ["g", "g"], command = "cursor_move_home" },
 	{ keys = ["G"], command = "cursor_move_end" },
