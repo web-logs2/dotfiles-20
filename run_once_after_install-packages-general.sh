@@ -105,39 +105,43 @@ install_for_arch() {
     fi
 }
 
-install_golang() {
-    sudo add-apt-repository -y ppa:longsleep/golang-backports
-    sudo apt-get install -y golang-go
-    # curl -sSL https://raw.githubusercontent.com/voidint/g/master/install.sh | bash
-    # unalias g
-    # source "$HOME/.g/env"
-    export G_MIRROR=https://golang.google.cn/dl/
-    # TODO
-    # install golang complete
-    go version
-    go env -w GO111MODULE=on
-    go env -w GOPROXY=https://goproxy.cn/,direct
-}
-
 install_for_debian() {
     sudo apt install -y \
         bat \
         fzf \
         fd-find \
         ripgrep \
+        cmake \
         software-properties-common
 
     if hasCommand fdfind && ! hasCommand fd; then
         sudo ln -s $(which fdfind) /usr/local/bin/fd
     fi
 
-    hasCommand go || install_golang
-}
+    if hasCommand batcat && ! hasCommand bat; then
+        sudo ln -s "$(which batcat)" /usr/local/bin/bat
+    fi
 
-install_cargo_pkg() {
-    hasCommand joshuto || cargo install --git https://github.com/kamiyaa/joshuto.git
-    hasCommand git-delta || cargo install git-delta
-    hasCommand zoxide || cargo install zoxide --locked
+    if ! hasCommand nvim; then
+        mkdir -p ~/install
+        git clone https://github.com/neovim/neovim.git --depth 1
+        make CMAKE_BUILD_TYPE=RelWithDebInfo
+        sudo make install
+    fi
+
+    if ! hasCommand go; then
+        sudo add-apt-repository -y ppa:longsleep/golang-backports
+        sudo apt-get install -y golang-go
+        # curl -sSL https://raw.githubusercontent.com/voidint/g/master/install.sh | bash
+        # unalias g
+        # source "$HOME/.g/env"
+        # export G_MIRROR=https://golang.google.cn/dl/
+        # TODO
+        # install golang complete
+        go version
+        go env -w GO111MODULE=on
+        go env -w GOPROXY=https://goproxy.cn/,direct
+    fi
 }
 
 install_vim_plug() {
@@ -148,13 +152,12 @@ install_vim_plug() {
     fi
 }
 
-install_rust() {
-    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
-    export PATH="$PATH:/home/urie/.cargo/bin"
-    source "$HOME/.cargo/env"
-}
-
 install_cargo_pkg() {
+    if ! hasCommand cargo; then
+        curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+        source "$HOME/.cargo/env"
+    fi
+
     hasCommand joshuto || cargo install --git https://github.com/kamiyaa/joshuto.git --force
     hasCommand delta || cargo install git-delta
     hasCommand btm || cargo install bottom --locked
@@ -162,13 +165,61 @@ install_cargo_pkg() {
 }
 
 install_go_pkg() {
+    if ! hasCommand go; then
+        echo has no go, skip install go pkg
+        return 0
+    fi
     hasCommand lazygit || go install github.com/jesseduffield/lazygit@latest
     hasCommand lazydocker || go install github.com/jesseduffield/lazydocker@latest
     hasCommand lego || go install github.com/go-acme/lego/v4/cmd/lego@latest
 }
 
+install_python_pkg() {
+    if ! hasCommand python; then
+        echo has no python, skip install python pkg
+        return 0
+    fi
+
+    if ! hasCommand pyenv; then
+        curl https://pyenv.run | bash
+    fi
+
+    if ! hasCommand pip; then
+        curl -s 'https://bootstrap.pypa.io/get-pip.py' | python
+    fi
+
+    if ! hasCommand pipx; then
+        python -m pip install --user pipx
+        python -m pipx ensurepath
+    fi
+
+    hasCommand pipenv || pip install --user pipenv
+    hasCommand mycli || pipx install mycli
+    hasCommand tldr || pipx install tldr
+}
+
+install_node_pkg() {
+    if ! hasCommand node; then
+        export NVM_DIR="$HOME/.config/nvm"
+        if [ ! -d "$NVM_DIR" ]; then
+            curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
+        fi
+        [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
+        if ! hasCommand node; then
+            nvm install node --lts # install latest node
+            nvm use --lts          # use latest node
+
+            echo $'\n'"set -gx PATH '$NVM_BIN' "'$PATH'$'\n' >>~/.config/fish/custom.fish # add nvm to fish
+        fi
+
+    fi
+
+    hasCommand pnpm || npm install -g pnpm
+    hasCommand http-server || pnpm install -g http-server
+}
+
 main() {
-    install_vim_plug
+    # install_vim_plug
     if [ "$(uname)" == "Darwin" ]; then
         install_for_darwin
     elif [ "$(uname)" == "Linux" ]; then
@@ -178,10 +229,14 @@ main() {
         echo "Your platform ($(uname)) is not supported."
         exit 1
     fi
-    hasCommand cargo || install_rust
-    hasCommand cargo && install_cargo_pkg
 
-    hasCommand go && install_go_pkg
+    install_cargo_pkg
+
+    install_go_pkg
+
+    install_python_pkg
+
+    install_node_pkg
 
     echo "pre_init done"
 }

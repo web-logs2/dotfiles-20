@@ -19,3 +19,5 @@ colorMoved = default
 [user]
 name = urie
 email = lubui.com@gmail.com
+[pull]
+	rebase = true

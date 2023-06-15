@@ -1,8 +1,14 @@
 [git]
 autoCommit = false
 autoPush = false
+
 [diff]
 pager = "delta"
+
+[merge]
+command = "nvim"
+args = ["-d", "{{ "{{" }} .Destination {{ "}}" }}", "{{ "{{" }} .Source {{ "}}" }}", "{{ "{{" }} .Target {{ "}}" }}"]
+
 [data]
 
 {{ if eq .chezmoi.fqdnHostname "C02DT7HGMD6R" }}

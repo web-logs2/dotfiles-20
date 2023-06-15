@@ -4,6 +4,10 @@ end
 
 set -gx PATH "$HOME/go/bin" "/opt/homebrew/bin" "$HOME/.pyenv/shims" "$HOME/bin" "$HOME/.cargo/bin" "$HOME/.local/bin" "$HOME/.pyenv/bin" "$HOME/.local/share/pnpm" "$PATH"
 
+if test -e $HOME/.config/fish/custom.fish
+  source $HOME/.config/fish/custom.fish
+end
+
 if status is-interactive
   fish_vi_key_bindings
 
