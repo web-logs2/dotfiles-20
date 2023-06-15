@@ -99,8 +99,9 @@ install_for_arch() {
     fi
 
     if hasCommand yay; then
-        hasCommand joshuto || yay -S joshuto
-        hasCommand lazydocker || yay -S lazydocker
+        yay -S --answerclean None --answerdiff None --needed \
+            joshuto-git \
+            lazydocker
     fi
 }
 
@@ -121,7 +122,14 @@ install_golang() {
 install_for_debian() {
     sudo apt install -y \
         bat \
+        fzf \
+        fd-find \
+        ripgrep \
         software-properties-common
+
+    if hasCommand fdfind && ! hasCommand fd; then
+        sudo ln -s $(which fdfind) /usr/local/bin/fd
+    fi
 
     hasCommand go || install_golang
 }
@@ -150,6 +158,7 @@ install_cargo_pkg() {
     hasCommand joshuto || cargo install --git https://github.com/kamiyaa/joshuto.git --force
     hasCommand delta || cargo install git-delta
     hasCommand btm || cargo install bottom --locked
+    hasCommand zoxide || cargo install zoxide --locked
 }
 
 install_go_pkg() {
