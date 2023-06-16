@@ -3,12 +3,13 @@ ignored_dir*
 {{ if ne .chezmoi.os "darwin" }}
 */yabai*
 */skhd*
+Library*
 {{ end }}
 
 {{ if ne .chezmoi.os "linux" }}
-
 {{ end }}
 
 {{ if eq .chezmoi.username "bytedance" "yangrui.0" }}
 .gitconfig
+.ssh/*
 {{ end }}
