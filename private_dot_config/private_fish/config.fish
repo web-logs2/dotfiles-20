@@ -25,7 +25,7 @@ if status is-interactive
   alias vi="nvim"
   alias code-note='code --folder-uri "vscode-remote://ssh-remote+home.lubui.com/home/urie/workspace/ts/code-notes-vitepress/docs"'
   # alias code-home="code --remote ssh-remote+home.lubui.com ~"
-  alias ce="chezmoi edit --apply"
+  alias cz="chezmoi"
 
   # Commands to run in interactive sessions can go here
   hasCommand pyenv && pyenv init - | source
@@ -55,8 +55,7 @@ if status is-interactive
       mkdir -p /tmp/$USER
       set OUTPUT_FILE "/tmp/$USER/joshuto-cwd-$ID"
       if not joshuto --output-file "$OUTPUT_FILE" $argv
-        set JOSHUTO_CWD (cat "$OUTPUT_FILE")
-        cd "$JOSHUTO_CWD"
+        cd (cat "$OUTPUT_FILE")
       end
     end
   end
