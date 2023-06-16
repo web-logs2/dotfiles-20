@@ -18,7 +18,8 @@ video_default	= [
 ]
 
 text_default	= [
-	{ command = "nvim" },
+  { command = "nvim" },
+	{ command = "code" },
 	# { command = "gedit", fork = true, silent = true },
 	{ command = "bat", args = [ "--paging=always" ] },
 ]
@@ -115,6 +116,8 @@ vim.inherit	= "text_default"
 xml.inherit	= "text_default"
 yaml.inherit	= "text_default"
 yml.inherit	= "text_default"
+## customer
+fish.inherit	= "text_default"
 
 # archive formats
 7z.app_list	= [
