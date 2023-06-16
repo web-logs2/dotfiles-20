@@ -1,0 +1,102 @@
+{
+	// Place your snippets for go here. Each snippet is defined under a snippet name and has a prefix, body and 
+	// description. The prefix is what is used to trigger the snippet and the body will be expanded and inserted. Possible variables are:
+	// $1, $2 for tab stops, $0 for the final cursor position, and ${1:label}, ${2:another} for placeholders. Placeholders with the 
+	// same ids are connected.
+	// Example:
+	"main": {
+		"prefix": "main",
+		"body": [
+			"package main",
+			"",
+			"func main() {",
+			"",
+			"}"
+		],
+		"description": "main function"
+	},
+	"iferr": {
+		"prefix": "ife",
+		"body": [
+			"if err != nil {",
+			"    logs.CtxError(ctx, \"%+v\", err)",
+			"    return errors.WithStack(err)",
+			"}"
+		],
+		"description": "main function"
+	},
+	"defer": {
+		"prefix": "defer",
+		"body": [
+			"defer func() {",
+			"  if err := recover(); err != nil {",
+			"    fmt.Println(err, string(debug.Stack()))",
+			"  }",
+			"}()",
+		]
+	},
+	"test": {
+		"prefix": "test",
+		"body": [
+			"func Test$1(t *testing.T) {",
+			"  $2",
+			"}",
+		]
+	},
+	"process": {
+		"prefix": "process",
+		"body": [
+			"package $1",
+			"",
+			"import \"code.byted.org/aurora/be_engine_phase\"",
+			"",
+			"type $2 struct{}",
+			"",
+			"func ($2) Process(ctx *be_engine_phase.EngineContext) error {",
+			"   data := Data(ctx)",
+			"",
+			"   return nil",
+			"}"
+		]
+	},
+	"ectxdata": {
+		"prefix": "ectxdata",
+		"body": [
+			"func (e EctxData) Set$1(d $2) {",
+			"   e.ectx.SetData(\"$3\", d)",
+			"}",
+			"",
+			"func (e EctxData) Get$1() (d $2) {",
+			"   e.ectx.FindData(\"$3\", &d)",
+			"   return",
+			"}",
+		]
+	},
+	"datamk": {
+		"prefix": "datamk",
+		"body": [
+			"package handler",
+			"",
+			"import (",
+			"    \"code.byted.org/aurora/be_engine_phase\"",
+			")",
+			"",
+			"type EctxData struct {",
+			"    ectx *be_engine_phase.EngineContext",
+			"}",
+			"",
+			"func Data(ectx *be_engine_phase.EngineContext) EctxData {",
+			"    return EctxData{ectx: ectx}",
+			"}",
+		]
+	},
+	"tomap": {
+		"prefix": "tomap",
+		"body": [
+			"m := make(map[int64]$2, len($1))",
+			"for _, item := range $1 {",
+			"   m[item.$3] = item",
+			"}"
+		]
+	}
+}
