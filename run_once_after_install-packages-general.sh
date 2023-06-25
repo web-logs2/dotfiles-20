@@ -28,7 +28,7 @@ brew "iperf3"
 brew "lazygit"
 brew "neovim"
 brew "pyenv"
-brew "tmux"
+brew "zellij"
 brew "go"
 brew "ripgrep"
 brew "gum"
@@ -77,7 +77,7 @@ install_for_arch() {
         openssh \
         p7zip \
         samba \
-        tmux \
+        zellij \
         translate-shell \
         tree \
         otf-firamono-nerd \
@@ -162,6 +162,7 @@ install_cargo_pkg() {
     hasCommand delta || cargo install git-delta
     hasCommand btm || cargo install bottom --locked
     hasCommand zoxide || cargo install zoxide --locked
+    hasCommand zellij || cargo install --locked zellij
 }
 
 install_go_pkg() {

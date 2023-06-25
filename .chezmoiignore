@@ -1,4 +1,5 @@
 ignored_dir*
+symbols*
 
 {{ if ne .chezmoi.os "darwin" }}
 */yabai*
@@ -13,3 +14,5 @@ Library*
 .gitconfig
 .ssh/*
 {{ end }}
+
+key.txt.age
