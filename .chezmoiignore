@@ -12,7 +12,6 @@ Library*
 
 {{ if eq .chezmoi.username "bytedance" "yangrui.0" }}
 .gitconfig
-.ssh/*
 {{ end }}
 
 key.txt.age
