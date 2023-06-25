@@ -9,6 +9,12 @@ if test -e $HOME/.config/fish/custom.fish
 end
 
 if status is-interactive
+  if hasCommand zellij and set -q "SSH_CONNECTION"
+    set ZELLIJ_AUTO_ATTACH true
+    # set ZELLIJ_AUTO_EXIT true
+    eval (zellij setup --generate-auto-start fish | string collect)
+  end
+
   fish_vi_key_bindings
 
   set -gx EDITOR nvim
@@ -37,15 +43,20 @@ if status is-interactive
     set -gx PATH "$PNPM_HOME" $PATH
   end
   # pnpm end
-
-  if hasCommand tmux
-    function tm
-      if test -z "$TMUX"
-        tmux attach || tmux new
-      else
-        echo already in tmux session
-        return 1
-      end
+  
+  function tm
+    if set -q ZELLIJ
+      echo already in zellij session
+      return 1
+    else if set -q TMUX
+      echo already in tmux session
+      return 1
+    else if hasCommand zellij
+      zellij attach -c
+    else if hasCommand tmux
+      tmux attach || tmux new
+    else
+      echo 'zellij/tmux command not found'
     end
   end
 
