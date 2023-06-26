@@ -1,9 +1,0 @@
-bookmark = [
-  # 自定义配置
-  { key = "c", path = "~/.config" },
-  { key = "z", path = "~/.local/share/chezmoi" },
-  # 默认配置
-  { key = "r", path = "/" },
-  { key = "e", path = "/etc" },
-  { key = "h", path = "~/" },
-]

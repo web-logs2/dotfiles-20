@@ -45,6 +45,7 @@ cask "raycast"
 cask "wechat"
 cask "neteasemusic"
 cask "visual-studio-code"
+cask "rar"
 
 EOF
 
@@ -87,6 +88,7 @@ install_for_arch() {
         openssl \
         gum \
         lego \
+        unrar \
         zoxide
 
     if ! hasCommand yay; then
@@ -163,6 +165,7 @@ install_cargo_pkg() {
     hasCommand btm || cargo install bottom --locked
     hasCommand zoxide || cargo install zoxide --locked
     hasCommand zellij || cargo install --locked zellij
+    hasCommand viu || cargo install viu --locked
 }
 
 install_go_pkg() {

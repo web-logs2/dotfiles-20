@@ -2,10 +2,14 @@
 keymap = [
 	# 自定义配置
 	{ keys = ["h"], command = "toggle_hidden" },
+	{ keys = ["b", "a"], command = "add_bookmark" },
+	{ keys = ["g", "b"], command = "cd_bookmark" },
+	{ keys = ["g", "z"], command = "cd ~/.local/share/chezmoi" },
 	{ keys = ["z"], command = ":z" },
 	{ keys = ["escape"], command = "quit --output-current-directory" },
 	{ keys = ["{"], command = "cursor_move_up 5" },
 	{ keys = ["}"], command = "cursor_move_down 5" },
+	{ keys = ["V"], command = "toggle_visual" },
 	{ keys = ["v", "i"], command = ":shell nvim " },
 	{ keys = ["l", "g"], command = ":shell lazygit" },
 	{ keys = ["c", "o"], command = ":shell code " },
