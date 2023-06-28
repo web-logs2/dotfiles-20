@@ -34,6 +34,7 @@ brew "ripgrep"
 brew "gum"
 brew "zoxide"
 brew "lego"
+brew "dsq"
 
 cask "font-fira-mono-nerd-font"
 cask "alacritty"
@@ -89,6 +90,7 @@ install_for_arch() {
         gum \
         lego \
         unrar \
+        dsq \
         zoxide
 
     if ! hasCommand yay; then
