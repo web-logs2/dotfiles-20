@@ -774,7 +774,7 @@ key_bindings:
   - { key: Escape,  mods: Command, mode: ~Search,    action: ToggleViMode            }
   - { key: A,                           mode: Vi|~Search, action: ToggleViMode            }
   - { key: A,                           mode: Vi|~Search, action: ScrollToBottom          }
-  - { key: Left,  mods: Command,mode: AppCursor, chars: "\x1bOH" } # Home
+  - { key: Left,  mods: Command, chars: "\x1bOH" } # Home
   - { key: Right,  mods: Command, chars: "\x1bOF" } # End
   - { key: Back,  mods: Command, chars: "\x15" } # Delete line
   - { key: Back,  mods: Control, chars: "\u001bciw" } # Delete word
