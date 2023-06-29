@@ -157,6 +157,7 @@ handle_extension() {
             jq --color-output . "${FILE_PATH}" && exit 5
             bat --color=always --paging=never \
                 --style=plain \
+                --line-range :500 \
                 --terminal-width="${PREVIEW_WIDTH}" \
                 "${FILE_PATH}" && exit 5
             python -m json.tool -- "${FILE_PATH}" && exit 5
@@ -239,6 +240,7 @@ handle_mime() {
         else
             bat --color=always --paging=never \
                 --style=plain \
+                --line-range :500 \
                 --terminal-width="${PREVIEW_WIDTH}" \
                 "${FILE_PATH}" && exit 5
         fi

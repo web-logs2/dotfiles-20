@@ -8,6 +8,13 @@ if test -e $HOME/.config/fish/custom.fish
   source $HOME/.config/fish/custom.fish
 end
 
+function my_key_bindings
+  fish_vi_key_bindings
+  fzf_key_bindings
+  bind -M insert \cA beginning-of-line
+  bind -M insert \cE end-of-line
+end
+
 if status is-interactive
   if hasCommand zellij; and set -q "SSH_CONNECTION"
     set ZELLIJ_AUTO_ATTACH true
@@ -15,7 +22,12 @@ if status is-interactive
     eval (zellij setup --generate-auto-start fish | string collect)
   end
 
-  fish_vi_key_bindings
+  set -gx FZF_DEFAULT_OPTS '--height 40% --layout=reverse --border'
+  if hasCommand fd
+    set -gx FZF_DEFAULT_COMMAND 'fd --strip-cwd-prefix --follow --exclude node_modules'
+  end
+
+  my_key_bindings
 
   set -gx EDITOR nvim
   hasCommand code && set -gx EDITOR "code -w"
@@ -72,4 +84,3 @@ if status is-interactive
   end
 
 end
-
