@@ -18,7 +18,7 @@ installAge() {
         brew install age
     elif [ "$(uname)" == "Linux" ]; then
         is_os_name "Arch Linux" && sudo pacman -Sy age
-        is_os_name "Ubuntu" && sudo apt install age
+        is_os_name "Ubuntu" && (sudo apt install age || go install filippo.io/age/cmd/...@latest)
     else
         echo "Your platform ($(uname)) is not supported."
         exit 1
