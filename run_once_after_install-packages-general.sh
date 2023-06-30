@@ -177,7 +177,8 @@ install_cargo_pkg() {
     hasCommand btm || cargo install bottom --locked
     hasCommand zoxide || cargo install zoxide --locked
     hasCommand zellij || cargo install --locked zellij
-    hasCommand viu || cargo install viu --locked
+    hasCommand viu || cargo install viu
+    # hasCommand rg || cargo install ripgrep
 }
 
 install_go_pkg() {

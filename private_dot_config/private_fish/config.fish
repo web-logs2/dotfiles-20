@@ -15,6 +15,19 @@ function my_key_bindings
     bind -M insert \cE end-of-line
 end
 
+function set_fzf_option
+    if hasCommand fd
+        set -gx FZF_DEFAULT_COMMAND "fd --strip-cwd-prefix --follow --exclude node_modules"
+        set FZF_CTRL_D_COMMAND "$FZF_DEFAULT_COMMAND --type d"
+        set FZF_CTRL_F_COMMAND "$FZF_DEFAULT_COMMAND --type f"
+        set -gx FZF_DEFAULT_OPTS "--height 40% --layout=reverse --border \
+            --prompt 'All> ' \
+            --bind \"ctrl-d:change-prompt(Directories> )+reload($FZF_CTRL_D_COMMAND)\" \
+            --bind \"ctrl-f:change-prompt(Files> )+reload($FZF_CTRL_F_COMMAND)\" \
+            --bind \"ctrl-a:change-prompt(All> )+reload($FZF_DEFAULT_COMMAND)\""
+    end
+end
+
 if status is-interactive
     if hasCommand zellij; and set -q SSH_CONNECTION
         set ZELLIJ_AUTO_ATTACH true
@@ -22,10 +35,7 @@ if status is-interactive
         eval (zellij setup --generate-auto-start fish | string collect)
     end
 
-    set -gx FZF_DEFAULT_OPTS '--height 40% --layout=reverse --border'
-    if hasCommand fd
-        set -gx FZF_DEFAULT_COMMAND 'fd --strip-cwd-prefix --follow --exclude node_modules'
-    end
+    set_fzf_option
 
     my_key_bindings
 
