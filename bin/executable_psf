@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+
+has_command() {
+    command -v $* >/dev/null 2>&1
+}
+
+if has_command procs && false; then
+    PS_COMMAND="procs --color always -p disable"
+    PREVIEW_COMMAND="procs --color always --no-header --only command {1}"
+    HEADER_LINES="2"
+    PID_COLUMN="1"
+else
+    PS_COMMAND="ps -ef"
+    PREVIEW_COMMAND="echo {}"
+    HEADER_LINES="1"
+    PID_COLUMN="2"
+fi
+
+: | fzf --ansi \
+    --bind "start:reload($PS_COMMAND)" \
+    --bind "ctrl-r:reload($PS_COMMAND)" \
+    --bind "ctrl-t:execute(kill {$PID_COLUMN})+reload($PS_COMMAND)" \
+    --bind "ctrl-k:execute(kill -9 {$PID_COLUMN})+reload($PS_COMMAND)" \
+    --header $'╱ CTRL-T (kill -15) ╱ CTRL-K (kill -9) ╱\n' \
+    --header-lines="$HEADER_LINES" \
+    --prompt 'Process> ' \
+    --preview="$PREVIEW_COMMAND" \
+    --preview-window 'down,2,wrap' \
+    --layout=reverse --height=60%

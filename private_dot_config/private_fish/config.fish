@@ -18,9 +18,11 @@ end
 function set_fzf_option
     if hasCommand fd
         set -gx FZF_DEFAULT_COMMAND "fd --strip-cwd-prefix --follow --exclude node_modules"
+        set -gx FZF_DEFAULT_OPTS "--height 40% --layout=reverse --border"
+
         set FZF_CTRL_D_COMMAND "$FZF_DEFAULT_COMMAND --type d"
         set FZF_CTRL_F_COMMAND "$FZF_DEFAULT_COMMAND --type f"
-        set -gx FZF_DEFAULT_OPTS "--height 40% --layout=reverse --border \
+        set -gx FZF_CTRL_T_OPTS "$FZF_DEFAULT_OPTS \
             --prompt 'All> ' \
             --bind \"ctrl-d:change-prompt(Directories> )+reload($FZF_CTRL_D_COMMAND)\" \
             --bind \"ctrl-f:change-prompt(Files> )+reload($FZF_CTRL_F_COMMAND)\" \
@@ -29,7 +31,7 @@ function set_fzf_option
 end
 
 if status is-interactive
-    if hasCommand zellij; and set -q SSH_CONNECTION
+    if hasCommand zellij; and set -q SSH_CONNECTION; and not set -q VSCODE_GIT_IPC_HANDLE
         set ZELLIJ_AUTO_ATTACH true
         # set ZELLIJ_AUTO_EXIT true
         eval (zellij setup --generate-auto-start fish | string collect)
@@ -47,7 +49,6 @@ if status is-interactive
 
     alias lzd=lazydocker
     alias lg=lazygit
-    #alias r=joshuto
     alias dc=docker-compose
     alias svc="sudo systemctl"
     alias vi="nvim"
