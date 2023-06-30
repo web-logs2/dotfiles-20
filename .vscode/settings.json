@@ -1,0 +1,8 @@
+{
+    "files.associations": {
+        "**/skhdrc": "Makefile"
+    },
+    "[Makefile]": {
+        "editor.formatOnSave": false
+    },
+}

@@ -35,6 +35,8 @@ brew "gum"
 brew "zoxide"
 brew "lego"
 brew "dsq"
+brew "koekeishiya/formulae/yabai"
+brew "koekeishiya/formulae/skhd"
 
 cask "font-fira-mono-nerd-font"
 cask "alacritty"
@@ -50,6 +52,14 @@ cask "rar"
 
 EOF
 
+    # for fish shell
+    # echo \n"$(whoami) ALL=(root) NOPASSWD: sha256:$(shasum -a 256 (which yabai)) --load-sa"|sudo tee -a /private/etc/sudoers.d/yabai
+
+    # for bash shell
+    # if sudo cat /private/etc/sudoers.d/yabai | grep yabai; then
+    #     echo add yabai to sudo...
+    #     echo \n"$(whoami) ALL=(root) NOPASSWD: sha256:$(shasum -a 256 $(which yabai)) --load-sa" | sudo tee -a /private/etc/sudoers.d/yabai
+    # fi
 }
 
 install_for_arch() {
