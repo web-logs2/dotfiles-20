@@ -259,7 +259,7 @@ handle_mime() {
     image/*)
         ## Preview as text conversion
         # img2txt --gamma=0.6 --width="${PREVIEW_WIDTH}" -- "${FILE_PATH}" && exit 4
-        viu -w "${PREVIEW_WIDTH}" "${FILE_PATH}" && exit 4
+        viu -b -w "${PREVIEW_WIDTH}" "${FILE_PATH}" && exit 4
         # tiv "${FILE_PATH}" && exit 4
         exiftool "${FILE_PATH}" && exit 5
         exit 1

@@ -1,0 +1,31 @@
+version: '3.3'
+
+services:
+  clash:
+    # image: dreamacro/clash-premium
+    build: .
+    container_name: clash
+    volumes:
+      - ./config:/root/.config/clash
+      # - ./ui:/ui # dashboard volume
+    network_mode: host
+    # ports:
+    #   - "7892:7892"
+    #   - "9090:9090"
+    #   - "10809:10809"
+    # TUN
+    dns:
+      - 223.5.5.5
+      - 223.6.6.6
+    cap_add:
+      - NET_ADMIN
+    # devices:
+    #   - /dev/net/tun
+    # privileged: true
+    restart: unless-stopped
+    labels:
+      - homepage.group=插件
+      - homepage.name=Clash
+      - homepage.icon=https://cdn.jsdelivr.net/gh/Dreamacro/clash/docs/logo.png
+      - homepage.href=http://home.lubui.com:9090/ui
+      - homepage.description=Clash代理
