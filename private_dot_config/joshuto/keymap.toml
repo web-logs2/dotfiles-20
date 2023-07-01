@@ -14,6 +14,7 @@ keymap = [
 	{ keys = ["l", "g"], command = ":shell lazygit" },
 	{ keys = ["c", "o"], command = ":shell code " },
 	{ keys = ["c", "a"], command = ":shell chezmoi add %s" },
+	{ keys = ["c", "A"], command = ":shell chezmoi add --encrypt %s" },
 	{ keys = ["Q"], command = "close_tab" },
 	{ keys = ["q"], command = "quit --output-current-directory" },
 	{ keys = ["1"], command = "numbered_command 1" },

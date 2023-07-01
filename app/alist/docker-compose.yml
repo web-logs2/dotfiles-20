@@ -1,0 +1,18 @@
+version: '3.3'
+services:
+    alist:
+        restart: always
+        volumes:
+            - './data:/opt/alist/data'
+        # ports:
+        #     - '5244:5244'
+        network_mode: host
+        container_name: alist
+        image: 'xhofe/alist:latest'
+        labels:
+            - homepage.group=存储
+            - homepage.name=AList
+            - homepage.icon=https://cdn.jsdelivr.net/gh/alist-org/logo@main/logo.svg
+            - homepage.href=http://home.lubui.com:5244/
+            - homepage.description=网盘中转站
+            - com.centurylinklabs.watchtower.enable=true

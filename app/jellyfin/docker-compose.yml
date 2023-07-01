@@ -1,0 +1,25 @@
+services:
+
+  jellyfin:
+    container_name: jellyfin
+    image: nyanmisaka/jellyfin
+    environment:
+      TZ: Asia/Shanghai
+    devices:
+      - /dev/dri:/dev/dri
+    volumes:
+      - ./config:/config
+      - ./cache:/cache
+      - ./media:/media
+      - /home/urie/app/navidrome/music:/media/music
+    # ports:
+    #   - '8096:8096'
+    network_mode: host
+    restart: unless-stopped
+    labels:
+      - homepage.group=媒体
+      - homepage.name=Jellyfin
+      - homepage.icon=jellyfin.png
+      - homepage.href=http://home.lubui.com:8096/
+      - homepage.description=家庭影院
+      - com.centurylinklabs.watchtower.enable=true

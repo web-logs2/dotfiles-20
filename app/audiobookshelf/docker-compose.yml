@@ -1,0 +1,15 @@
+version: "3.7"
+services:
+  audiobookshelf:
+    image: ghcr.io/advplyr/audiobookshelf:latest
+    environment:
+      TZ: Asia/Shanghai
+      PORT: 13378
+    # ports:
+    #   - 13378:80
+    network_mode: host
+    volumes:
+      - ./audiobooks:/audiobooks
+      - ./podcasts:/podcasts
+      - ./config:/config
+      - ./metadata:/metadata

@@ -1,0 +1,19 @@
+version: '3.5'
+
+services:
+  stash:
+    container_name: stash
+    image: stashapp/stash
+    environment:
+      TZ: Asia/Shanghai
+    devices:
+      - /dev/dri:/dev/dri
+    volumes:
+      - ./data:/root/.stash
+      - ./files:/data
+    network_mode: host
+    # ports:
+    #   - '9999:9999'
+    restart: unless-stopped
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"

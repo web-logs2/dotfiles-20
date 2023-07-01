@@ -1,0 +1,23 @@
+version: '3'
+services:
+  homeassistant:
+    container_name: homeassistant
+    image: "ghcr.io/home-assistant/home-assistant:stable"
+    environment:
+      TZ: Asia/Shanghai
+      # DISABLE_JEMALLOC: true
+    # devices:
+    #   - /dev/ttyUSB0:/dev/ttyUSB0
+    volumes:
+      - ./config:/config
+      - /etc/localtime:/etc/localtime:ro
+    restart: unless-stopped
+    privileged: true
+    network_mode: host
+    labels:
+      - homepage.group=插件
+      - homepage.name=Home Assistant
+      - homepage.icon=home-assistant.png
+      - homepage.href=http://home.lubui.com:8123/
+      - homepage.description=智能家居系统
+      - com.centurylinklabs.watchtower.enable=true

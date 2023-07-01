@@ -1,0 +1,19 @@
+version: "3.8"
+
+services:
+  ddns:
+    container_name: ddns-go
+    image: jeessy/ddns-go
+    volumes:
+      - ./config:/root
+    network_mode: host
+    # ports:
+    #   - 9876:9876
+    restart: unless-stopped
+    labels:
+      - homepage.group=插件
+      - homepage.name=DDNS-Go
+      - homepage.icon=ddns-updater.png
+      - homepage.href=http://home.lubui.com:9876/
+      - homepage.description=DDNS服务
+      - com.centurylinklabs.watchtower.enable=true

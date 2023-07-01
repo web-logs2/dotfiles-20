@@ -1,0 +1,29 @@
+version: '2'
+
+services:
+  app:
+    image: nextcloud
+    container_name: nextcloud
+    restart: always
+    ports:
+      - 12345:80
+    # network_mode: host
+    environment:
+      TZ: Asia/Shanghai
+      # NEXTCLOUD_ADMIN_USER: urie
+      # NEXTCLOUD_ADMIN_PASSWORD: 
+      NEXTCLOUD_TRUSTED_DOMAINS: home.lubui.com:12345
+      # MYSQL_HOST: 
+      # MYSQL_DATABASE: nextcloud
+      # MYSQL_USER:
+      # MYSQL_PASSWORD:
+    volumes:
+      - ./data:/var/www/html:z
+      - ./files:/var/www/html/data/urie/files
+    labels:
+      - homepage.group=存储
+      - homepage.name=NextCloud
+      - homepage.icon=nextcloud.png
+      - homepage.href=http://home.lubui.com:12345/
+      - homepage.description=私有云盘
+      - com.centurylinklabs.watchtower.enable=true

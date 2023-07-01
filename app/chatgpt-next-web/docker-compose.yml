@@ -1,0 +1,18 @@
+services:
+  chatgpt:
+    container_name: chatgpt-next-web
+    image: yidadaa/chatgpt-next-web
+    environment:
+      TZ: Asia/Shanghai
+      OPENAI_API_KEY:
+      CODE:
+      PORT: 3010
+    network_mode: host
+    restart: unless-stopped
+    labels:
+      - homepage.group=工具
+      - homepage.name=ChatGPT
+      - homepage.icon=chatgpt.png
+      - homepage.href=http://home.lubui.com:3010/
+      - homepage.description=智能语言模型
+      - com.centurylinklabs.watchtower.enable=true

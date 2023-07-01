@@ -21,7 +21,7 @@ text_default	= [
   { command = "nvim" },
 	{ command = "code" },
 	# { command = "gedit", fork = true, silent = true },
-	{ command = "bat", args = [ "--paging=always" ] },
+	{ command = "bat", args = [ "-p", "--paging=always" ] },
 ]
 
 reader_default	= [

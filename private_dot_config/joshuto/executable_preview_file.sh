@@ -73,6 +73,20 @@ elif [ "$(uname)" == "Linux" ]; then
     FILE_SIZE=$(stat --printf="%s" "$FILE_PATH")
 fi
 
+if [ $FILE_SIZE -le '1024000' ]; then
+    diff="$(chezmoi diff $FILE_PATH)"
+
+    if [ $? -gt 0 ]; then
+        # echo "chezmoi nomanaged"
+        :
+    elif [ -z "$diff" ]; then
+        echo -e "\\033[1;32m---chezmoi clean---\n\\033[0;39m"
+    else
+        echo -e "\\033[1;31m---chezmoi diff---\n\\033[0;39m"
+    fi
+fi
+
+
 FILE_EXTENSION="${FILE_PATH##*.}"
 FILE_EXTENSION_LOWER="$(printf "%s" "${FILE_EXTENSION}" | tr '[:upper:]' '[:lower:]')"
 

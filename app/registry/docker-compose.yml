@@ -1,0 +1,18 @@
+version: '3'
+services:
+  registry:
+    container_name: registry
+    image: registry:2
+    environment:
+      TZ: Asia/Shanghai
+      REGISTRY_HTTP_ADDR: 0.0.0.0:5000
+      REGISTRY_HTTP_TLS_CERTIFICATE: /certs/home.lubui.com.crt
+      REGISTRY_HTTP_TLS_KEY: /certs/home.lubui.com.key
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ./registry:/var/lib/registry
+      - /home/urie/.lego/certificates:/certs
+    restart: unless-stopped
+    network_mode: host
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
