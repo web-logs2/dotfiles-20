@@ -15,4 +15,8 @@ Library*
 .gitconfig
 {{ end }}
 
+{{ if ne .chezmoi.fqdnHostname "home.lubui.com" }}
+app*
+{{ end }}
+
 key.txt.age
