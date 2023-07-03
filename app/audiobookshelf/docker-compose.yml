@@ -2,6 +2,7 @@ version: "3.7"
 services:
   audiobookshelf:
     image: ghcr.io/advplyr/audiobookshelf:latest
+    container_name: audiobookshelf
     environment:
       TZ: Asia/Shanghai
       PORT: 13378
@@ -13,3 +14,12 @@ services:
       - ./podcasts:/podcasts
       - ./config:/config
       - ./metadata:/metadata
+    restart: unless-stopped
+    labels:
+      - homepage.group=媒体
+      - homepage.name=AudioBookShelf
+      - homepage.icon=audiobookshelf.png
+      - homepage.href=http://home.lubui.com:13378/
+      - homepage.description=有声图书
+      - com.centurylinklabs.watchtower.enable=true
+    

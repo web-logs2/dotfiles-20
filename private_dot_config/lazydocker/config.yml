@@ -1,3 +1,5 @@
+# https://pkg.go.dev/github.com/jesseduffield/lazydocker/pkg/config
+
 customCommands:
   containers:
     - name: bash
@@ -12,6 +14,10 @@ customCommands:
     - name: build up
       attach: true
       command: '{{ .DockerCompose }} up -d --build'
+  volumes:
+    - name: prune
+      attach: true
+      command: 'docker volume prune -a -f'
 
 gui:
   scrollHeight: 2
@@ -36,7 +42,7 @@ gui:
   expandFocusedSidePanel: true
 logs:
   timestamps: false
-  since: '60m' # set to '' to show all logs
+  since: '' # set to '' to show all logs
   tail: '300' # set to 200 to show last 200 lines of logs
 commandTemplates:
   dockerCompose: 'docker compose'
