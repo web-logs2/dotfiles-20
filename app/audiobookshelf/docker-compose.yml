@@ -8,6 +8,8 @@ services:
       PORT: 13378
     # ports:
     #   - 13378:80
+    expose:
+      - '13378'
     network_mode: host
     volumes:
       - ./audiobooks:/audiobooks
