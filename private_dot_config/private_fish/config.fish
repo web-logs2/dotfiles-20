@@ -1,8 +1,12 @@
 function hasCommand
-    which $argv[1] >/dev/null 2>&1
+    command -v $argv[1] >/dev/null 2>&1
 end
 
-set -gx PATH "$HOME/go/bin" /opt/homebrew/bin "$HOME/.pyenv/shims" "$HOME/bin" "$HOME/.cargo/bin" "$HOME/.local/bin" "$HOME/.pyenv/bin" "$HOME/.local/share/pnpm" "$PATH"
+for dir in "$HOME/go/bin" /opt/homebrew/bin "$HOME/.pyenv/shims" "$HOME/bin" "$HOME/.cargo/bin" "$HOME/.local/bin" "$HOME/.pyenv/bin" "$HOME/.local/share/pnpm"
+    if test -e "$dir"
+        set -gx PATH "$dir" "$PATH"
+    end
+end
 
 if test -e $HOME/.config/fish/custom.fish
     source $HOME/.config/fish/custom.fish
@@ -42,7 +46,7 @@ if status is-interactive
     my_key_bindings
 
     set -gx EDITOR nvim
-    hasCommand code && set -gx EDITOR "code -w"
+    hasCommand code; and set -gx EDITOR "code -w"
     set -gx XDG_CONFIG_HOME "$HOME/.config"
 
     alias ..="cd .."
@@ -57,8 +61,8 @@ if status is-interactive
     alias cz="chezmoi"
 
     # Commands to run in interactive sessions can go here
-    hasCommand pyenv && pyenv init - | source
-    hasCommand zoxide && zoxide init fish | source
+    hasCommand pyenv; and pyenv init - | source
+    hasCommand zoxide; and zoxide init fish | source
 
     # pnpm
     set -gx PNPM_HOME "$HOME/.local/share/pnpm"
@@ -77,7 +81,7 @@ if status is-interactive
         else if hasCommand zellij
             zellij attach -c
         else if hasCommand tmux
-            tmux attach || tmux new
+            tmux attach; or tmux new
         else
             echo 'zellij/tmux command not found'
         end
