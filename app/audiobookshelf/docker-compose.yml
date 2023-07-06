@@ -1,4 +1,4 @@
-version: "3.7"
+version: '3.7'
 services:
   audiobookshelf:
     image: ghcr.io/advplyr/audiobookshelf:latest
@@ -17,6 +17,11 @@ services:
       - ./config:/config
       - ./metadata:/metadata
     restart: unless-stopped
+    healthcheck:
+      test: 'curl -f http://127.0.0.1:13378/healthcheck || exit 1'
+      interval: 1m
+      timeout: 3s
+      retries: 2
     labels:
       - homepage.group=媒体
       - homepage.name=AudioBookShelf
@@ -24,4 +29,3 @@ services:
       - homepage.href=http://home.lubui.com:13378/
       - homepage.description=有声图书
       - com.centurylinklabs.watchtower.enable=true
-    
