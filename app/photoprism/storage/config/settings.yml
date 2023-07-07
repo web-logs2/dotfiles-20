@@ -1,7 +1,7 @@
 UI:
   Scrollbar: true
   Zoom: false
-  Theme: moonlight
+  Theme: default
   Language: zh
   TimeZone: ""
 Search:
@@ -10,22 +10,21 @@ Maps:
   Animate: 0
   Style: ""
 Features:
-  Account: true
-  Advanced: false
+  Account: false
   Albums: true
   Archive: true
   Delete: false
   Download: true
   Edit: true
-  Estimates: true
+  Estimates: false
   Favorites: true
-  Files: true
+  Files: false
   Folders: true
   Import: true
-  Labels: true
-  Library: true
-  Logs: true
-  Moments: true
+  Labels: false
+  Library: false
+  Logs: false
+  Moments: false
   People: false
   Places: true
   Private: false
@@ -49,7 +48,7 @@ Index:
 Stack:
   UUID: true
   Meta: true
-  Name: false
+  Name: true
 Share:
   Title: ""
 Download:
@@ -57,6 +56,6 @@ Download:
   Disabled: false
   Originals: true
   MediaRaw: false
-  MediaSidecar: false
+  MediaSidecar: true
 Templates:
   Default: index.gohtml
