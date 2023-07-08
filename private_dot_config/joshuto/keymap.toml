@@ -7,7 +7,7 @@ keymap = [
 	{ keys = ["g", "z"], command = "cd ~/.local/share/chezmoi" },
 	{ keys = ["z", " "], command = ":z " },
 	{ keys = ["z", "i"], command = ":zi " },
-	{ keys = ["z", "t"], command = ":shell tar -cvfp %s" },
+	{ keys = ["z", "t"], command = ":shell tar -czvf tmp.tar.gz %s" },
 	{ keys = ["escape"], command = "select --all=true --deselect=true" },
 	{ keys = ["{"], command = "cursor_move_up 5" },
 	{ keys = ["}"], command = "cursor_move_down 5" },
