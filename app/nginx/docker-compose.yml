@@ -22,7 +22,7 @@ services:
       - /var/run/docker.sock:/tmp/docker.sock:ro
       - ~/.lego/certificates/:/etc/nginx/certs
       - ./vhost.d:/etc/nginx/vhost.d
-      - ./conf.d/gzip.conf:/etc/nginx/conf.d/gzip.conf
+      - ./conf.d/custom.conf:/etc/nginx/conf.d/custom.conf
       # - ./proxy.conf:/etc/nginx/proxy.conf
     logging:
       driver: json-file
