@@ -21,6 +21,9 @@ services:
       ND_LASTFM_APIKEY: 
       ND_LASTFM_SECRET: 
       ND_LASTFM_LANGUAGE: zh
+      TZ: Asia/Shanghai
+      VIRTUAL_HOST: music.home.lubui.com
+      VIRTUAL_PORT: 4533
     volumes:
       - "./data:/data"
       - "./music:/music"
@@ -28,6 +31,6 @@ services:
       - homepage.group=媒体
       - homepage.name=Navidrome
       - homepage.icon=navidrome.png
-      - homepage.href=http://home.lubui.com:4533/
+      - homepage.href=https://music.home.lubui.com:8443/
       - homepage.description=音乐库
       - com.centurylinklabs.watchtower.enable=true

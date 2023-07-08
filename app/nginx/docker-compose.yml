@@ -1,0 +1,32 @@
+services:
+  # nginx:
+  #   container_name: nginx
+  #   image: nginx:alpine
+  #   environment:
+  #     TZ: Asia/Shanghai
+  #   volumes:
+  #     - ./conf.d:/etc/nginx/conf.d:ro
+  #     - ./htpasswd/htpasswd:/etc/nginx/htpasswd:ro
+  #     - /tmp:/srv
+  #   network_mode: host
+  #   restart: unless-stopped
+
+  nginx-proxy:
+    image: nginxproxy/nginx-proxy
+    network_mode: host
+    environment:
+      TZ: Asia/Shanghai
+      HTTPS_PORT: 8443
+      HTTP_PORT: 1080
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+      - ~/.lego/certificates/:/etc/nginx/certs
+      - ./vhost.d:/etc/nginx/vhost.d
+      # - ./proxy.conf:/etc/nginx/proxy.conf
+
+  # whoami:
+  #   image: traefik/whoami
+  #   network_mode: host
+  #   environment:
+  #     - VIRTUAL_HOST=a.home.lubui.com
+  #     - VIRTUAL_PORT=80

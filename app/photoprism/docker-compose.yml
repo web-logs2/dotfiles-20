@@ -10,10 +10,13 @@ services:
     #   - "2342:2342" # HTTP port (host:container)
     network_mode: host
     environment:
+      TZ: Asia/Shanghai
+      VIRTUAL_HOST: photo.home.lubui.com
+      VIRTUAL_PORT: 2342
       PHOTOPRISM_ADMIN_USER: 'admin' # admin username
       PHOTOPRISM_ADMIN_PASSWORD: 'insecure' # initial admin password (minimum 8 characters)
       PHOTOPRISM_AUTH_MODE: 'public' # authentication mode (public, password)
-      PHOTOPRISM_SITE_URL: 'http://home.lubui.com:2342/' # server URL in the format "http(s)://domain.name(:port)/(path)"
+      PHOTOPRISM_SITE_URL: 'https://photo.home.lubui.com:8443/' # server URL in the format "http(s)://domain.name(:port)/(path)"
       PHOTOPRISM_ORIGINALS_LIMIT: 7000 # file size limit for originals in MB (increase for high-res video)
       PHOTOPRISM_HTTP_COMPRESSION: 'gzip' # improves transfer speed and bandwidth utilization (none or gzip)
       PHOTOPRISM_LOG_LEVEL: 'warning' # log level: trace, debug, info, warning, error, fatal, or panic
@@ -21,7 +24,7 @@ services:
       PHOTOPRISM_EXPERIMENTAL: 'false' # enables experimental features
       PHOTOPRISM_DISABLE_CHOWN: 'false' # disables updating storage permissions via chmod and chown on startup
       PHOTOPRISM_DISABLE_WEBDAV: 'false' # disables built-in WebDAV server
-      PHOTOPRISM_DISABLE_SETTINGS: 'false' # disables settings UI and API
+      PHOTOPRISM_DISABLE_SETTINGS: 'true' # disables settings UI and API
       PHOTOPRISM_DISABLE_TENSORFLOW: 'true' # disables all features depending on TensorFlow
       PHOTOPRISM_DISABLE_FACES: 'true' # disables face detection and recognition (requires TensorFlow)
       PHOTOPRISM_DISABLE_CLASSIFICATION: 'true' # disables image classification (requires TensorFlow)
@@ -61,6 +64,6 @@ services:
       - homepage.group=媒体
       - homepage.name=PhotoPrism
       - homepage.icon=photoprism.png
-      - homepage.href=http://home.lubui.com:2342/
+      - homepage.href=https://photo.home.lubui.com:8443/
       - homepage.description=记录生活的点滴
       - com.centurylinklabs.watchtower.enable=true

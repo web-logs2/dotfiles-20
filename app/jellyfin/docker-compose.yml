@@ -5,6 +5,8 @@ services:
     image: nyanmisaka/jellyfin
     environment:
       TZ: Asia/Shanghai
+      VIRTUAL_HOST: jellyfin.home.lubui.com
+      VIRTUAL_PORT: 8096
     devices:
       - /dev/dri:/dev/dri
     volumes:
@@ -20,6 +22,6 @@ services:
       - homepage.group=媒体
       - homepage.name=Jellyfin
       - homepage.icon=jellyfin.png
-      - homepage.href=http://home.lubui.com:8096/
+      - homepage.href=https://jellyfin.home.lubui.com:8443/
       - homepage.description=家庭影院
       - com.centurylinklabs.watchtower.enable=true

@@ -5,6 +5,8 @@ services:
     container_name: audiobookshelf
     environment:
       TZ: Asia/Shanghai
+      VIRTUAL_HOST: audio.home.lubui.com
+      VIRTUAL_PORT: 13378
       PORT: 13378
     # ports:
     #   - 13378:80
@@ -26,6 +28,6 @@ services:
       - homepage.group=媒体
       - homepage.name=AudioBookShelf
       - homepage.icon=audiobookshelf.png
-      - homepage.href=http://home.lubui.com:13378/
+      - homepage.href=https://audio.home.lubui.com:8443/
       - homepage.description=有声图书
       - com.centurylinklabs.watchtower.enable=true

@@ -6,6 +6,11 @@ services:
     # ports:
     #   - 3000:3000
     network_mode: host
+    environment:
+      TZ: Asia/Shanghai
+      PORT: 3015
+      VIRTUAL_HOST: home.lubui.com
+      VIRTUAL_PORT: 3015
     volumes:
       - ./config:/app/config # Make sure your local config directory exists
       - /var/run/docker.sock:/var/run/docker.sock # (optional) For docker integrations

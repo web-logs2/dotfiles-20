@@ -7,12 +7,14 @@ services:
       OPENAI_API_KEY:
       CODE:
       PORT: 3010
+      VIRTUAL_HOST: gpt.home.lubui.com
+      VIRTUAL_PORT: 3010
     network_mode: host
     restart: unless-stopped
     labels:
       - homepage.group=工具
       - homepage.name=ChatGPT
       - homepage.icon=chatgpt.png
-      - homepage.href=http://home.lubui.com:3010/
+      - homepage.href=https://gpt.home.lubui.com:8443/
       - homepage.description=智能语言模型
       - com.centurylinklabs.watchtower.enable=true

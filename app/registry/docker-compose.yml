@@ -6,8 +6,10 @@ services:
     environment:
       TZ: Asia/Shanghai
       REGISTRY_HTTP_ADDR: 0.0.0.0:5000
-      REGISTRY_HTTP_TLS_CERTIFICATE: /certs/home.lubui.com.crt
-      REGISTRY_HTTP_TLS_KEY: /certs/home.lubui.com.key
+      VIRTUAL_HOST: hub.home.lubui.com
+      VIRTUAL_PORT: 5000
+      # REGISTRY_HTTP_TLS_CERTIFICATE: /certs/home.lubui.com.crt
+      # REGISTRY_HTTP_TLS_KEY: /certs/home.lubui.com.key
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ./registry:/var/lib/registry

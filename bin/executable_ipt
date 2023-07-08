@@ -16,6 +16,12 @@ print_command() {
   fi
 }
 
+add_rule() {
+  command="$@"
+  print_command "$command"
+  gum confirm "Execute?" && sudo $command && echo -e "\n$command\n" | sudo tee -a $RUN_ON_BOOT_FILE_PATH
+}
+
 DNAT() {
   tput sc
 
@@ -32,12 +38,10 @@ DNAT() {
   print_command "iptables -t nat -A PREROUTING -d $ip -p tcp --dport $port -j DNAT --to-destination [ip]:[port]?"
   destination="$(gum input --placeholder "to ip:port")"
 
-  command="iptables -t nat -A PREROUTING -d $ip -p tcp --dport $port -j DNAT --to-destination $destination"
   tput rc
   tput el
-  print_command "$command"
-
-  gum confirm "Execute?" && sudo $command && echo -e "\n$command\n" | sudo tee -a $RUN_ON_BOOT_FILE_PATH
+  command="iptables -t nat -A PREROUTING -d $ip -p tcp --dport $port -j DNAT --to-destination $destination"
+  add_rule "$command"
 
   tput ed
 }
@@ -49,5 +53,21 @@ DELETE() {
   gum confirm "Execute?" && sudo $delete_command && sudo sed -i "/^$ori_rule$/d" $RUN_ON_BOOT_FILE_PATH
 }
 
-action="$(gum choose DELETE DNAT)"
+ADD_WHITE() {
+  tput sc
+  print_command "iptables -A INPUT -p tcp --dport [port]? -j ACCEPT"
+  port="$(gum input --placeholder "which [port]:")"
+  tput rc
+  tput el
+  command="iptables -A INPUT -p tcp --dport $port -j ACCEPT"
+  add_rule $command
+
+  tput ed
+}
+
+ADD_RULE() {
+  add_rule "$(gum write --placeholder "Write commands (CTRL+D to finish)")"
+}
+
+action="$(gum choose DELETE DNAT ADD_WHITE ADD_RULE)"
 $action
