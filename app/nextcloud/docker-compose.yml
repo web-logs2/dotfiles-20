@@ -20,11 +20,6 @@ services:
       REDIS_HOST:
       REDIS_HOST_PASSWORD:
     labels:
-      - homepage.group=存储
-      - homepage.name=NextCloud
-      - homepage.icon=nextcloud.png
-      - homepage.href=https://cloud.home.lubui.com:8443/
-      - homepage.description=私有云盘
       - com.centurylinklabs.watchtower.enable=true
 
   web:

@@ -32,11 +32,6 @@ services:
       options:
         max-size: 1m
     labels:
-      - homepage.group=存储
-      - homepage.name=Aria2
-      - homepage.icon=github.png
-      - homepage.href=https://aria.home.lubui.com:8443/ui/
-      - homepage.description=后台下载器
       - com.centurylinklabs.watchtower.enable=true
 
   aria_ng:

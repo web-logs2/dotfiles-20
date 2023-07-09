@@ -27,3 +27,6 @@ temp:
 copy:
 	sudo cp ./nextcloud/config/config.php .
 	sudo chown "$$(id -u)" ./config.php
+
+token:
+	$(OCC_COMMAND) config:app:set serverinfo token --value xx

@@ -1,0 +1,17 @@
+---
+# For configuration options and examples, please see:
+# https://github.com/benphelps/homepage/wiki/Settings
+
+# providers:
+# openweathermap: openweathermapapikey
+# weatherapi: weatherapiapikey
+
+language: zh-CN
+title: '家庭服务主页'
+
+color: slate
+# slate, gray, zinc, neutral, stone, amber, yellow, lime, green, emerald, teal, cyan, sky, blue, indigo, violet, purple, fuchsia, pink, rose, red, white
+
+layout:
+  - 工具:
+      # icon: home-assistant.png

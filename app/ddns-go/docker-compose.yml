@@ -15,9 +15,4 @@ services:
       VIRTUAL_PORT: 9876
     restart: unless-stopped
     labels:
-      - homepage.group=插件
-      - homepage.name=DDNS-Go
-      - homepage.icon=ddns-updater.png
-      - homepage.href=https://ddns.home.lubui.com:8443/
-      - homepage.description=DDNS服务
       - com.centurylinklabs.watchtower.enable=true

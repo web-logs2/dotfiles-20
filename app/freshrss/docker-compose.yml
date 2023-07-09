@@ -42,9 +42,4 @@ services:
         --user urie
     network_mode: host
     labels:
-      - homepage.group=工具
-      - homepage.name=FreshRSS
-      - homepage.icon=freshrss.png
-      - homepage.href=https://rss.home.lubui.com:8443
-      - homepage.description=RSS聚合器
       - com.centurylinklabs.watchtower.enable=true

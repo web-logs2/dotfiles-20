@@ -17,9 +17,4 @@ services:
     privileged: true
     network_mode: host
     labels:
-      - homepage.group=插件
-      - homepage.name=Home Assistant
-      - homepage.icon=home-assistant.png
-      - homepage.href=https://hass.home.lubui.com:8443/
-      - homepage.description=智能家居系统
       - com.centurylinklabs.watchtower.enable=true

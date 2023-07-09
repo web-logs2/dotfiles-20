@@ -2,6 +2,7 @@ version: '3.5'
 services:
   photoprism:
     image: photoprism/photoprism:latest
+    container_name: photoprism
     restart: unless-stopped
     security_opt:
       - seccomp:unconfined
@@ -61,9 +62,4 @@ services:
       - './Import:/photoprism/import' # *Optional* base folder from which files can be imported to originals
       - './storage:/photoprism/storage' # *Writable* storage folder for cache, database, and sidecar files (DO NOT REMOVE)
     labels:
-      - homepage.group=媒体
-      - homepage.name=PhotoPrism
-      - homepage.icon=photoprism.png
-      - homepage.href=https://photo.home.lubui.com:8443/
-      - homepage.description=记录生活的点滴
       - com.centurylinklabs.watchtower.enable=true

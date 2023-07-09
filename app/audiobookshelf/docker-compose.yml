@@ -25,9 +25,4 @@ services:
       timeout: 3s
       retries: 2
     labels:
-      - homepage.group=媒体
-      - homepage.name=AudioBookShelf
-      - homepage.icon=audiobookshelf.png
-      - homepage.href=https://audio.home.lubui.com:8443/
-      - homepage.description=有声图书
       - com.centurylinklabs.watchtower.enable=true

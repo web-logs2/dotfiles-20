@@ -10,18 +10,112 @@ services:
     devices:
       - /dev/dri:/dev/dri
     volumes:
-      - ./config:/config
-      - ./cache:/cache
+      - ./jellyfin/config:/config
+      - ./jellyfin/cache:/cache
       - ./media:/media
-      - /home/urie/app/navidrome/music:/media/music
-    # ports:
-    #   - '8096:8096'
+      - ~/app/navidrome/music:/media/music
     network_mode: host
     restart: unless-stopped
     labels:
-      - homepage.group=媒体
-      - homepage.name=Jellyfin
-      - homepage.icon=jellyfin.png
-      - homepage.href=https://jellyfin.home.lubui.com:8443/
-      - homepage.description=家庭影院
+      - com.centurylinklabs.watchtower.enable=true
+
+  jackett:
+    image: lscr.io/linuxserver/jackett:latest
+    container_name: jackett
+    environment:
+      PUID: 1000
+      PGID: 1000
+      TZ: Asia/Shanghai
+      AUTO_UPDATE: true #optional
+      RUN_OPTS: #optional
+      VIRTUAL_HOST: jackett.home.lubui.com
+      VIRTUAL_PORT: 9117
+    volumes:
+      - ./jackett/config:/config
+      - ~/Downloads:/downloads
+    network_mode: host
+    restart: unless-stopped
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
+
+  radarr:
+    image: lscr.io/linuxserver/radarr:latest
+    container_name: radarr
+    environment:
+      PUID: 1000
+      PGID: 1000
+      TZ: Asia/Shanghai
+      VIRTUAL_HOST: radarr.home.lubui.com
+      VIRTUAL_PORT: 7878
+    volumes:
+      - ./radarr/config:/config
+      - ./media/Movies/:/movies
+      - ~/Downloads:/downloads
+    network_mode: host
+    restart: unless-stopped
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
+
+  sonarr:
+    image: lscr.io/linuxserver/sonarr:latest
+    container_name: sonarr
+    environment:
+      PUID: 1000
+      PGID: 1000
+      TZ: Asia/Shanghai
+      VIRTUAL_HOST: sonarr.home.lubui.com
+      VIRTUAL_PORT: 8989
+    volumes:
+      - ./sonarr/config:/config
+      - ./media/TV:/tv
+      - ~/Downloads:/downloads
+    network_mode: host
+    restart: unless-stopped
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
+
+  jellyseerr:
+    image: fallenbagel/jellyseerr:latest
+    container_name: jellyseerr
+    environment:
+      PUID: 1000
+      PGID: 1000
+      LOG_LEVEL: debug
+      TZ: Asia/Shanghai
+      VIRTUAL_HOST: jellyseerr.home.lubui.com
+      VIRTUAL_PORT: 5055
+    network_mode: host
+    volumes:
+        - ./jellyseerr/config:/app/config
+    restart: unless-stopped
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
+  
+  chinesesubfinder:
+    image: allanpk716/chinesesubfinder
+    container_name: chinesesubfinder
+    volumes:
+      - ./chinesesubfinder/config:/config
+      - ./media:/media
+      - ./chinesesubfinder/browser:/root/.cache/rod/browser    # 容器重启后无需再次下载 chrome，除非 go-rod 更新
+    environment:
+      PUID: 1000
+      PGID: 1000
+      LOG_LEVEL: debug
+      TZ: Asia/Shanghai
+      PERMS: false
+      UMASK: 022
+      VIRTUAL_HOST: subfinder.home.lubui.com
+      VIRTUAL_PORT: 19035
+    restart: unless-stopped
+    network_mode: host
+    hostname: chinesesubfinder
+    # ports:
+    #   - 19035:19035
+    #   - 19037:19037
+    logging:
+        driver: "json-file"
+        options:
+          max-size: "1m"
+    labels:
       - com.centurylinklabs.watchtower.enable=true
