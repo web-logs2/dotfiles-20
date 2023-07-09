@@ -11,7 +11,7 @@ if has_command procs && false; then
     PID_COLUMN="1"
 else
     PS_COMMAND="ps -ef"
-    PREVIEW_COMMAND="echo {}"
+    PREVIEW_COMMAND="echo -n {-1}"
     HEADER_LINES="1"
     PID_COLUMN="2"
 fi

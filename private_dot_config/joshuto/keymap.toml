@@ -14,6 +14,7 @@ keymap = [
 	{ keys = ["V"], command = "toggle_visual" },
 	{ keys = ["v", "i"], command = ":shell nvim " },
 	{ keys = ["l", "g"], command = ":shell lazygit" },
+	{ keys = ["l", "z", "d"], command = ":shell lazydocker" },
 	{ keys = ["c", "o"], command = ":shell code " },
 	{ keys = ["c", "a"], command = ":shell chezmoi add %s" },
 	{ keys = ["c", "A"], command = ":shell chezmoi add --encrypt %s" },
