@@ -12,8 +12,8 @@ services:
       VIRTUAL_HOST: home.lubui.com
       VIRTUAL_PORT: 3015
     volumes:
-      - ./config:/app/config # Make sure your local config directory exists
-      - /var/run/docker.sock:/var/run/docker.sock # (optional) For docker integrations
+      - ./config:/app/config
+      - /var/run/docker.sock:/var/run/docker.sock
     extra_hosts:
       - "home.lubui.com:192.168.1.7"
     restart: unless-stopped

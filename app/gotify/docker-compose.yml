@@ -1,0 +1,17 @@
+version: "3"
+
+services:
+  gotify:
+    image: gotify/server
+    container_name: gotify
+    environment:
+      TZ: Asia/Shanghai
+      VIRTUAL_HOST: gotify.home.lubui.com
+      VIRTUAL_PORT: 7001
+      GOTIFY_SERVER_PORT: 7001
+    network_mode: host
+    volumes:
+      - "./data:/app/data"
+    restart: unless-stopped
+    labels:
+      - com.centurylinklabs.watchtower.enable=true

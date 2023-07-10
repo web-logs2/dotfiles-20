@@ -46,3 +46,21 @@ services:
       driver: json-file
       options:
         max-size: 1m
+  
+  qbittorrent:
+    image: lscr.io/linuxserver/qbittorrent:latest
+    container_name: qbittorrent
+    environment:
+      PUID: 65534
+      PGID: 65534
+      TZ: Asia/Shanghai
+      WEBUI_PORT: 6882
+    volumes:
+      - ./qbittorrent:/config
+      - ~/Downloads:/downloads
+    network_mode: host
+    # ports:
+    #   - 8080:8080
+    #   - 6881:6881
+    #   - 6881:6881/udp
+    restart: unless-stopped
