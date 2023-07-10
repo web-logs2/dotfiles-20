@@ -148,8 +148,19 @@
         "cloudide-67x80dvnj47p9l": "linux",
         "CloudIDE_182980": "linux",
         "cloudide-q4w4vq94pk8vr5": "linux",
-        "CloudIDE_182780": "linux"
+        "CloudIDE_182780": "linux",
+        "cloudide-wq61rox65v6v83": "linux",
+        "mac.home.lubui.com": "macOS",
+        "pc.home.lubui.com": "linux"
     },
     "byted-ide.settings-sync.includedExtensions": [],
-    "workbench.startupEditor": "none"
+    "workbench.startupEditor": "none",
+    // "editor.tabCompletion": "onlySnippets",
+    "[yaml]": {
+        "editor.quickSuggestions": {
+            "other": "on",
+            "comments": "off",
+            "strings": "on"
+        }
+    }
 }
