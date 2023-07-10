@@ -2,13 +2,14 @@ version: "3"
 services:
   watchtower:
     image: containrrr/watchtower
+    container_name: watchtower
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     environment:
       WATCHTOWER_NOTIFICATION_REPORT: "true"
       TZ: Asia/Shanghai
-    command: '-c --http-api-metrics --http-api-token youling --label-enable --schedule "0 0 4 * * *"'
+    command: '-c --http-api-metrics --http-api-token ${TOKEN} --label-enable --schedule "0 0 4 * * *"'
     restart: unless-stopped
     # ports:
     #   - 8080:8080
-    # network_mode: host
+    network_mode: host

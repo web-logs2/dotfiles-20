@@ -1,6 +1,7 @@
 ignored_dir*
 symbols*
 .vscode*
+README.md
 
 {{ if ne .chezmoi.os "darwin" }}
 */yabai*

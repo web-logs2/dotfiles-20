@@ -96,6 +96,7 @@ if status is-interactive
                 cd (cat "$OUTPUT_FILE")
             end
         end
+        alias sudor="sudo env JOSHUTO_CONFIG_HOME=$HOME/.config/joshuto joshuto"
     end
 
 end

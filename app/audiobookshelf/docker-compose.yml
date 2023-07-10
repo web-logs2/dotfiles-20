@@ -1,13 +1,17 @@
-version: "3.7"
+version: '3.7'
 services:
   audiobookshelf:
     image: ghcr.io/advplyr/audiobookshelf:latest
     container_name: audiobookshelf
     environment:
       TZ: Asia/Shanghai
+      VIRTUAL_HOST: audio.home.lubui.com
+      VIRTUAL_PORT: 13378
       PORT: 13378
     # ports:
     #   - 13378:80
+    expose:
+      - '13378'
     network_mode: host
     volumes:
       - ./audiobooks:/audiobooks
@@ -15,11 +19,10 @@ services:
       - ./config:/config
       - ./metadata:/metadata
     restart: unless-stopped
+    healthcheck:
+      test: 'curl -f http://127.0.0.1:13378/healthcheck || exit 1'
+      interval: 1m
+      timeout: 3s
+      retries: 2
     labels:
-      - homepage.group=媒体
-      - homepage.name=AudioBookShelf
-      - homepage.icon=audiobookshelf.png
-      - homepage.href=http://home.lubui.com:13378/
-      - homepage.description=有声图书
       - com.centurylinklabs.watchtower.enable=true
-    

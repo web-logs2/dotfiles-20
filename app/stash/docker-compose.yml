@@ -6,6 +6,8 @@ services:
     image: stashapp/stash
     environment:
       TZ: Asia/Shanghai
+      VIRTUAL_HOST: porn.home.lubui.com
+      VIRTUAL_PORT: 9999
     devices:
       - /dev/dri:/dev/dri
     volumes:

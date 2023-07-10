@@ -5,6 +5,8 @@ services:
     image: "ghcr.io/home-assistant/home-assistant:stable"
     environment:
       TZ: Asia/Shanghai
+      VIRTUAL_HOST: hass.home.lubui.com
+      VIRTUAL_PORT: 8123
       # DISABLE_JEMALLOC: true
     # devices:
     #   - /dev/ttyUSB0:/dev/ttyUSB0
@@ -15,9 +17,4 @@ services:
     privileged: true
     network_mode: host
     labels:
-      - homepage.group=插件
-      - homepage.name=Home Assistant
-      - homepage.icon=home-assistant.png
-      - homepage.href=http://home.lubui.com:8123/
-      - homepage.description=智能家居系统
       - com.centurylinklabs.watchtower.enable=true

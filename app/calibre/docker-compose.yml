@@ -1,0 +1,25 @@
+version: '2.1'
+services:
+  calibre:
+    image: lscr.io/linuxserver/calibre-web:latest
+    container_name: calibre-web
+    environment:
+      PUID: 1000
+      PGID: 1000
+      TZ: Asia/Shanghai
+      DOCKER_MODS: linuxserver/mods:universal-calibre
+      VIRTUAL_HOST: ebook.home.lubui.com
+      VIRTUAL_PORT: 8083
+    volumes:
+      - ./config:/config
+      - ./books:/books
+      - ./books_to_add:/books_to_add
+    network_mode: host
+    restart: unless-stopped
+    labels:
+      - homepage.group=媒体
+      - homepage.name=Calibre Web
+      - homepage.icon=calibre-web.png
+      - homepage.href=https://ebook.home.lubui.com:8443/
+      - homepage.description=电子书管理器
+      - com.centurylinklabs.watchtower.enable=true

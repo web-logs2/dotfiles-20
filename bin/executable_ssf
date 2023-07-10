@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+
+set -e
+
+has_command() {
+    command -v $* >/dev/null 2>&1
+}
+
+PREVIEW_COMMAND="echo -n {}"
+if [ "$(uname)" == "Darwin" ]; then
+    LIST_COMMAND="sudo lsof -iTCP -sTCP:LISTEN -P"
+    KILL_COMMAND="kill {2}"
+elif [ "$(uname)" == "Linux" ]; then
+    if has_command ss; then
+        LIST_COMMAND="sudo ss -plnt"
+        KILL_COMMAND="echo -n {} | grep -Eo pid=[0-9]+ | grep -Eo [0-9]+ | xargs kill"
+        PREVIEW_COMMAND="echo -n {-1}"
+    elif has_command netstat; then
+        LIST_COMMAND="sudo netstat -tln"
+    else
+        echo "ss/netstat commands not found"
+        exit 1
+    fi
+else
+    echo "Your platform ($(uname)) is not supported."
+    exit 1
+fi
+
+sudo echo -n "" # 提前输入sudo密码以缓存
+
+: | fzf \
+    -q \' \
+    --bind "start:reload($LIST_COMMAND)" \
+    --bind "ctrl-r:reload($LIST_COMMAND)" \
+    --bind "ctrl-t:execute($KILL_COMMAND)+reload($LIST_COMMAND)" \
+    --header $'╱ CTRL-T (kill -15) ╱\n' \
+    --header-lines="1" \
+    --preview="$PREVIEW_COMMAND" \
+    --preview-window 'down,2,wrap' \
+    --layout=reverse --height=60% --border

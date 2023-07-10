@@ -101,6 +101,7 @@ install_for_arch() {
         lego \
         unrar \
         dsq \
+        rsync \
         zoxide
 
     if ! hasCommand yay; then
@@ -171,6 +172,7 @@ install_cargo_pkg() {
         curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
         source "$HOME/.cargo/env"
     fi
+    cargo default stable
 
     hasCommand joshuto || cargo install --git https://github.com/kamiyaa/joshuto.git --force
     hasCommand delta || cargo install git-delta

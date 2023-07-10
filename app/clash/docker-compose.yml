@@ -5,6 +5,10 @@ services:
     # image: dreamacro/clash-premium
     build: .
     container_name: clash
+    environment:
+      TZ: Asia/Shanghai
+      VIRTUAL_HOST: clash.home.lubui.com
+      VIRTUAL_PORT: 9090
     volumes:
       - ./config:/root/.config/clash
       # - ./ui:/ui # dashboard volume
@@ -23,9 +27,3 @@ services:
     #   - /dev/net/tun
     # privileged: true
     restart: unless-stopped
-    labels:
-      - homepage.group=插件
-      - homepage.name=Clash
-      - homepage.icon=https://cdn.jsdelivr.net/gh/Dreamacro/clash/docs/logo.png
-      - homepage.href=http://home.lubui.com:9090/ui
-      - homepage.description=Clash代理
