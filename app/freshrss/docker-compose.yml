@@ -24,6 +24,7 @@ services:
       LISTEN: 0.0.0.0:3011
       VIRTUAL_HOST: rss.home.lubui.com
       VIRTUAL_PORT: 3011
+      ENABLE_SSO: 1
       FRESHRSS_INSTALL: |-
         --api_enabled
         --base_url https://rss.home.lubui.com:8443

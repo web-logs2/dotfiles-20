@@ -23,6 +23,9 @@ services:
       TZ: Asia/Shanghai
       HTTPS_PORT: 8443
       HTTP_PORT: 1080
+      SSO_INTERNAL_AUTH_ADDR: http://127.0.0.1:3100/auth
+      SSO_LOGIN_ADDR: https://sso.home.lubui.com:8443/login
+      SSO_COOKIE_DOMAIN:
     restart: unless-stopped
     network_mode: host
     volumes:
@@ -30,6 +33,21 @@ services:
       - /var/run/docker.sock:/tmp/docker.sock:ro
       - ./nginx.tmpl:/etc/docker-gen/templates/nginx.tmpl
       - ~/.lego/certificates/:/etc/nginx/certs
+  
+  sso:
+    build: ./sso
+    container_name: sso
+    environment:
+      TZ: Asia/Shanghai
+      VIRTUAL_HOST: sso.home.lubui.com
+      VIRTUAL_PORT: 3100
+      LISTEN_ADDR: ":3100"
+      SSO_COOKIE_DOMAIN:
+      SSO_TOKEN_SALT:
+      LOGIN_USERNAME:
+      LOGIN_PASSWORD:
+    restart: unless-stopped
+    network_mode: host
 
   # whoami:
   #   image: traefik/whoami

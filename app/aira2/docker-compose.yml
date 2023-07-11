@@ -19,7 +19,7 @@ services:
       CUSTOM_TRACKER_URL:
       TZ: Asia/Shanghai
     volumes:
-      - ${PWD}/aria2-config:/config
+      - ./aria2-config:/config
       - ~/Downloads:/downloads
     # ports:
     #   - 6800:6800
@@ -36,12 +36,16 @@ services:
 
   aria_ng:
     container_name: aria_ng
-    build: ./aria_ng
+    build: 
+      context: ./aria_ng
+      args:
+        PASSWORD: ${RPC_SECRET}
     network_mode: host
     restart: unless-stopped
     environment:
       VIRTUAL_HOST: aria.home.lubui.com
       VIRTUAL_PORT: 6880
+      ENABLE_SSO: 1
     logging:
       driver: json-file
       options:

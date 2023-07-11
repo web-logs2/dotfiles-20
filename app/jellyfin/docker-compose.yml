@@ -30,6 +30,7 @@ services:
       RUN_OPTS: #optional
       VIRTUAL_HOST: jackett.home.lubui.com
       VIRTUAL_PORT: 9117
+      ENABLE_SSO: 1
     volumes:
       - ./jackett/config:/config
       - ~/Downloads:/downloads
@@ -47,6 +48,7 @@ services:
       TZ: Asia/Shanghai
       VIRTUAL_HOST: radarr.home.lubui.com
       VIRTUAL_PORT: 7878
+      ENABLE_SSO: 1
     volumes:
       - ./radarr/config:/config
       - ./media/Movies/:/movies
@@ -65,6 +67,7 @@ services:
       TZ: Asia/Shanghai
       VIRTUAL_HOST: sonarr.home.lubui.com
       VIRTUAL_PORT: 8989
+      ENABLE_SSO: 1
     volumes:
       - ./sonarr/config:/config
       - ./media/TV:/tv
@@ -73,6 +76,43 @@ services:
     restart: unless-stopped
     labels:
       - com.centurylinklabs.watchtower.enable=true
+  
+  lidarr:
+    image: lscr.io/linuxserver/lidarr:latest
+    container_name: lidarr
+    environment:
+      PUID: 1000
+      PGID: 1000
+      TZ: Asia/Shanghai
+      VIRTUAL_HOST: lidarr.home.lubui.com
+      VIRTUAL_PORT: 8686
+      ENABLE_SSO: 1
+    volumes:
+      - ./lidarr/config:/config
+      - ~/app/navidrome/music:/music
+      - ~/Downloads:/downloads
+    network_mode: host
+    restart: unless-stopped
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
+
+  prowlarr:
+    image: lscr.io/linuxserver/prowlarr:latest
+    container_name: prowlarr
+    environment:
+      PUID: 1000
+      PGID: 1000
+      TZ: Asia/Shanghai
+      VIRTUAL_HOST: prowlarr.home.lubui.com
+      VIRTUAL_PORT: 9696
+      ENABLE_SSO: 1
+    volumes:
+      - ./prowlarr/config:/config
+    network_mode: host
+    restart: unless-stopped
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
+
 
   jellyseerr:
     image: fallenbagel/jellyseerr:latest
