@@ -9,6 +9,7 @@ services:
     volumes:
       - ./conf.d:/etc/nginx/conf.d
       - ~/.lego/certificates/:/etc/nginx/certs
+      - ./html:/usr/share/nginx/html
     logging:
       driver: json-file
       options:
@@ -21,10 +22,10 @@ services:
       /etc/nginx/conf.d/default.conf
     environment:
       TZ: Asia/Shanghai
-      HTTPS_PORT: 8443
-      HTTP_PORT: 1080
-      SSO_INTERNAL_AUTH_ADDR: http://127.0.0.1:3100/auth
-      SSO_LOGIN_ADDR: https://sso.home.lubui.com:8443/login
+      HTTPS_PORT:
+      HTTP_PORT:
+      SSO_INTERNAL_AUTH_ADDR:
+      SSO_LOGIN_ADDR:
       SSO_COOKIE_DOMAIN:
     restart: unless-stopped
     network_mode: host
@@ -33,7 +34,7 @@ services:
       - /var/run/docker.sock:/tmp/docker.sock:ro
       - ./nginx.tmpl:/etc/docker-gen/templates/nginx.tmpl
       - ~/.lego/certificates/:/etc/nginx/certs
-  
+
   sso:
     build: ./sso
     container_name: sso
@@ -41,7 +42,7 @@ services:
       TZ: Asia/Shanghai
       VIRTUAL_HOST: sso.home.lubui.com
       VIRTUAL_PORT: 3100
-      LISTEN_ADDR: ":3100"
+      LISTEN_ADDR: ':3100'
       SSO_COOKIE_DOMAIN:
       SSO_TOKEN_SALT:
       LOGIN_USERNAME:

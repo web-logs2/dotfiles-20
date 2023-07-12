@@ -1,4 +1,4 @@
-FROM golang:1.19 AS build-stage
+FROM golang:alpine AS build-stage
 WORKDIR /app
 COPY main.go ./
 RUN CGO_ENABLED=0 GOOS=linux go build -o /go-bin main.go

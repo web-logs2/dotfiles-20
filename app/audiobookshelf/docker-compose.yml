@@ -8,10 +8,6 @@ services:
       VIRTUAL_HOST: audio.home.lubui.com
       VIRTUAL_PORT: 13378
       PORT: 13378
-    # ports:
-    #   - 13378:80
-    expose:
-      - '13378'
     network_mode: host
     volumes:
       - ./audiobooks:/audiobooks
