@@ -23,7 +23,7 @@ server {
         break;
     }
     location / {
-        return 301 https://$host:8443$request_uri;
+        return 301 https://$host:{{ $external_https_port }}$request_uri;
     }
 }
 server {

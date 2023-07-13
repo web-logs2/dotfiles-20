@@ -13,7 +13,7 @@ services:
       TZ: Asia/Shanghai
       VIRTUAL_HOST: ddns.home.lubui.com
       VIRTUAL_PORT: 9876
-      ENABLE_SSO: 1
+      PATH_NEED_SSO: /
     restart: unless-stopped
     labels:
       - com.centurylinklabs.watchtower.enable=true

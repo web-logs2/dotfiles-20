@@ -32,7 +32,7 @@ services:
     volumes:
       - ./conf.d:/etc/nginx/conf.d
       - /var/run/docker.sock:/tmp/docker.sock:ro
-      - ./nginx.tmpl:/etc/docker-gen/templates/nginx.tmpl
+      - ./gen/nginx.gtpl:/etc/docker-gen/templates/nginx.tmpl
       - ~/.lego/certificates/:/etc/nginx/certs
 
   sso:

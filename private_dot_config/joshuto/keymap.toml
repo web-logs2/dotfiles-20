@@ -80,6 +80,7 @@ keymap = [
 	{ keys = ["y", "."], command = "copy_filename_without_extension" },
 	{ keys = ["y", "p"], command = "copy_filepath" },
 	{ keys = ["y", "d"], command = "copy_dirpath" },
+	{ keys = ["y", "l"], command = "symlink_files --relative=true" },
 	{ keys = ["delete"], command = "delete_files" },
 	{ keys = ["d", "D"], command = "delete_files" },
 	{ keys = ["a"], command = "rename_append" },

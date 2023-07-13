@@ -188,6 +188,17 @@
     {{- end }}
 {{- end }}
 
+{{- define "auth_request" }}
+        satisfy any;
+        allow 127.0.0.0/8;
+        allow 192.168.0.0/16;
+        allow 172.16.0.0/12;
+        allow 10.0.0.0/8;
+        deny  all;
+        auth_request /auth;
+        error_page 401 = @error401;
+{{ end }}
+
 {{- define "location" }}
     {{- $override := printf "/etc/nginx/vhost.d/%s_%s_location_override" .Host (sha1 .Path) }}
     {{- if and (eq .Path "/") (not (exists $override)) }}
@@ -197,7 +208,32 @@
     include {{ $override }};
     {{- else }}
         {{- $keepalive := first (keys (groupByLabel .Containers "com.github.nginx-proxy.nginx-proxy.keepalive")) }}
+        {{- if .PATH_NEED_SSO }}
+    location = /auth {
+        internal;
+        proxy_pass_request_body off;
+        proxy_set_header Content-Length "";
+        proxy_pass {{ $.Env.SSO_INTERNAL_AUTH_ADDR }};
+    }
+
+    location @error401 {
+        add_header Set-Cookie "redirect=$scheme://$http_host$request_uri;Domain={{ $.Env.SSO_COOKIE_DOMAIN }};Path=/;Max-Age=3000";
+        return 302 {{ $.Env.SSO_LOGIN_ADDR }};
+    }
+            {{ if ne .PATH_NEED_SSO .Path }}
+    location {{ .PATH_NEED_SSO }} {
+        {{- template "auth_request" }}
+        
+        proxy_pass {{ trim .Proto }}://{{ trim .Upstream }}{{ trim .Dest }};
+        set $upstream_keepalive {{ if $keepalive }}true{{ else }}false{{ end }};
+    }
+            {{- end }}
+        {{- end }}
     location {{ .Path }} {
+        {{ if eq .PATH_NEED_SSO .Path }}
+            {{- template "auth_request" }}
+        {{- end }}
+        
         {{- if eq .NetworkTag "internal" }}
         # Only allow traffic from internal clients
         include /etc/nginx/network_internal.conf;
@@ -216,17 +252,6 @@
         {{- else if eq .Proto "grpc" }}
         grpc_pass {{ trim .Proto }}://{{ trim .Upstream }};
         {{- else }}
-
-        {{- if .EnableSSO }}
-        satisfy any;
-        allow 127.0.0.0/8;
-        allow 192.168.0.0/16;
-        allow 172.16.0.0/12;
-        allow 10.0.0.0/8;
-        deny  all;
-        auth_request /auth;
-        error_page 401 = @error401;
-        {{- end }}
         
         proxy_pass {{ trim .Proto }}://{{ trim .Upstream }}{{ trim .Dest }};
         set $upstream_keepalive {{ if $keepalive }}true{{ else }}false{{ end }};
@@ -657,22 +682,8 @@ server {
             {{- $upstream = printf "%s-%s" $upstream $sum }}
             {{- $dest = (or (first (groupByKeys $containers "Env.VIRTUAL_DEST")) "") }}
         {{- end }}
-        {{- $enable_sso := trim (or (first (groupByKeys $containers "Env.ENABLE_SSO")) "") }}
-        {{- template "location" (dict "Path" $path "Proto" $proto "Upstream" $upstream "Host" $host "VhostRoot" $vhost_root "Dest" $dest "NetworkTag" $network_tag "Containers" $containers "EnableSSO" $enable_sso) }}
-        {{- if $enable_sso }}
-    location /auth {
-        internal;
-        proxy_pass_request_body off;
-        proxy_set_header Content-Length "";
-        proxy_pass {{ $.Env.SSO_INTERNAL_AUTH_ADDR }};
-    }
-
-    location @error401 {
-        add_header Set-Cookie "redirect=$scheme://$http_host$request_uri;Domain={{ $.Env.SSO_COOKIE_DOMAIN }};Path=/;Max-Age=3000";
-        return 302 {{ $.Env.SSO_LOGIN_ADDR }};
-    }
-        {{- end }}
-    
+        {{- $path_need_sso := trim (or (first (groupByKeys $containers "Env.PATH_NEED_SSO")) "") }}
+        {{- template "location" (dict "Path" $path "Proto" $proto "Upstream" $upstream "Host" $host "VhostRoot" $vhost_root "Dest" $dest "NetworkTag" $network_tag "Containers" $containers "PATH_NEED_SSO" $path_need_sso) }}
     {{- end }}
     {{- if and (not (contains $paths "/")) (ne $globals.default_root_response "none")}}
     location / {

@@ -45,7 +45,7 @@ services:
     environment:
       VIRTUAL_HOST: aria.home.lubui.com
       VIRTUAL_PORT: 6880
-      ENABLE_SSO: 1
+      PATH_NEED_SSO: /ui
     logging:
       driver: json-file
       options:

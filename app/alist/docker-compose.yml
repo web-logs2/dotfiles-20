@@ -10,7 +10,7 @@ services:
             TZ: Asia/Shanghai
             VIRTUAL_HOST: alist.home.lubui.com
             VIRTUAL_PORT: 5244
-            ENABLE_SSO: 1
+            PATH_NEED_SSO: /
         network_mode: host
         container_name: alist
         image: 'xhofe/alist:latest'

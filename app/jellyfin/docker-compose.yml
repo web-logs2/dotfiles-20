@@ -30,7 +30,7 @@ services:
       RUN_OPTS: #optional
       VIRTUAL_HOST: jackett.home.lubui.com
       VIRTUAL_PORT: 9117
-      ENABLE_SSO: 1
+      PATH_NEED_SSO: /
     volumes:
       - ./jackett/config:/config
       - ~/Downloads:/downloads
@@ -48,7 +48,7 @@ services:
       TZ: Asia/Shanghai
       VIRTUAL_HOST: radarr.home.lubui.com
       VIRTUAL_PORT: 7878
-      ENABLE_SSO: 1
+      PATH_NEED_SSO: /
     volumes:
       - ./radarr/config:/config
       - ./media/Movies/:/movies
@@ -67,7 +67,7 @@ services:
       TZ: Asia/Shanghai
       VIRTUAL_HOST: sonarr.home.lubui.com
       VIRTUAL_PORT: 8989
-      ENABLE_SSO: 1
+      PATH_NEED_SSO: /
     volumes:
       - ./sonarr/config:/config
       - ./media/TV:/tv
@@ -86,7 +86,7 @@ services:
       TZ: Asia/Shanghai
       VIRTUAL_HOST: lidarr.home.lubui.com
       VIRTUAL_PORT: 8686
-      ENABLE_SSO: 1
+      PATH_NEED_SSO: /
     volumes:
       - ./lidarr/config:/config
       - ~/app/navidrome/music:/music
@@ -105,7 +105,7 @@ services:
       TZ: Asia/Shanghai
       VIRTUAL_HOST: prowlarr.home.lubui.com
       VIRTUAL_PORT: 9696
-      ENABLE_SSO: 1
+      PATH_NEED_SSO: /
     volumes:
       - ./prowlarr/config:/config
     network_mode: host

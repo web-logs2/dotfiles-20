@@ -14,6 +14,11 @@ var servers = []Server{
 		UpStream:  "127.0.0.1:7007",
 		EnableSSO: true,
 	},
+	{
+		Host:           "ailearning.home.lubui.com",
+		EnableSSO:      false,
+		LocationOfHtml: "/",
+	},
 }
 
 type Server struct {

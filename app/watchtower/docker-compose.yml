@@ -8,6 +8,8 @@ services:
     environment:
       WATCHTOWER_NOTIFICATION_REPORT: "true"
       TZ: Asia/Shanghai
+      VIRTUAL_HOST: watchtower.home.lubui.com
+      VIRTUAL_PORT: 8080
     command: '-c --http-api-metrics --http-api-token ${TOKEN} --label-enable --schedule "0 0 4 * * *"'
     restart: unless-stopped
     # ports:
