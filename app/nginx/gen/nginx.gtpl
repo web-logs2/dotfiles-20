@@ -213,12 +213,12 @@
         internal;
         proxy_pass_request_body off;
         proxy_set_header Content-Length "";
-        proxy_pass {{ $.Env.SSO_INTERNAL_AUTH_ADDR }};
+        proxy_pass {{ $.globals.Env.SSO_INTERNAL_AUTH_ADDR }};
     }
 
     location @error401 {
-        add_header Set-Cookie "redirect=$scheme://$http_host$request_uri;Domain={{ $.Env.SSO_COOKIE_DOMAIN }};Path=/;Max-Age=3000";
-        return 302 {{ $.Env.SSO_LOGIN_ADDR }};
+        add_header Set-Cookie "redirect=$scheme://$http_host$request_uri;Domain={{ $.globals.Env.SSO_COOKIE_DOMAIN }};Path=/;Max-Age=3000";
+        return 302 {{ $.globals.Env.SSO_LOGIN_ADDR }};
     }
             {{ if ne .PATH_NEED_SSO .Path }}
     location {{ .PATH_NEED_SSO }} {
@@ -683,7 +683,7 @@ server {
             {{- $dest = (or (first (groupByKeys $containers "Env.VIRTUAL_DEST")) "") }}
         {{- end }}
         {{- $path_need_sso := trim (or (first (groupByKeys $containers "Env.PATH_NEED_SSO")) "") }}
-        {{- template "location" (dict "Path" $path "Proto" $proto "Upstream" $upstream "Host" $host "VhostRoot" $vhost_root "Dest" $dest "NetworkTag" $network_tag "Containers" $containers "PATH_NEED_SSO" $path_need_sso) }}
+        {{- template "location" (dict "Path" $path "Proto" $proto "Upstream" $upstream "Host" $host "VhostRoot" $vhost_root "Dest" $dest "NetworkTag" $network_tag "Containers" $containers "PATH_NEED_SSO" $path_need_sso "globals" $globals) }}
     {{- end }}
     {{- if and (not (contains $paths "/")) (ne $globals.default_root_response "none")}}
     location / {
