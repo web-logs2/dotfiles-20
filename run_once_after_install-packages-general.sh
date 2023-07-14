@@ -37,6 +37,8 @@ brew "lego"
 brew "dsq"
 brew "koekeishiya/formulae/yabai"
 brew "koekeishiya/formulae/skhd"
+brew "pngpaste"
+brew "gh"
 
 cask "font-fira-mono-nerd-font"
 cask "alacritty"
@@ -102,6 +104,7 @@ install_for_arch() {
         unrar \
         dsq \
         rsync \
+        github-cli \
         zoxide
 
     if ! hasCommand yay; then
