@@ -1,0 +1,23 @@
+services:
+
+  gitea:
+    container_name: gitea
+    image: gitea/gitea:1-rootless
+    environment:
+      TZ: Asia/Shanghai
+      VIRTUAL_HOST: git.home.lubui.com
+      VIRTUAL_PORT: 3001
+      GITEA__database__DB_TYPE: mysql
+      GITEA__database__HOST: home.lubui.com
+      GITEA__database__NAME: gitea
+      GITEA__database__USER: urie
+      GITEA__database__PASSWD: youling
+    volumes:
+      - ./data:/var/lib/gitea
+      - ./config:/etc/gitea
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    network_mode: host
+    restart: unless-stopped
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
