@@ -2,24 +2,28 @@
 
 # https://github.com/jcsalterego/pngpaste
 # brew install pngpaste
-set -e
+pngpaste - >>/dev/null || exit 1 # 判断是否有图片
+
 img_path=~/workspace/images/
 
 if [ ! -d $img_path ]; then
-  git clone https://git.home.lubui.com:8443/urie/images.git ~/workspace/images/
-  git remote add github git@github.com:Urie96/images.git
-  # https://git.home.lubui.com:8443/urie/images/raw/branch/main/test.png
+  mkdir -p $img_path
+  git init
+  git config pull.rebase true
+  git checkout -b main
 fi
-git pull origin main
+cd $img_path
+git remote -v | grep github || git remote add github git@github.com:Urie96/images.git
+git remote -v | grep gitea || git remote add gitea https://git.home.lubui.com:8443/urie/images.git
+git pull gitea main
 git pull github main
 
 name=$1$(date +"%Y%m%d%H%M%S").jpg
-pngpaste - >>/dev/null # 判断是否有图片
 pngpaste - >$name
 
 git add $name
 git commit -m "upload $name"
-git push origin main
+git push gitea main
 git push github main
 
 github_url=https://cdn.jsdelivr.net/gh/Urie96/images/$name
