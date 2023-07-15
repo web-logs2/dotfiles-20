@@ -178,6 +178,10 @@ handle_extension() {
         handle_text
         ;;
 
+    toml | tmpl)
+        handle_text
+        ;;
+
     ## Direct Stream Digital/Transfer (DSDIFF) and wavpack aren't detected
     ## by file(1).
     dff | dsf | wv | wvc)
