@@ -784,7 +784,7 @@ key_bindings:
   - { key: Z,  mods: Command|Shift, chars: "\u001b\u0012" } # redo
   - { key: S,  mods: Command, chars: "\u001b:w\r" } # save
   - { key: X,  mods: Command, chars: "\u001bdda" } # cut one line
-  - { key: A,  mods: Command, chars: "\u001bggvG" } # select all
+  - { key: A,  mods: Command, chars: "\u001bggVG" } # select all
 
   #- { key: Paste,                                       action: Paste          }
   #- { key: Copy,                                        action: Copy           }

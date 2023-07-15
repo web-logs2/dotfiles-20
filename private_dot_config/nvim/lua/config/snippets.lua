@@ -1,5 +1,5 @@
 local ls = require("luasnip")
-require("luasnip.loaders.from_vscode").load({
+require("luasnip.loaders.from_vscode").lazy_load({
   paths = { "~/.local/share/chezmoi/private_Library/private_Application Support/private_Code/User/snippets" },
 })
 

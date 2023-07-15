@@ -1,10 +1,5 @@
 return {
   {
-    "folke/tokyonight.nvim",
-    lazy = true,
-    opts = { style = "night" },
-  },
-  {
     "nvim-neo-tree/neo-tree.nvim",
     opts = {
       sources = { "filesystem", "buffers", "git_status", "document_symbols" },
@@ -43,5 +38,9 @@ return {
         },
       },
     },
+  },
+  {
+    "folke/todo-comments.nvim",
+    enabled = false,
   },
 }
