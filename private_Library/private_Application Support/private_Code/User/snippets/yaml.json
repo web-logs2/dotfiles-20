@@ -1,29 +1,25 @@
 {
-	// Place your snippets for yaml here. Each snippet is defined under a snippet name and has a prefix, body and 
-	// description. The prefix is what is used to trigger the snippet and the body will be expanded and inserted. Possible variables are:
-	// $1, $2 for tab stops, $0 for the final cursor position, and ${1:label}, ${2:another} for placeholders. Placeholders with the 
-	// same ids are connected.
-	"docker-compose": {
-		"prefix": "docker",
-		"body": [
-			"services:",
-			"  $1:",
-			"    container_name: $1",
-			"    image: nyanmisaka/jellyfin",
-			"    environment:",
-			"      PUID: 1000",
-			"      PGID: 1000",
-			"      TZ: Asia/Shanghai",
-			"      VIRTUAL_HOST: $1.home.lubui.com",
-			"      VIRTUAL_PORT: ",
-			"    devices:",
-			"      - /dev/dri:/dev/dri",
-			"    volumes:",
-			"      - ./config:/config",
-			"    network_mode: host",
-			"    restart: unless-stopped",
-			"    labels:",
-			"      - com.centurylinklabs.watchtower.enable=true",
-		]
-	}
+  "docker-compose": {
+    "prefix": "docker",
+    "body": [
+      "services:",
+      "  $1:",
+      "    container_name: $1",
+      "    image: nyanmisaka/jellyfin",
+      "    environment:",
+      "      PUID: 1000",
+      "      PGID: 1000",
+      "      TZ: Asia/Shanghai",
+      "      VIRTUAL_HOST: $1.home.lubui.com",
+      "      VIRTUAL_PORT: ",
+      "    devices:",
+      "      - /dev/dri:/dev/dri",
+      "    volumes:",
+      "      - ./config:/config",
+      "    network_mode: host",
+      "    restart: unless-stopped",
+      "    labels:",
+      "      - com.centurylinklabs.watchtower.enable=true"
+    ]
+  }
 }
