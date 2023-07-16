@@ -333,15 +333,17 @@ On_ICyan='\033[0;106m'   # Cyan
 On_IWhite='\033[0;107m'  # White
 
 handle_chezmoi() {
-	if [ "$FILE_SIZE" -le '1024000' ]; then
-		if ! chezmoi diff "$FILE_PATH"; then
-			# echo "chezmoi nomanaged"
-			:
-		elif [ -z "$diff" ]; then
-			echo -e "$BGreen---chezmoi clean---\n$Color_Off"
-		else
-			echo -e "$BRed---chezmoi diff---\n$Color_Off"
-		fi
+	# shellcheck disable=2086
+	diff="$(chezmoi diff $FILE_PATH)"
+
+	# shellcheck disable=2181
+	if [ $? -gt 0 ]; then
+		# echo "chezmoi nomanaged"
+		:
+	elif [ -z "$diff" ]; then
+		echo -e "$BGreen---chezmoi clean---\n$Color_Off"
+	else
+		echo -e "$BRed---chezmoi diff---\n$Color_Off"
 	fi
 }
 
