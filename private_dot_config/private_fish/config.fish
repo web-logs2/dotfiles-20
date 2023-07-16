@@ -2,7 +2,7 @@ function hasCommand
     command -v $argv[1] >/dev/null 2>&1
 end
 
-for dir in "$HOME/go/bin" /opt/homebrew/bin "$HOME/.pyenv/shims" "$HOME/bin" "$HOME/.cargo/bin" "$HOME/.local/bin" "$HOME/.pyenv/bin" "$HOME/.local/share/pnpm"
+for dir in "$HOME/go/bin" /opt/homebrew/bin "$HOME/.pyenv/shims" "$HOME/bin" "$HOME/.cargo/bin" "$HOME/.local/bin" "$HOME/.pyenv/bin" "$HOME/.local/share/pnpm" "$HOME/.local/share/nvim/mason/bin"
     if test -e "$dir"
         set -gx PATH "$dir" "$PATH"
     end
@@ -35,7 +35,7 @@ function set_fzf_option
 end
 
 if status is-interactive
-    if hasCommand zellij; and set -q SSH_CONNECTION; and not set -q VSCODE_GIT_IPC_HANDLE
+    if hasCommand zellij; and set -q SSH_CONNECTION; and not set -q VSCODE_GIT_IPC_HANDLE; and not set -q NVIM
         set ZELLIJ_AUTO_ATTACH true
         # set ZELLIJ_AUTO_EXIT true
         eval (zellij setup --generate-auto-start fish | string collect)

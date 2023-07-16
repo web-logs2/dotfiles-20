@@ -194,8 +194,6 @@ install_go_pkg() {
 	hasCommand lazygit || go install github.com/jesseduffield/lazygit@latest
 	hasCommand lazydocker || go install github.com/jesseduffield/lazydocker@latest
 	hasCommand lego || go install github.com/go-acme/lego/v4/cmd/lego@latest
-	hasCommand goimports-reviser || go install github.com/incu6us/goimports-reviser/v3@latest
-	hasCommand gofumpt || go install mvdan.cc/gofumpt@latest
 }
 
 install_python_pkg() {
@@ -228,11 +226,13 @@ install_node_pkg() {
 		if [ ! -d "$NVM_DIR" ]; then
 			curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
 		fi
+		# shellcheck disable=1091
 		[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
 		if ! hasCommand node; then
 			nvm install node --lts # install latest node
 			nvm use --lts          # use latest node
 
+			# shellcheck disable=2016
 			echo $'\n'"set -gx PATH '$NVM_BIN' "'$PATH'$'\n' >>~/.config/fish/custom.fish # add nvm to fish
 		fi
 
