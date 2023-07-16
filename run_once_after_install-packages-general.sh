@@ -1,11 +1,12 @@
 #!/bin/bash
+# shellcheck disable=1091
 
 is_os_name() {
 	grep "$*" /etc/issue || grep "$*" /etc/*-release
 }
 
 hasCommand() {
-	command -v $* >/dev/null 2>&1
+	command -v "$@" >/dev/null 2>&1
 }
 
 install_for_darwin() {
@@ -108,9 +109,9 @@ install_for_arch() {
 		zoxide
 
 	if ! hasCommand yay; then
-		mkdir -p ~/install && cd ~/install
+		mkdir -p ~/install && cd ~/install || exit 1
 		git clone https://aur.archlinux.org/yay.git
-		cd yay
+		cd yay || exit 1
 		makepkg -si
 		yay -Y --gendb
 		yay
@@ -133,7 +134,7 @@ install_for_debian() {
 		software-properties-common
 
 	if hasCommand fdfind && ! hasCommand fd; then
-		sudo ln -s $(which fdfind) /usr/local/bin/fd
+		sudo ln -s "$(which fdfind)" /usr/local/bin/fd
 	fi
 
 	if hasCommand batcat && ! hasCommand bat; then

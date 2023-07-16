@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# shellcheck disable=2034
 
 set -o noclobber -o noglob -o nounset -o pipefail
 IFS=$'\n'
@@ -102,7 +103,7 @@ handle_text() {
 }
 
 handle_image() {
-	if [ $FILE_SIZE -le 30000000 ]; then
+	if [ "$FILE_SIZE" -le 30000000 ]; then
 		## Preview as text conversion
 		# img2txt --gamma=0.6 --width="${PREVIEW_WIDTH}" -- "${FILE_PATH}" && exit 4
 		viu -b -w "${PREVIEW_WIDTH}" "${FILE_PATH}" && exit 4
@@ -332,10 +333,8 @@ On_ICyan='\033[0;106m'   # Cyan
 On_IWhite='\033[0;107m'  # White
 
 handle_chezmoi() {
-	if [ $FILE_SIZE -le '1024000' ]; then
-		diff="$(chezmoi diff $FILE_PATH)"
-
-		if [ $? -gt 0 ]; then
+	if [ "$FILE_SIZE" -le '1024000' ]; then
+		if ! chezmoi diff "$FILE_PATH"; then
 			# echo "chezmoi nomanaged"
 			:
 		elif [ -z "$diff" ]; then
@@ -348,12 +347,12 @@ handle_chezmoi() {
 
 echo_long_file_name() {
 	if [ ${#FILE_NAME} -gt 20 ]; then
-		echo -e "$UCyan$FILE_NAME\n$Color_Off" | fold -w $PREVIEW_WIDTH
+		echo -e "$UCyan$FILE_NAME\n$Color_Off" | fold -w "$PREVIEW_WIDTH"
 	fi
 }
 
 echo_stat() {
-	stat "${FILE_PATH}" | fold -w $PREVIEW_WIDTH
+	stat "${FILE_PATH}" | fold -w "$PREVIEW_WIDTH"
 }
 
 handle_fallback() {
@@ -363,7 +362,7 @@ handle_fallback() {
 	exit 1
 }
 
-if [ $FILE_SIZE -ge 30000000 ]; then
+if [ "$FILE_SIZE" -ge 30000000 ]; then
 	echo_long_file_name
 	echo_stat && exit 5
 	exit 1
@@ -375,5 +374,3 @@ MIMETYPE="$(file --dereference --brief --mime-type -- "${FILE_PATH}")"
 handle_extension
 handle_mime "${MIMETYPE}"
 handle_fallback
-
-exit 1

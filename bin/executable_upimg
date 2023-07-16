@@ -7,21 +7,21 @@ pngpaste - >>/dev/null || exit 1 # 判断是否有图片
 img_path=~/workspace/images/
 
 if [ ! -d $img_path ]; then
-  mkdir -p $img_path
-  git init
-  git config pull.rebase true
-  git checkout -b main
+	mkdir -p $img_path
+	git init
+	git config pull.rebase true
+	git checkout -b main
 fi
-cd $img_path
+cd $img_path || exit 1
 git remote -v | grep github || git remote add github git@github.com:Urie96/images.git
 git remote -v | grep gitea || git remote add gitea https://git.home.lubui.com:8443/urie/images.git
 git pull gitea main
 git pull github main
 
 name=$1$(date +"%Y%m%d%H%M%S").jpg
-pngpaste - >$name
+pngpaste - >"$name"
 
-git add $name
+git add "$name"
 git commit -m "upload $name"
 git push gitea main
 git push github main
@@ -31,4 +31,4 @@ gitea_url=https://git.home.lubui.com:8443/urie/images/raw/branch/main/$name
 echo ""
 echo "Github: $github_url"
 echo "Gitea: $gitea_url"
-echo $gitea_url | pbcopy
+echo "$gitea_url" | pbcopy
