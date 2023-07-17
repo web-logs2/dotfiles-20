@@ -1,0 +1,31 @@
+Host lubui.com
+  HostName lubui.com
+  User ubuntu
+
+Host mac.mini
+  User urie
+
+Host orange.pi
+  User orangepi
+
+Host home.lubui.com
+  HostName home.lubui.com
+  User urie
+
+Host devbox
+  HostName devbox
+  User yangrui.0
+
+Host mac.home.lubui.com
+    HostName mac.home.lubui.com
+    Port 2222
+    User urie
+
+Host pc.home.lubui.com
+    HostName pc.home.lubui.com
+    Port 2223
+    User urie
+
+Host *
+  ServerAliveInterval 300
+  ExitOnForwardFailure yes

@@ -7,3 +7,4 @@ url = "https://github.com/alacritty/alacritty-theme.git"
 type = "file"
 url= "https://raw.githubusercontent.com/laurent22/rsync-time-backup/master/rsync_tmbackup.sh"
 refreshPeriod = "168h"
+executable = true
