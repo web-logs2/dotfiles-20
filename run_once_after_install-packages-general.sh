@@ -43,7 +43,6 @@ brew "gh"
 
 cask "font-fira-mono-nerd-font"
 cask "alacritty"
-cask "slowquitapps"
 cask "google-chrome"
 cask "android-platform-tools"
 cask "telegram"
