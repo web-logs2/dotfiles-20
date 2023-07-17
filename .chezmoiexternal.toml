@@ -3,7 +3,7 @@ refreshPeriod = "0"
 type = "git-repo"
 url = "https://github.com/alacritty/alacritty-theme.git"
 
-[".config/nvim"]
-refreshPeriod = "72h"
-type = "git-repo"
-url = "https://github.com/LazyVim/starter"
+["./bin/rsync_tmbackup.sh"]
+type = "file"
+url= "https://raw.githubusercontent.com/laurent22/rsync-time-backup/master/rsync_tmbackup.sh"
+refreshPeriod = "168h"

@@ -1,48 +1,48 @@
 #!/usr/bin/env bash
 
 has_command() {
-    command -v $* >/dev/null 2>&1
+	command -v "$*" >/dev/null 2>&1
 }
 
 RG_PREFIX="rg --column --line-number --no-heading --color=always --smart-case"
 
 while [ "$#" -gt 0 ]; do
-    case "$1" in
-    --count*|--stats)
-        RG_PREFIX="$RG_PREFIX $1"
-        shift
-        ;;
-    -*)
-        RG_PREFIX="$RG_PREFIX $1 \"$2\""
-        shift
-        shift
-        ;;
-    *)
-        INITIAL_QUERY="$1"
-        shift
-        ;;
-    esac
+	case "$1" in
+	--count* | --stats)
+		RG_PREFIX="$RG_PREFIX $1"
+		shift
+		;;
+	-*)
+		RG_PREFIX="$RG_PREFIX $1 \"$2\""
+		shift
+		shift
+		;;
+	*)
+		INITIAL_QUERY="$1"
+		shift
+		;;
+	esac
 done
 
 # echo "$RG_PREFIX | $INITIAL_QUERY"
 
 if has_command code; then
-    ENTER_COMMAND="code -g {1}:{2}"
+	ENTER_COMMAND="code -g {1}:{2}"
 elif has_command nvim; then
-    ENTER_COMMAND="nvim {1} +{2}"
+	ENTER_COMMAND="nvim {1} +{2}"
 else
-    ENTER_COMMAND="vim {1} +{2}"
+	ENTER_COMMAND="vim {1} +{2}"
 fi
 
 : | fzf --ansi --disabled --query "$INITIAL_QUERY" \
-    --bind "start:reload($RG_PREFIX {q})+unbind(ctrl-r)" \
-    --bind "change:reload:sleep 0.1; $RG_PREFIX {q} || true" \
-    --bind "ctrl-f:unbind(change,ctrl-f)+change-prompt(2. fzf> )+enable-search+rebind(ctrl-r)+transform-query(echo {q} > /tmp/rg-fzf-r; cat /tmp/rg-fzf-f)" \
-    --bind "ctrl-r:unbind(ctrl-r)+change-prompt(1. ripgrep> )+disable-search+reload($RG_PREFIX {q} || true)+rebind(change,ctrl-f)+transform-query(echo {q} > /tmp/rg-fzf-f; cat /tmp/rg-fzf-r)" \
-    --color "hl:-1:underline,hl+:-1:underline:reverse" \
-    --prompt '1. ripgrep> ' \
-    --delimiter : \
-    --header '╱ CTRL-R (ripgrep mode) ╱ CTRL-F (fzf mode) ╱' \
-    --preview 'bat --color=always {1} --highlight-line {2}' \
-    --preview-window 'up,60%,border-bottom,+{2}+3/3,~3' \
-    --bind "enter:become($ENTER_COMMAND)"
+	--bind "start:reload($RG_PREFIX {q})+unbind(ctrl-r)" \
+	--bind "change:reload:sleep 0.1; $RG_PREFIX {q} || true" \
+	--bind "ctrl-f:unbind(change,ctrl-f)+change-prompt(2. fzf> )+enable-search+rebind(ctrl-r)+transform-query(echo {q} > /tmp/rg-fzf-r; cat /tmp/rg-fzf-f)" \
+	--bind "ctrl-r:unbind(ctrl-r)+change-prompt(1. ripgrep> )+disable-search+reload($RG_PREFIX {q} || true)+rebind(change,ctrl-f)+transform-query(echo {q} > /tmp/rg-fzf-f; cat /tmp/rg-fzf-r)" \
+	--color "hl:-1:underline,hl+:-1:underline:reverse" \
+	--prompt '1. ripgrep> ' \
+	--delimiter : \
+	--header '╱ CTRL-R (ripgrep mode) ╱ CTRL-F (fzf mode) ╱' \
+	--preview 'bat --color=always {1} --highlight-line {2}' \
+	--preview-window 'up,60%,border-bottom,+{2}+3/3,~3' \
+	--bind "enter:become($ENTER_COMMAND)"

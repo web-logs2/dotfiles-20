@@ -5,68 +5,68 @@ set -e
 RUN_ON_BOOT_FILE_PATH=/etc/rc.local.d/iptables.sh
 
 has_command() {
-  command -v $* >/dev/null 2>&1
+	command -v "$@" >/dev/null 2>&1
 }
 
 print_command() {
-  if has_command bat; then
-    echo $@ | bat -l sh -p
-  else
-    echo $@
-  fi
+	if has_command bat; then
+		echo "$@" | bat -l sh -p
+	else
+		echo "$@"
+	fi
 }
 
 add_rule() {
-  command="$@"
-  print_command "$command"
-  gum confirm "Execute?" && sudo $command && echo -e "\n$command\n" | sudo tee -a $RUN_ON_BOOT_FILE_PATH
+	command="$*"
+	print_command "$command"
+	gum confirm "Execute?" && sudo "$command" && echo -e "\n$command\n" | sudo tee -a "$RUN_ON_BOOT_FILE_PATH"
 }
 
 DNAT() {
-  tput sc
+	tput sc
 
-  print_command "iptables -t nat -A PREROUTING -d [ip]?"
-  ip="$(gum input --value "192.168.1.7" --placeholder "previous dest [ip]:")"
+	print_command "iptables -t nat -A PREROUTING -d [ip]?"
+	ip="$(gum input --value "192.168.1.7" --placeholder "previous dest [ip]:")"
 
-  tput rc
-  tput el
-  print_command "iptables -t nat -A PREROUTING -d $ip -p tcp --dport [port]?"
-  port="$(gum input --placeholder "previous dest [port]:")"
+	tput rc
+	tput el
+	print_command "iptables -t nat -A PREROUTING -d $ip -p tcp --dport [port]?"
+	port="$(gum input --placeholder "previous dest [port]:")"
 
-  tput rc
-  tput el
-  print_command "iptables -t nat -A PREROUTING -d $ip -p tcp --dport $port -j DNAT --to-destination [ip]:[port]?"
-  destination="$(gum input --placeholder "to ip:port")"
+	tput rc
+	tput el
+	print_command "iptables -t nat -A PREROUTING -d $ip -p tcp --dport $port -j DNAT --to-destination [ip]:[port]?"
+	destination="$(gum input --placeholder "to ip:port")"
 
-  tput rc
-  tput el
-  command="iptables -t nat -A PREROUTING -d $ip -p tcp --dport $port -j DNAT --to-destination $destination"
-  add_rule "$command"
+	tput rc
+	tput el
+	command="iptables -t nat -A PREROUTING -d $ip -p tcp --dport $port -j DNAT --to-destination $destination"
+	add_rule "$command"
 
-  tput ed
+	tput ed
 }
 
 DELETE() {
-  ori_rule="$(grep -v '^\s*#' $RUN_ON_BOOT_FILE_PATH | grep -v '^$' | fzf)"
-  delete_command="$(echo $ori_rule | sed "s/ -I / -D /" | sed "s/ -A / -D /")"
-  print_command "$delete_command"
-  gum confirm "Execute?" && sudo $delete_command && sudo sed -i "/^$ori_rule$/d" $RUN_ON_BOOT_FILE_PATH
+	ori_rule="$(grep -v '^\s*#' $RUN_ON_BOOT_FILE_PATH | grep -v '^$' | fzf)"
+	delete_command="$(echo "$ori_rule" | sed "s/ -I / -D /" | sed "s/ -A / -D /")"
+	print_command "$delete_command"
+	gum confirm "Execute?" && sudo "$delete_command" && sudo sed -i "/^$ori_rule$/d" $RUN_ON_BOOT_FILE_PATH
 }
 
 ADD_WHITE() {
-  tput sc
-  print_command "iptables -A INPUT -p tcp --dport [port]? -j ACCEPT"
-  port="$(gum input --placeholder "which [port]:")"
-  tput rc
-  tput el
-  command="iptables -A INPUT -p tcp --dport $port -j ACCEPT"
-  add_rule $command
+	tput sc
+	print_command "iptables -A INPUT -p tcp --dport [port]? -j ACCEPT"
+	port="$(gum input --placeholder "which [port]:")"
+	tput rc
+	tput el
+	command="iptables -A INPUT -p tcp --dport $port -j ACCEPT"
+	add_rule "$command"
 
-  tput ed
+	tput ed
 }
 
 ADD_RULE() {
-  add_rule "$(gum write --placeholder "Write commands (CTRL+D to finish)")"
+	add_rule "$(gum write --placeholder "Write commands (CTRL+D to finish)")"
 }
 
 action="$(gum choose DELETE DNAT ADD_WHITE ADD_RULE)"
