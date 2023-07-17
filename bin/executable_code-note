@@ -1,0 +1,17 @@
+#!/bin/bash
+
+# Required parameters:
+# @raycast.schemaVersion 1
+# @raycast.title VS Code Notes
+# @raycast.mode silent
+
+# Optional parameters:
+# @raycast.icon 🤖
+# @raycast.packageName VS Code
+
+# Documentation:
+# @raycast.description Open my notes in VS Code
+# @raycast.author Urie96
+# @raycast.authorURL https://raycast.com/Urie96
+
+code --folder-uri "vscode-remote://ssh-remote+home.lubui.com/home/urie/workspace/ts/code-notes-vitepress/docs"

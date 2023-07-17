@@ -4,6 +4,6 @@ type = "git-repo"
 url = "https://github.com/alacritty/alacritty-theme.git"
 
 [".config/nvim"]
-refreshPeriod = "0"
+refreshPeriod = "72h"
 type = "git-repo"
 url = "https://github.com/LazyVim/starter"
