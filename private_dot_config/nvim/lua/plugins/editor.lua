@@ -43,4 +43,7 @@ return {
     "folke/todo-comments.nvim",
     enabled = false,
   },
+  {
+    "ojroques/nvim-osc52",
+  },
 }

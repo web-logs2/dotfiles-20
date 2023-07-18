@@ -27,5 +27,6 @@ Host pc.home.lubui.com
     User urie
 
 Host *
-  ServerAliveInterval 300
+  ServerAliveInterval 30
+  ServerAliveCountMax 2
   ExitOnForwardFailure yes
