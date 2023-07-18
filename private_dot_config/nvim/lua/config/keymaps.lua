@@ -17,7 +17,4 @@ local function map(mode, lhs, rhs, opts)
     vim.keymap.set(mode, lhs, rhs, opts)
   end
 end
-
-map("n", "<leader>cc", require("osc52").copy_operator, { expr = true, desc = "Copy using OSC52" })
-map("n", "<leader>ccc", "<leader>cc", { remap = true })
-map("v", "<leader>cc", require("osc52").copy_visual, { desc = "Copy using OSC52" })
+-- map("c", "w!!", "<esc>:lua require'utils'.sudo_write()<CR>", { silent = true })
