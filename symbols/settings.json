@@ -162,5 +162,6 @@
             "comments": "off",
             "strings": "on"
         }
-    }
+    },
+    "editor.acceptSuggestionOnEnter": "off"
 }
