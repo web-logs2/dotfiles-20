@@ -46,7 +46,11 @@ if status is-interactive
     my_key_bindings
 
     set -gx EDITOR nvim
-    hasCommand code; and set -gx EDITOR "code -w"
+    if hasCommand code
+        if not set -q SSH_CONNECTION; or set -q VSCODE_GIT_IPC_HANDLE
+            set -gx EDITOR "code -w"
+        end
+    end
     set -gx XDG_CONFIG_HOME "$HOME/.config"
 
     alias ..="cd .."
