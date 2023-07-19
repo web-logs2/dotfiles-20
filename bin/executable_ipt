@@ -17,9 +17,9 @@ print_command() {
 }
 
 add_rule() {
-	command="$*"
+	command=$*
 	print_command "$command"
-	gum confirm "Execute?" && sudo "$command" && echo -e "\n$command\n" | sudo tee -a "$RUN_ON_BOOT_FILE_PATH"
+	gum confirm "Execute?" && sudo $command && echo -e "\n$command\n" | sudo tee -a "$RUN_ON_BOOT_FILE_PATH"
 }
 
 DNAT() {
