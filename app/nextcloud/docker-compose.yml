@@ -1,6 +1,7 @@
 services:
   app:
-    image: nextcloud:fpm-alpine
+    # image: nextcloud:fpm-alpine
+    build: .
     container_name: nextcloud-server
     restart: unless-stopped
     volumes:
@@ -19,8 +20,8 @@ services:
       MYSQL_PASSWORD:
       REDIS_HOST:
       REDIS_HOST_PASSWORD:
-    labels:
-      - com.centurylinklabs.watchtower.enable=true
+    # labels:
+    #   - com.centurylinklabs.watchtower.enable=true
 
   web:
     image: nginx:alpine
