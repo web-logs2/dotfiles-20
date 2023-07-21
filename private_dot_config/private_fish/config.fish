@@ -2,7 +2,7 @@ function hasCommand
     command -v $argv[1] >/dev/null 2>&1
 end
 
-for dir in "$HOME/go/bin" /opt/homebrew/bin "$HOME/.pyenv/shims" "$HOME/bin" "$HOME/.cargo/bin" "$HOME/.local/bin" "$HOME/.pyenv/bin" "$HOME/.local/share/pnpm" "$HOME/.local/share/nvim/mason/bin"
+for dir in "$HOME/go/bin" /opt/homebrew/bin "$HOME/bin" "$HOME/.cargo/bin" "$HOME/.local/bin" "$HOME/.pyenv/bin" "$HOME/.local/share/pnpm" "$HOME/.local/share/nvim/mason/bin"
     if test -e "$dir"
         set -gx PATH "$dir" "$PATH"
     end
@@ -65,7 +65,7 @@ if status is-interactive
     alias cz="chezmoi"
 
     # Commands to run in interactive sessions can go here
-    hasCommand pyenv; and pyenv init - | source
+    # hasCommand pyenv; and pyenv init - | source
     hasCommand zoxide; and zoxide init fish | source
 
     # pnpm

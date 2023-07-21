@@ -111,7 +111,7 @@ func main() {
 		}
 		http.Redirect(w, r, getRedirectURL(), http.StatusFound)
 	}))
-	addr := fmt.Sprintf(os.Getenv("LISTEN_ADDR"))
+	addr := os.Getenv("LISTEN_ADDR")
 	if addr == "" {
 		addr = "127.0.0.1:3100"
 	}

@@ -94,6 +94,7 @@ install_for_arch() {
 		p7zip \
 		samba \
 		zellij \
+		python \
 		translate-shell \
 		tree \
 		otf-firamono-nerd \
