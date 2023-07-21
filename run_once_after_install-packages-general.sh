@@ -12,8 +12,6 @@ hasCommand() {
 install_for_darwin() {
 	brew bundle --no-lock --file=/dev/stdin <<EOF
 tap "homebrew/bundle"
-tap "homebrew/cask"
-tap "homebrew/core"
 tap "homebrew/services"
 tap "homebrew/cask-fonts"
 tap "dteoh/sqa"

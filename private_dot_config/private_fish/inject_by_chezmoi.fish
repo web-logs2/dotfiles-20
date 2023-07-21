@@ -2,14 +2,10 @@ function hasCommand
     command -v $argv[1] >/dev/null 2>&1
 end
 
-for dir in "$HOME/go/bin" /opt/homebrew/bin "$HOME/bin" "$HOME/.cargo/bin" "$HOME/.local/bin" "$HOME/.pyenv/bin" "$HOME/.local/share/pnpm" "$HOME/.local/share/nvim/mason/bin"
+for dir in "$HOME/go/bin" /opt/homebrew/bin /opt/homebrew/sbin "$HOME/bin" "$HOME/.cargo/bin" "$HOME/.local/bin" "$HOME/.pyenv/bin" "$HOME/.local/share/pnpm" "$HOME/.local/share/nvim/mason/bin"
     if test -e "$dir"
         set -gx PATH "$dir" "$PATH"
     end
-end
-
-if test -e $HOME/.config/fish/custom.fish
-    source $HOME/.config/fish/custom.fish
 end
 
 function my_key_bindings
@@ -63,6 +59,7 @@ if status is-interactive
     alias code-note='code --folder-uri "vscode-remote://ssh-remote+home.lubui.com/home/urie/workspace/ts/code-notes-vitepress/docs"'
     # alias code-home="code --remote ssh-remote+home.lubui.com ~"
     alias cz="chezmoi"
+    alias pyenv-init="pyenv init - | source"
 
     # Commands to run in interactive sessions can go here
     # hasCommand pyenv; and pyenv init - | source
