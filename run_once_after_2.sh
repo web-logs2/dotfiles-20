@@ -17,4 +17,19 @@ EOF
 	fi
 }
 
+fish_config_inject() {
+	cd ~/.config/fish/ || exit 1
+	[ ! -f config.fish ] && touch config.fish
+	if ! grep 'chezmoi injection' config.fish >/dev/null; then
+		cat <<EOF >>config.fish
+# -- chezmoi injection begin --
+source ~/.config/fish/inject_by_chezmoi.fish
+# -- chezmoi injection end --
+
+EOF
+
+	fi
+}
+
 ssh_config_inject
+fish_config_inject

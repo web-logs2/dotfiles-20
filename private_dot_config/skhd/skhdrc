@@ -137,7 +137,7 @@ shift + alt - 5 : yabai -m window --space 9 && yabai -m space --focus 9
 # 1B -   18 =    33 back
 alt - 0x33 : yabai -m window --focus recent
 # alt - 0x18 : yabai -m window --focus next
-alt - t : open -a Alacritty
+alt - t : open -n -a Alacritty
 alt - s : open -a 'Google Chrome' https://www.google.com/search\?q\="$(pbpaste)"
 
 # 增加窗口大小
