@@ -30,6 +30,38 @@ function set_fzf_option
     end
 end
 
+function conda-init
+    conda shell.fish hook | source
+    if test (uname) = Darwin; and test (uname -m) = arm64
+        conda env config vars set CONDA_SUBDIR=osx-arm64
+    end
+    conda env list
+    echo 'conda activate base'
+end
+
+function pyenv-init
+    pyenv init - | source
+    pyenv versions
+    echo "exec `python -V`: $(python -V)"
+end
+
+function tm
+    if set -q ZELLIJ
+        echo already in zellij session
+        return 1
+    else if set -q TMUX
+        echo already in tmux session
+        return 1
+    else if hasCommand zellij
+        zellij attach -c
+    else if hasCommand tmux
+        tmux attach; or tmux new
+    else
+        echo 'zellij/tmux command not found'
+    end
+end
+
+
 if status is-interactive
     if hasCommand zellij; and set -q SSH_CONNECTION; and not set -q VSCODE_GIT_IPC_HANDLE; and not set -q NVIM
         set ZELLIJ_AUTO_ATTACH true
@@ -59,7 +91,6 @@ if status is-interactive
     alias code-note='code --folder-uri "vscode-remote://ssh-remote+home.lubui.com/home/urie/workspace/ts/code-notes-vitepress/docs"'
     # alias code-home="code --remote ssh-remote+home.lubui.com ~"
     alias cz="chezmoi"
-    alias pyenv-init="pyenv init - | source"
 
     # Commands to run in interactive sessions can go here
     # hasCommand pyenv; and pyenv init - | source
@@ -71,22 +102,6 @@ if status is-interactive
         set -gx PATH "$PNPM_HOME" $PATH
     end
     # pnpm end
-
-    function tm
-        if set -q ZELLIJ
-            echo already in zellij session
-            return 1
-        else if set -q TMUX
-            echo already in tmux session
-            return 1
-        else if hasCommand zellij
-            zellij attach -c
-        else if hasCommand tmux
-            tmux attach; or tmux new
-        else
-            echo 'zellij/tmux command not found'
-        end
-    end
 
     if hasCommand joshuto
         function r
