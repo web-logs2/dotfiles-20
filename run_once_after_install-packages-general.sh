@@ -47,6 +47,7 @@ brew "im-select"
 brew "m-cli"
 brew "scrcpy"
 brew "node"
+brew "glow"
 
 cask "font-fira-mono-nerd-font"
 cask "alacritty"
@@ -113,6 +114,7 @@ install_for_arch() {
 		dsq \
 		rsync \
 		github-cli \
+		glow \
 		zoxide
 
 	if ! hasCommand yay; then
@@ -226,6 +228,7 @@ install_python_pkg() {
 	hasCommand pipenv || pip install --user pipenv
 	hasCommand mycli || pipx install mycli
 	hasCommand tldr || pipx install tldr
+	hasCommand jupyter-nbconvert || pipx install nbconvert
 }
 
 install_node_pkg() {

@@ -1,0 +1,49 @@
+#!/usr/bin/env bash
+# shellcheck disable=2034
+FILE_PATH="$1"
+FILE_SIZE=0
+
+if [ "$(uname)" == "Darwin" ]; then
+	FILE_SIZE=$(stat -f%z "$FILE_PATH")
+elif [ "$(uname)" == "Linux" ]; then
+	FILE_SIZE=$(stat --printf="%s" "$FILE_PATH")
+fi
+
+FILE_EXTENSION="${FILE_PATH##*.}"
+FILE_EXTENSION_LOWER="$(printf "%s" "${FILE_EXTENSION}" | tr '[:upper:]' '[:lower:]')"
+FILE_NAME="${FILE_PATH##*/}"
+MIMETYPE=$(file --mime-type -Lb "${FILE_PATH}")
+
+handle_extension() {
+	case "${FILE_EXTENSION_LOWER}" in
+	ipynb)
+		jupyter-nbconvert "${FILE_PATH}" --to markdown --stdout 2>/dev/null | glow -p && exit 0
+		;;
+	esac
+}
+
+handle_mime() {
+	local mimetype="${1}"
+
+	case "${mimetype}" in
+
+	## Text
+	text/* | */xml)
+		handle_text
+		exit 2
+		;;
+
+	esac
+}
+
+handle_fallback() {
+	[[ "$FILE_NAME" =~ ^\.[a-z]*rc$ ]] && handle_text
+	echo '----- File Type Classification -----' && file --dereference --brief -- "${FILE_PATH}" && echo
+	echo_stat && exit 5
+	exit 1
+}
+
+handle_extension
+MIMETYPE="$(file --dereference --brief --mime-type -- "${FILE_PATH}")"
+handle_mime "${MIMETYPE}"
+handle_fallback

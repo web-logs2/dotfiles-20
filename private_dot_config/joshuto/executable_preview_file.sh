@@ -175,7 +175,12 @@ handle_extension() {
 		;;
 
 	## JSON
-	json | ipynb)
+	json)
+		handle_text
+		;;
+
+	ipynb)
+		# jupyter-nbconvert "${FILE_PATH}" --to markdown --stdout | glow -s dracula - && exit 5
 		handle_text
 		;;
 

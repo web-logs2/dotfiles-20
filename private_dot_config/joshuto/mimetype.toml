@@ -32,7 +32,14 @@ libreoffice_default	= [
 	{ command = "libreoffice", fork = true, silent = true },
 ]
 
+general_default = [
+  { command = "open_file" },
+]
+
+
 [extension]
+
+ipynb.inherit = "general_default"
 
 ## image formats
 avif.inherit    = "image_default"

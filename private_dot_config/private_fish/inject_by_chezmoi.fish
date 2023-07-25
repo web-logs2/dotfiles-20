@@ -35,8 +35,9 @@ function conda-init
     if test (uname) = Darwin; and test (uname -m) = arm64
         conda env config vars set CONDA_SUBDIR=osx-arm64
     end
-    conda env list
-    echo 'conda activate base'
+    if hasCommand fzf
+        conda activate (conda env list | grep -vE '^\s*#' | grep -vE '^$' | fzf --bind "enter:become(echo {1})")
+    end
 end
 
 function pyenv-init
