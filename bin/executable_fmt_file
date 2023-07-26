@@ -3,7 +3,7 @@ FILE_PATH="/dev/stdin"
 LANG=""
 
 echo_err() {
-  echo $@ >/dev/stderr
+  echo "$@" >/dev/stderr
 }
 
 while [ "$#" -gt 0 ]; do
@@ -25,7 +25,7 @@ detect_lang() {
 
   FILE_EXTENSION="${FILE_PATH##*.}"
   FILE_EXTENSION_LOWER="$(printf "%s" "${FILE_EXTENSION}" | tr '[:upper:]' '[:lower:]')"
-  FILE_NAME="${FILE_PATH##*/}"
+  # FILE_NAME="${FILE_PATH##*/}"
 
   case "${FILE_EXTENSION_LOWER}" in
   sh | bash)
@@ -40,7 +40,7 @@ detect_lang() {
 
   MIMETYPE="$(file --dereference --brief --mime-type -- "${FILE_PATH}")"
 
-  case "${mimetype}" in
+  case "${MIMETYPE}" in
   text/x-shellscript)
     LANG="bash"
     ;;
@@ -50,22 +50,25 @@ detect_lang() {
 print_fmt() {
   case "$LANG" in
   bash | sh)
-    shfmt -i 2 $FILE_PATH
+    shfmt -i 2 "$FILE_PATH"
     ;;
   fish)
-    fish_indent $FILE_PATH
+    fish_indent "$FILE_PATH"
     ;;
   sql)
-    sql-formatter -c ~/.config/nvim/plugin_config/sql_formatter_config.json <$FILE_PATH
+    sql-formatter -c ~/.config/nvim/plugin_config/sql_formatter_config.json <"$FILE_PATH"
     ;;
   js | ts | jsx | tsx | mjs | mts | json)
-    cat $FILE_PATH | rome format --stdin-file-path="file.$LANG" --skip-errors --indent-style space --quote-style single
+    rome format --stdin-file-path="file.$LANG" --skip-errors --indent-style space --quote-style single <"$FILE_PATH"
     ;;
   yaml | yml)
-    yamlfmt -
+    yamlfmt -formatter retain_line_breaks=true -
     ;;
   toml)
     taplo fmt -
+    ;;
+  go)
+    gofumpt <"$FILE_PATH" | goimports
     ;;
   *)
     echo_err "no formatter"
