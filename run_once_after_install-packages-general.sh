@@ -59,6 +59,7 @@ cask "wechat"
 cask "neteasemusic"
 cask "visual-studio-code"
 cask "rar"
+cask "jellyfin-media-player"
 
 EOF
 

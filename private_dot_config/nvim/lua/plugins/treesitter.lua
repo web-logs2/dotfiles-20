@@ -1,8 +1,8 @@
 return {
   "nvim-treesitter/nvim-treesitter",
   opts = function(_, opts)
-    vim.list_extend(opts.ensure_installed, {
-      "fish",
-    })
+    if type(opts.ensure_installed) == "table" then
+      vim.list_extend(opts.ensure_installed, { "fish" })
+    end
   end,
 }
