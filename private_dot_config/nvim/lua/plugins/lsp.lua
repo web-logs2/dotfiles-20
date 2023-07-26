@@ -1,16 +1,4 @@
-local function filter_inplace(arr, func)
-  local new_index = 1
-  local size_orig = #arr
-  for old_index, v in ipairs(arr) do
-    if func(v, old_index) then
-      arr[new_index] = v
-      new_index = new_index + 1
-    end
-  end
-  for i = new_index, size_orig do
-    arr[i] = nil
-  end
-end
+local util = require("util")
 
 return {
   {
@@ -21,11 +9,22 @@ return {
         "prettierd",
         "gofumpt",
         "goimports-reviser",
+        "goimports",
         "shellcheck",
         "sql-formatter",
         "yamlfmt",
         "taplo",
+        "markdownlint",
       })
+    end,
+  },
+  {
+    "neovim/nvim-lspconfig",
+    opts = function(_, opts)
+      opts.format = {
+        formatting_options = nil,
+        timeout_ms = 5000,
+      }
     end,
   },
   {
@@ -35,45 +34,49 @@ return {
 
       vim.list_extend(opts.sources, {
         nls.builtins.diagnostics.shellcheck,
+        nls.builtins.diagnostics.markdownlint,
         nls.builtins.code_actions.shellcheck,
-        nls.builtins.formatting.prettierd.with({
-          env = {
-            PRETTIERD_DEFAULT_CONFIG = vim.fn.expand("~/.config/nvim/plugin_config/.prettierrc.yaml"),
-          },
-        }),
+        -- nls.builtins.formatting.prettierd.with({
+        --   env = {
+        --     PRETTIERD_DEFAULT_CONFIG = vim.fn.expand("~/.config/nvim/plugin_config/.prettierrc.yaml"),
+        --   },
+        -- }),
       })
 
       local FORMATTING = nls.methods.FORMATTING
+      local function make_my_source(filetypes, lang)
+        return {
+          method = FORMATTING,
+          filetypes = filetypes,
+          generator = nls.formatter({
+            command = "fmt_file",
+            args = { "-l", lang },
+            to_stdin = true,
+          }),
+        }
+      end
       local my_sources = {
-        {
-          method = FORMATTING,
-          filetypes = {
-            "sql",
-            "javascript",
-            "typescript",
-            "javascriptreact",
-            "typescriptreact",
-            "json",
-            "yaml",
-            "toml",
-            "fish",
-            "go",
-          },
-          generator = nls.formatter({
-            command = "fmt_file",
-            args = { "-l", "$FILEEXT" },
-            to_stdin = true,
-          }),
-        },
-        {
-          method = FORMATTING,
-          filetypes = { "sh" },
-          generator = nls.formatter({
-            command = "fmt_file",
-            args = { "-l", "sh" },
-            to_stdin = true,
-          }),
-        },
+        make_my_source({
+          "sql",
+          "javascript",
+          "typescript",
+          "javascriptreact",
+          "typescriptreact",
+          "yaml",
+          "toml",
+          "fish",
+          "go",
+          "vue",
+          "css",
+          "scss",
+          "less",
+          "html",
+          "jsonc",
+          "json",
+          "markdown",
+        }, "$FILEEXT"),
+        make_my_source({ "sh" }, "sh"),
+        make_my_source({ "fish" }, "fish"),
       }
 
       local my_formatter_types = {}
@@ -84,16 +87,18 @@ return {
       end
 
       -- remove predefined formatter
-      for _, src in pairs(opts.sources) do
-        if src.method == FORMATTING then
-          filter_inplace(src.filetypes, function(ft)
-            return not my_formatter_types[ft]
-          end)
-          print("a" .. table.concat(src.filetypes, ","))
+      util.filter_inplace(opts.sources, function(src)
+        local met = src.method
+        if type(met) == "string" and met == FORMATTING then
+          if #src.filetypes > 0 then
+            util.filter_inplace(src.filetypes, function(ft)
+              return not my_formatter_types[ft]
+            end)
+            -- print("a" .. table.concat(src.filetypes, ","))
+            return #src.filetypes > 0
+          end
         end
-      end
-      filter_inplace(opts.sources, function(src)
-        return src.method ~= FORMATTING or #src.filetypes > 0
+        return true
       end)
 
       nls.register(my_sources)

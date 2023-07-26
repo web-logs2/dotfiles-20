@@ -58,7 +58,7 @@ print_fmt() {
   sql)
     sql-formatter -c ~/.config/nvim/plugin_config/sql_formatter_config.json <"$FILE_PATH"
     ;;
-  js | ts | jsx | tsx | mjs | mts | json)
+  js | ts | jsx | tsx | mjs | mts)
     rome format --stdin-file-path="file.$LANG" --skip-errors --indent-style space --quote-style single <"$FILE_PATH"
     ;;
   yaml | yml)
@@ -70,10 +70,26 @@ print_fmt() {
   go)
     gofumpt <"$FILE_PATH" | goimports
     ;;
+  vue | css | scss | less | html | jsonc | json | md)
+    function markdown_lint_fmt() {
+      if [[ $LANG == "md" ]]; then
+        local temp_path=""
+        temp_path="$(mktemp)"
+        cat /dev/stdin >"$temp_path"
+        markdownlint -f "$temp_path"
+        cat "$temp_path"
+        rm "$temp_path"
+      else
+        cat /dev/stdin
+      fi
+    }
+    PRETTIERD_DEFAULT_CONFIG="$HOME/.config/nvim/plugin_config/.prettierrc.yaml" prettierd "file.$LANG" <"$FILE_PATH" | markdown_lint_fmt
+    ;;
   *)
     echo_err "no formatter"
     ;;
   esac
 }
+
 detect_lang
 print_fmt
