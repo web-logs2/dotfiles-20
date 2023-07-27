@@ -7,8 +7,8 @@ services:
     container_name: aria2-pro
     image: p3terx/aria2-pro
     environment:
-      PUID: 65534
-      PGID: 65534
+      PUID: 1000
+      PGID: 1000
       UMASK_SET: 022
       RPC_SECRET:
       RPC_PORT: 6800
@@ -55,8 +55,8 @@ services:
     image: lscr.io/linuxserver/qbittorrent:latest
     container_name: qbittorrent
     environment:
-      PUID: 65534
-      PGID: 65534
+      PUID: 1000
+      PGID: 1000
       TZ: Asia/Shanghai
       WEBUI_PORT: 6882
     volumes:
