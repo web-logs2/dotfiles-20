@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-FILE_PATH="/dev/stdin"
 FILE_NAME=""
 LANG=""
 
@@ -17,11 +16,7 @@ while [ "$#" -gt 0 ]; do
   -n)
     shift
     FILE_NAME="$1"
-    shift
-    ;;
-  *)
-    FILE_PATH="$1"
-    FILE_NAME="${FILE_PATH##*/}"
+    FILE_NAME="${FILE_NAME##*/}"
     shift
     ;;
   esac
@@ -35,37 +30,26 @@ FILE_EXTENSION_LOWER="$(printf "%s" "${FILE_EXTENSION}" | tr '[:upper:]' '[:lowe
 print_fmt() {
   case "$LANG" in
   bash | sh)
-    shfmt -i 2 "$FILE_PATH"
+    shfmt -i 2 -
     ;;
   fish)
-    fish_indent "$FILE_PATH"
+    fish_indent
     ;;
   sql)
-    sql-formatter -c ~/.config/nvim/plugin_config/sql_formatter_config.json <"$FILE_PATH"
+    sql-formatter -c ~/.config/nvim/plugin_config/sql_formatter_config.json -
     ;;
-  js | ts | jsx | tsx | mjs | mts)
-    rome format --stdin-file-path="$FILE_NAME" --skip-errors --indent-style space --quote-style single <"$FILE_PATH"
-    ;;
+  # js | ts | jsx | tsx | mjs | mts)
+  #   rome format --stdin-file-path="$FILE_NAME" --skip-errors --indent-style space --quote-style single <"$FILE_PATH"
+  #   ;;
   toml)
     taplo fmt -
     ;;
   go)
-    gofumpt <"$FILE_PATH" | goimports
+    gofumpt | goimports
     ;;
-  vue | css | scss | less | html | jsonc | json | md | yaml | yml)
-    function markdown_lint_fmt() {
-      if [[ $LANG == "md" ]]; then
-        local temp_path=""
-        temp_path="$(mktemp)"
-        cat /dev/stdin >"$temp_path"
-        markdownlint -f "$temp_path"
-        cat "$temp_path"
-        rm "$temp_path"
-      else
-        cat /dev/stdin
-      fi
-    }
-    PRETTIERD_DEFAULT_CONFIG="$HOME/.config/nvim/plugin_config/.prettierrc.yaml" prettierd "$FILE_NAME" <"$FILE_PATH" | markdown_lint_fmt
+  vue | css | scss | less | html | jsonc | json | md | yaml | yml | js | ts | jsx | tsx | mjs | mts)
+    export PRETTIERD_DEFAULT_CONFIG="$HOME/.config/nvim/plugin_config/.prettierrc.yaml"
+    prettierd "$FILE_NAME"
     ;;
   py | python | ipynb)
     black --stdin-filename "$FILE_NAME" --quiet - | isort --stdout --filename "$FILE_NAME" -

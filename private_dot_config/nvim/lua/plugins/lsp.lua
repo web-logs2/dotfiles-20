@@ -52,6 +52,7 @@ return {
             command = "fmt_file",
             args = { "-l", lang, "-n", "$FILENAME" },
             to_stdin = true,
+            -- ignore_stderr = false,
           }),
         }
       end
@@ -90,7 +91,9 @@ return {
       -- remove predefined formatter
       util.filter_inplace(opts.sources, function(src)
         local met = src.method
-        if type(met) == "string" and met == FORMATTING then
+        if
+          (type(met) == "string" and met == FORMATTING) or (type(met) == "table" and util.has_value(met, FORMATTING))
+        then
           if #src.filetypes > 0 then
             util.filter_inplace(src.filetypes, function(ft)
               return not my_formatter_types[ft]
