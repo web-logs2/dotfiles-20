@@ -209,15 +209,23 @@ install_go_pkg() {
 
 install_python_pkg() {
   if ! hasCommand python; then
-    echo has no python, skip install python pkg
-    return 0
+    if hasCommand python3; then
+      local python3_path=""
+      python3_path="$(which python3)"
+      echo "link python to python3"
+      sudo ln -s "$python3_path" "${python3_path%?}"
+    else
+      echo has no python, skip install python pkg
+      return 0
+    fi
   fi
 
   if ! hasCommand pyenv; then
     curl https://pyenv.run | bash
   fi
 
-  if ! hasCommand pip; then
+  if ! python -m pip >/dev/null; then
+    echo "pip installing..."
     curl -s 'https://bootstrap.pypa.io/get-pip.py' | python
   fi
 
@@ -230,6 +238,8 @@ install_python_pkg() {
   hasCommand mycli || pipx install mycli
   hasCommand tldr || pipx install tldr
   hasCommand jupyter-nbconvert || pipx install nbconvert
+  hasCommand black || pipx install "black[jupyter,d]"
+  hasCommand isort || pipx install isort
 }
 
 install_node_pkg() {

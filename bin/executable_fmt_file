@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 FILE_PATH="/dev/stdin"
+FILE_NAME=""
 LANG=""
 
 echo_err() {
@@ -13,39 +14,23 @@ while [ "$#" -gt 0 ]; do
     LANG="$1"
     shift
     ;;
+  -n)
+    shift
+    FILE_NAME="$1"
+    shift
+    ;;
   *)
     FILE_PATH="$1"
+    FILE_NAME="${FILE_PATH##*/}"
     shift
     ;;
   esac
 done
 
-detect_lang() {
-  [[ -n $LANG ]] && return
-
-  FILE_EXTENSION="${FILE_PATH##*.}"
-  FILE_EXTENSION_LOWER="$(printf "%s" "${FILE_EXTENSION}" | tr '[:upper:]' '[:lower:]')"
-  # FILE_NAME="${FILE_PATH##*/}"
-
-  case "${FILE_EXTENSION_LOWER}" in
-  sh | bash)
-    LANG="bash"
-    ;;
-  fish)
-    LANG="fish"
-    ;;
-  esac
-
-  [[ -z $LANG ]] && return
-
-  MIMETYPE="$(file --dereference --brief --mime-type -- "${FILE_PATH}")"
-
-  case "${MIMETYPE}" in
-  text/x-shellscript)
-    LANG="bash"
-    ;;
-  esac
-}
+FILE_EXTENSION="${FILE_NAME##*.}"
+FILE_EXTENSION_LOWER="$(printf "%s" "${FILE_EXTENSION}" | tr '[:upper:]' '[:lower:]')"
+[[ -n $FILE_EXTENSION_LOWER ]] && [[ -z $LANG ]] && LANG="$FILE_EXTENSION_LOWER"
+[[ -z $FILE_NAME ]] && [[ -n $LANG ]] && FILE_NAME="_stdin_file.$LANG"
 
 print_fmt() {
   case "$LANG" in
@@ -59,10 +44,7 @@ print_fmt() {
     sql-formatter -c ~/.config/nvim/plugin_config/sql_formatter_config.json <"$FILE_PATH"
     ;;
   js | ts | jsx | tsx | mjs | mts)
-    rome format --stdin-file-path="file.$LANG" --skip-errors --indent-style space --quote-style single <"$FILE_PATH"
-    ;;
-  yaml | yml)
-    yamlfmt -formatter retain_line_breaks=true -
+    rome format --stdin-file-path="$FILE_NAME" --skip-errors --indent-style space --quote-style single <"$FILE_PATH"
     ;;
   toml)
     taplo fmt -
@@ -70,7 +52,7 @@ print_fmt() {
   go)
     gofumpt <"$FILE_PATH" | goimports
     ;;
-  vue | css | scss | less | html | jsonc | json | md)
+  vue | css | scss | less | html | jsonc | json | md | yaml | yml)
     function markdown_lint_fmt() {
       if [[ $LANG == "md" ]]; then
         local temp_path=""
@@ -83,7 +65,10 @@ print_fmt() {
         cat /dev/stdin
       fi
     }
-    PRETTIERD_DEFAULT_CONFIG="$HOME/.config/nvim/plugin_config/.prettierrc.yaml" prettierd "file.$LANG" <"$FILE_PATH" | markdown_lint_fmt
+    PRETTIERD_DEFAULT_CONFIG="$HOME/.config/nvim/plugin_config/.prettierrc.yaml" prettierd "$FILE_NAME" <"$FILE_PATH" | markdown_lint_fmt
+    ;;
+  py | python | ipynb)
+    black --stdin-filename "$FILE_NAME" --quiet - | isort --stdout --filename "$FILE_NAME" -
     ;;
   *)
     echo_err "no formatter"
@@ -91,5 +76,4 @@ print_fmt() {
   esac
 }
 
-detect_lang
 print_fmt

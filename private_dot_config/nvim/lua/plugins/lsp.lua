@@ -50,7 +50,7 @@ return {
           filetypes = filetypes,
           generator = nls.formatter({
             command = "fmt_file",
-            args = { "-l", lang },
+            args = { "-l", lang, "-n", "$FILENAME" },
             to_stdin = true,
           }),
         }
@@ -74,6 +74,7 @@ return {
           "jsonc",
           "json",
           "markdown",
+          "python",
         }, "$FILEEXT"),
         make_my_source({ "sh" }, "sh"),
         make_my_source({ "fish" }, "fish"),

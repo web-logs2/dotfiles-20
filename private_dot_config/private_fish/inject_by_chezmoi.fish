@@ -8,6 +8,9 @@ for dir in "$HOME/go/bin" /opt/homebrew/bin /opt/homebrew/sbin "$HOME/bin" "$HOM
     end
 end
 
+set -gx XDG_CONFIG_HOME "$HOME/.config"
+set -gx EDITOR nvim
+
 function my_key_bindings
     fish_vi_key_bindings
     fzf_key_bindings
@@ -62,6 +65,14 @@ function tm
     end
 end
 
+function editor-detect
+    if hasCommand code
+        if not set -q SSH_CONNECTION; or set -q VSCODE_GIT_IPC_HANDLE
+            set -gx EDITOR "code -w"
+        end
+    end
+    env | grep EDITOR
+end
 
 if status is-interactive
     if hasCommand zellij; and set -q SSH_CONNECTION; and not set -q VSCODE_GIT_IPC_HANDLE; and not set -q NVIM
@@ -74,16 +85,7 @@ if status is-interactive
 
     my_key_bindings
 
-    set -gx EDITOR nvim
-    if hasCommand code
-        if not set -q SSH_CONNECTION; or set -q VSCODE_GIT_IPC_HANDLE
-            set -gx EDITOR "code -w"
-        end
-    end
-    set -gx XDG_CONFIG_HOME "$HOME/.config"
-
     alias ..="cd .."
-
     alias lzd=lazydocker
     alias lg=lazygit
     alias dc=docker-compose
