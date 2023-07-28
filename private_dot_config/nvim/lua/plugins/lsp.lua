@@ -76,6 +76,7 @@ return {
           "json",
           "markdown",
           "python",
+          "d2",
         }, "$FILEEXT"),
         make_my_source({ "sh" }, "sh"),
         make_my_source({ "fish" }, "fish"),

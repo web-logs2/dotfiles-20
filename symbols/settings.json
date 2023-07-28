@@ -1,15 +1,12 @@
 {
-  "C_Cpp.formatting": "vcFormat",
-  "C_Cpp.intelliSenseEngine": "Tag Parser",
-  "C_Cpp.intelliSenseEngineFallback": "Disabled",
   "[dockerfile]": {
     "editor.defaultFormatter": "ms-azuretools.vscode-docker"
   },
   "[html]": {
-    "editor.defaultFormatter": "vscode.html-language-features"
+    "editor.defaultFormatter": "urie.yrtool"
   },
   "[javascript]": {
-    "editor.defaultFormatter": "Vehmloewff.custom-format"
+    "editor.defaultFormatter": "urie.yrtool"
   },
   "[json]": {
     "editor.defaultFormatter": "vscode.json-language-features"
@@ -18,27 +15,18 @@
     "editor.defaultFormatter": "vscode.json-language-features"
   },
   "[markdown]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "urie.yrtool"
   },
   "[python]": {},
   "[typescript]": {
-    "editor.defaultFormatter": "rome.rome"
+    "editor.defaultFormatter": "urie.yrtool"
   },
   "[typescriptreact]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "urie.yrtool"
   },
   "[vue]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "urie.yrtool"
   },
-  "arduino.ignoreBoards": [],
-  "arduino.path": "/usr/local/bin/arduino-cli",
-  "arduino.useArduinoCli": true,
-  "cSpell.userWords": [
-    "consts",
-    "ctxservice",
-    "Kubernetes",
-    "yrtool"
-  ],
   "commentTranslate.multiLineMerge": true,
   "commentTranslate.targetLanguage": "zh-CN",
   "diffEditor.ignoreTrimWhitespace": false,
@@ -66,16 +54,6 @@
   "git.autofetch": true,
   "git.confirmSync": false,
   "git.enableSmartCommit": true,
-  "github.copilot.enable": {
-    "*": false,
-    "plaintext": false,
-    "markdown": true,
-    "scminput": false,
-    "go": true,
-    "rust": false,
-    "yaml": false
-  },
-  "gitlab.instanceUrl": "https://code.byted.org",
   "go.autocompleteUnimportedPackages": true,
   "go.buildOnSave": "off",
   "go.formatFlags": [
@@ -84,17 +62,12 @@
   "go.lintTool": "golangci-lint",
   "go.toolsManagement.autoUpdate": true,
   "go.useCodeSnippetsOnFunctionSuggest": true,
-  "latex-workshop.latex.autoBuild.run": "never",
-  "latex-workshop.latexindent.path": "/usr/local/texlive/2021/bin/universal-darwin/latexindent",
-  "latex-workshop.view.pdf.viewer": "tab",
   "prettier.singleQuote": true,
   "redhat.telemetry.enabled": false,
   "remote.SSH.defaultExtensions": [
     "byted-ide.gallery"
   ],
   "remote.SSH.useLocalServer": false,
-  "resmon.show.battery": false,
-  "resmon.show.cpufreq": false,
   "rest-client.defaultHeaders": {
     "User-Agent": "vscode-restclient"
   },
@@ -149,55 +122,62 @@
       "comments": "off",
       "strings": "on"
     },
-    "editor.defaultFormatter": "Vehmloewff.custom-format"
+    "editor.defaultFormatter": "urie.yrtool"
   },
   "editor.acceptSuggestionOnEnter": "off",
   "editor.tabSize": 2,
   "editor.insertSpaces": true,
   "editor.detectIndentation": false,
-  "custom-format.formatters": [
+  "yrtool.formatters": [
     {
-      "language": "shellscript",
-      "command": "fmt_file -l bash"
+      "languages": [
+        "sql",
+        "javascript",
+        "typescript",
+        "yaml",
+        "toml",
+        "shellscript",
+        "fish",
+        "go",
+        "markdown",
+        "css",
+        "scss",
+        "vue",
+        "json",
+        "jsonc",
+        "html",
+        "less",
+        "python",
+        "typescriptreact",
+      ],
+      "command": "fmt_file",
+      "args": [
+        "-n",
+        "$FILENAME",
+        "-l",
+        "$LANGUAGE",
+      ]
     },
     {
-      "language": "fish",
-      "command": "fmt_file -l fish"
-    },
-    {
-      "language": "sql",
-      "command": "fmt_file -l sql"
-    },
-    {
-      "language": "dockerfile",
-      "command": "fmt_file -l dockerfile"
-    },
-    {
-      "language": "javascript",
-      "command": "fmt_file -l js"
-    },
-    {
-      "language": "typescript",
-      "command": "fmt_file -l ts"
-    },
-    {
-      "language": "json",
-      "command": "fmt_file -l json"
-    },
-    {
-      "language": "yaml",
-      "command": "fmt_file -l yaml"
-    },
-    {
-      "language": "toml",
-      "command": "fmt_file -l toml"
-    },
+      "languages": [
+        "plaintext"
+      ],
+      "command": "fmt_file",
+      "args": [
+        "-n",
+        "$FILENAME",
+      ]
+    }
   ],
-  "[fish]": {
-    "editor.defaultFormatter": "Vehmloewff.custom-format"
-  },
   "python.terminal.activateEnvironment": false,
+  "editor.indentSize": "tabSize",
+  "[fish]": {
+    "editor.defaultFormatter": "urie.yrtool"
+  },
+  "[shellscript]": {
+    "editor.defaultFormatter": "urie.yrtool"
+  },
   "[toml]": {
-    "editor.defaultFormatter": "Vehmloewff.custom-format"
+    "editor.defaultFormatter": "urie.yrtool"
   },
 }

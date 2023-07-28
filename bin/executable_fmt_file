@@ -29,14 +29,14 @@ FILE_EXTENSION_LOWER="$(printf "%s" "${FILE_EXTENSION}" | tr '[:upper:]' '[:lowe
 
 print_fmt() {
   case "$LANG" in
-  bash | sh)
+  bash | sh | shellscript)
     shfmt -i 2 -
     ;;
   fish)
     fish_indent
     ;;
   sql)
-    sql-formatter -c ~/.config/nvim/plugin_config/sql_formatter_config.json -
+    sql-formatter -c ~/.config/nvim/plugin_config/sql_formatter_config.json
     ;;
   # js | ts | jsx | tsx | mjs | mts)
   #   rome format --stdin-file-path="$FILE_NAME" --skip-errors --indent-style space --quote-style single <"$FILE_PATH"
@@ -47,12 +47,15 @@ print_fmt() {
   go)
     gofumpt | goimports
     ;;
-  vue | css | scss | less | html | jsonc | json | md | yaml | yml | js | ts | jsx | tsx | mjs | mts)
-    export PRETTIERD_DEFAULT_CONFIG="$HOME/.config/nvim/plugin_config/.prettierrc.yaml"
-    prettierd "$FILE_NAME"
-    ;;
   py | python | ipynb)
     black --stdin-filename "$FILE_NAME" --quiet - | isort --stdout --filename "$FILE_NAME" -
+    ;;
+  d2)
+    d2 fmt -
+    ;;
+  vue | css | scss | less | html | jsonc | json | md | yaml | yml | js | ts | jsx | tsx | mjs | mts | markdown | typescriptreact | javascriptreact | typescript | javascript)
+    export PRETTIERD_DEFAULT_CONFIG="$HOME/.config/nvim/plugin_config/.prettierrc.yaml"
+    prettierd "$FILE_NAME"
     ;;
   *)
     echo_err "no formatter"

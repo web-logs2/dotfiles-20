@@ -6,4 +6,8 @@ vim.opt.relativenumber = false
 
 vim.b.autoformat = true
 
--- vim.api_nvim_set_keymap("c", "w!!", "<esc>:lua require'utils'.sudo_write()<CR>", { silent = true })
+vim.filetype.add({
+  extension = {
+    d2 = "d2",
+  },
+})
