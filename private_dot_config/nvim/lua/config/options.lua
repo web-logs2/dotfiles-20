@@ -6,8 +6,12 @@ vim.opt.relativenumber = false
 
 vim.b.autoformat = true
 
+-- https://neovim.io/doc/user/lua.html#vim.filetype.add()
 vim.filetype.add({
   extension = {
     d2 = "d2",
+  },
+  filename = {
+    [".env"] = "dotenv",
   },
 })

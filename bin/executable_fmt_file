@@ -50,6 +50,9 @@ print_fmt() {
   py | python | ipynb)
     black --stdin-filename "$FILE_NAME" --quiet - | isort --stdout --filename "$FILE_NAME" -
     ;;
+  nginx | conf)
+    nginxfmt -i 2 -
+    ;;
   d2)
     d2 fmt -
     ;;

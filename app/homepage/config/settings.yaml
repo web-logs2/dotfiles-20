@@ -8,12 +8,18 @@
 
 language: zh-CN
 title: '家庭服务主页'
-
+disableCollapse: true
 color: slate
 # slate, gray, zinc, neutral, stone, amber, yellow, lime, green, emerald, teal, cyan, sky, blue, indigo, violet, purple, fuchsia, pink, rose, red, white
+headerStyle: clean
 
 layout:
   网页:
     style: row
     columns: 4
 # icon: home-assistant.png
+
+quicklaunch:
+  searchDescriptions: true
+  hideInternetSearch: true
+  hideVisitURL: true

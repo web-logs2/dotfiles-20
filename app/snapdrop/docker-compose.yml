@@ -1,0 +1,16 @@
+version: "2.1"
+services:
+  snapdrop:
+    image: lscr.io/linuxserver/snapdrop:latest
+    container_name: snapdrop
+    environment:
+      PUID: 1000
+      PGID: 1000
+      TZ: Asia/Shanghai
+      VIRTUAL_HOST: snapdrop.home.lubui.com
+      VIRTUAL_PORT: 80
+    volumes:
+      - ./config:/config
+    restart: unless-stopped
+    labels:
+      - com.centurylinklabs.watchtower.enable=true

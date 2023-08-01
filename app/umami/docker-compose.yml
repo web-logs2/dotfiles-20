@@ -1,0 +1,20 @@
+services:
+  umami:
+    container_name: umami
+    image: docker.umami.dev/umami-software/umami:mysql-latest
+    environment:
+      PUID: 1000
+      PGID: 1000
+      TZ: Asia/Shanghai
+      VIRTUAL_HOST: umami.home.lubui.com
+      VIRTUAL_PORT: 3003
+      PORT: 3003
+      DATABASE_URL:
+      DATABASE_TYPE: mysql
+      APP_SECRET:
+      # DISABLE_LOGIN: 1
+      # CLOUD_MODE: 1
+    network_mode: host
+    restart: unless-stopped
+    labels:
+      - com.centurylinklabs.watchtower.enable=true

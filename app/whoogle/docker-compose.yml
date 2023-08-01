@@ -1,0 +1,19 @@
+version: '2.4'
+
+services:
+  whoogle:
+    container_name: whoogle
+    image: benbusby/whoogle-search
+    environment:
+      TZ: Asia/Shanghai
+      VIRTUAL_HOST: search.home.lubui.com
+      VIRTUAL_PORT: 5001
+      EXPOSE_PORT: 5001
+      WHOOGLE_CONFIG_COUNTRY: China
+      WHOOGLE_CONFIG_LANGUAGE: zh
+      WHOOGLE_CONFIG_SEARCH_LANGUAGE: zh
+      WHOOGLE_CONFIG_URL: https://search.home.lubui.com:8443
+    network_mode: host
+    restart: unless-stopped
+    labels:
+      - com.centurylinklabs.watchtower.enable=true

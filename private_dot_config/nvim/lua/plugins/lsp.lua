@@ -35,6 +35,7 @@ return {
       vim.list_extend(opts.sources, {
         nls.builtins.diagnostics.shellcheck,
         nls.builtins.diagnostics.markdownlint,
+        nls.builtins.diagnostics.checkmake,
         nls.builtins.code_actions.shellcheck,
         -- nls.builtins.formatting.prettierd.with({
         --   env = {
@@ -77,6 +78,7 @@ return {
           "markdown",
           "python",
           "d2",
+          "nginx",
         }, "$FILEEXT"),
         make_my_source({ "sh" }, "sh"),
         make_my_source({ "fish" }, "fish"),

@@ -5,7 +5,7 @@
       "services:",
       "  $1:",
       "    container_name: $1",
-      "    image: nyanmisaka/jellyfin",
+      "    image: ",
       "    environment:",
       "      PUID: 1000",
       "      PGID: 1000",

@@ -205,6 +205,7 @@ install_go_pkg() {
   hasCommand lazygit || go install github.com/jesseduffield/lazygit@latest
   hasCommand lazydocker || go install github.com/jesseduffield/lazydocker@latest
   hasCommand lego || go install github.com/go-acme/lego/v4/cmd/lego@latest
+  hasCommand checkmake || go install github.com/mrtazz/checkmake/cmd/checkmake@latest
 }
 
 install_python_pkg() {
@@ -240,6 +241,7 @@ install_python_pkg() {
   hasCommand jupyter-nbconvert || pipx install nbconvert
   hasCommand black || pipx install "black[jupyter,d]"
   hasCommand isort || pipx install isort
+  hasCommand nginxfmt || pipx install nginxfmt
 }
 
 install_node_pkg() {

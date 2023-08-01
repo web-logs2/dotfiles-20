@@ -1,0 +1,18 @@
+services:
+  uptime_kuma:
+    container_name: uptime_kuma
+    image: louislam/uptime-kuma:1
+    environment:
+      PUID: 1000
+      PGID: 1000
+      TZ: Asia/Shanghai
+      VIRTUAL_HOST: uptime.home.lubui.com
+      VIRTUAL_PORT: 3002
+      PATH_NEED_SSO: /
+      PORT: 3002
+    volumes:
+      - ./data:/app/data
+    network_mode: host
+    restart: unless-stopped
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
