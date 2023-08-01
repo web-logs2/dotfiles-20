@@ -180,4 +180,5 @@
   "[toml]": {
     "editor.defaultFormatter": "urie.yrtool"
   },
+  "window.confirmBeforeClose": "always",
 }

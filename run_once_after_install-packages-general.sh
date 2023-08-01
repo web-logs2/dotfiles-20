@@ -208,6 +208,11 @@ install_go_pkg() {
   hasCommand checkmake || go install github.com/mrtazz/checkmake/cmd/checkmake@latest
 }
 
+install_conda() {
+  pyenv install miniconda3-latest
+  CONDA_SUBDIR=osx-arm64 conda create -n d2l python=3.9 -y
+}
+
 install_python_pkg() {
   if ! hasCommand python; then
     if hasCommand python3; then
