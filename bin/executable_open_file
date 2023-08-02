@@ -1,49 +1,96 @@
 #!/usr/bin/env bash
-# shellcheck disable=2034
+# shellcheck disable=2155,2034
 FILE_PATH="$1"
 FILE_SIZE=0
 
 if [ "$(uname)" == "Darwin" ]; then
-	FILE_SIZE=$(stat -f%z "$FILE_PATH")
+  FILE_SIZE=$(stat -f%z "$FILE_PATH")
 elif [ "$(uname)" == "Linux" ]; then
-	FILE_SIZE=$(stat --printf="%s" "$FILE_PATH")
+  FILE_SIZE=$(stat --printf="%s" "$FILE_PATH")
 fi
 
 FILE_EXTENSION="${FILE_PATH##*.}"
 FILE_EXTENSION_LOWER="$(printf "%s" "${FILE_EXTENSION}" | tr '[:upper:]' '[:lower:]')"
 FILE_NAME="${FILE_PATH##*/}"
 MIMETYPE=$(file --mime-type -Lb "${FILE_PATH}")
+XDG_OPEN="open"
+
+ipynb_glow_preview() {
+  # shellcheck disable=2317
+  jupyter-nbconvert "${FILE_PATH}" --to markdown --stdout 2>/dev/null | glow -p && exit 0
+}
+
+open_with_chrome() {
+  open -a 'Google Chrome' "$FILE_PATH"
+}
+
+exec_command() {
+  set -e
+  if [[ $# -gt 1 ]]; then
+    cmd=$(gum choose "$@")
+    $cmd "$FILE_PATH"
+  else
+    $1 "$FILE_PATH"
+  fi
+  exit 0
+}
+
+handle_audio() {
+  exec_command "ffplay -autoexit -nodisp" "$XDG_OPEN" open_with_chrome
+}
+
+handle_text() {
+  exec_command "nvim" "code" "bat --paging=always"
+}
+
+handle_video() {
+  exec_command $XDG_OPEN open_with_chrome
+}
+
+handle_image() {
+  exec_command $XDG_OPEN open_with_chrome
+}
 
 handle_extension() {
-	case "${FILE_EXTENSION_LOWER}" in
-	ipynb)
-		jupyter-nbconvert "${FILE_PATH}" --to markdown --stdout 2>/dev/null | glow -p && exit 0
-		;;
-	esac
+  case "${FILE_EXTENSION_LOWER}" in
+  ipynb)
+    exec_command ipynb_glow_preview
+    ;;
+  pcm)
+    exec_command "ffplay -f s16le -ar 22k -ac 1 -autoexit -nodisp"
+    ;;
+  svg)
+    exec_command open_with_chrome
+    ;;
+  avif | bmp | gif | heic | jpeg | jpe | jpg | pgm | png | ppm | webp)
+    handle_image
+    ;;
+  mp3 | flac | m4a | ogg | wav)
+    handle_audio
+    ;;
+  odt | odf | ods | odp | doc | docx | xls | xlsx | ppt | pptx)
+    exec_command $XDG_OPEN
+    ;;
+  avi | av1 | flv | mkv | m4v | mov | mp4 | webm | wmv)
+    handle_video
+    ;;
+  esac
 }
 
 handle_mime() {
-	local mimetype="${1}"
+  local mimetype="${1}"
 
-	case "${mimetype}" in
+  case "${mimetype}" in
 
-	## Text
-	text/* | */xml)
-		handle_text
-		exit 2
-		;;
+  ## Text
+  text/* | */xml)
+    handle_text
+    ;;
 
-	esac
-}
-
-handle_fallback() {
-	[[ "$FILE_NAME" =~ ^\.[a-z]*rc$ ]] && handle_text
-	echo '----- File Type Classification -----' && file --dereference --brief -- "${FILE_PATH}" && echo
-	echo_stat && exit 5
-	exit 1
+  esac
 }
 
 handle_extension
 MIMETYPE="$(file --dereference --brief --mime-type -- "${FILE_PATH}")"
 handle_mime "${MIMETYPE}"
-handle_fallback
+open "FILE_PATH" && exit 0
