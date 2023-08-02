@@ -43,12 +43,13 @@ disable_all() {
     com.android.vpndialogs
     com.phicomm.speaker.productiontest
     com.phicomm.speaker.bugreport
+    com.droidlogic.mediacenter
   )
 
   for pkg in "${pkgs[@]}"; do
     adb shell /system/bin/pm hide "$pkg"
   done
-  # adb shell /system/bin/pm uninstall com.droidlogic.mediacenter
+  # adb shell /system/bin/pm uninstally com.droidlogic.mediacenter
 }
 
 install_apk() {
@@ -67,4 +68,5 @@ get_device_info() {
   adb shell getprop
 }
 
-stop_pkg
+# stop_pkg
+disable_all
