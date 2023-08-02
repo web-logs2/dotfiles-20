@@ -1,7 +1,21 @@
 #!/usr/bin/env bash
 # shellcheck disable=2155,2034
-FILE_PATH="$1"
+FILE_PATH=""
 FILE_SIZE=0
+SELECT=false
+
+while [ "$#" -gt 0 ]; do
+  case "$1" in
+  -s)
+    SELECT=true
+    shift
+    ;;
+  *)
+    FILE_PATH="$1"
+    shift
+    ;;
+  esac
+done
 
 if [ "$(uname)" == "Darwin" ]; then
   FILE_SIZE=$(stat -f%z "$FILE_PATH")
@@ -26,7 +40,9 @@ open_with_chrome() {
 
 exec_command() {
   set -e
-  if [[ $# -gt 1 ]]; then
+  if ! $SELECT; then
+    $1 "$FILE_PATH"
+  elif [[ $# -gt 1 ]]; then
     cmd=$(gum choose "$@")
     $cmd "$FILE_PATH"
   else
