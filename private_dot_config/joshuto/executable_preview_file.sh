@@ -39,39 +39,39 @@ IMAGE_CACHE_PATH=""
 # echo "$@"
 
 while [ "$#" -gt 0 ]; do
-	case "$1" in
-	"--path")
-		shift
-		FILE_PATH="$1"
-		;;
-	"--preview-width")
-		shift
-		PREVIEW_WIDTH="$1"
-		;;
-	"--preview-height")
-		shift
-		PREVIEW_HEIGHT="$1"
-		;;
-	"--x-coord")
-		shift
-		PREVIEW_X_COORD="$1"
-		;;
-	"--y-coord")
-		shift
-		PREVIEW_Y_COORD="$1"
-		;;
-	"--image-cache")
-		shift
-		IMAGE_CACHE_PATH="$1"
-		;;
-	esac
-	shift
+  case "$1" in
+  "--path")
+    shift
+    FILE_PATH="$1"
+    ;;
+  "--preview-width")
+    shift
+    PREVIEW_WIDTH="$1"
+    ;;
+  "--preview-height")
+    shift
+    PREVIEW_HEIGHT="$1"
+    ;;
+  "--x-coord")
+    shift
+    PREVIEW_X_COORD="$1"
+    ;;
+  "--y-coord")
+    shift
+    PREVIEW_Y_COORD="$1"
+    ;;
+  "--image-cache")
+    shift
+    IMAGE_CACHE_PATH="$1"
+    ;;
+  esac
+  shift
 done
 
 if [ "$(uname)" == "Darwin" ]; then
-	FILE_SIZE=$(stat -f%z "$FILE_PATH")
+  FILE_SIZE=$(stat -f%z "$FILE_PATH")
 elif [ "$(uname)" == "Linux" ]; then
-	FILE_SIZE=$(stat --printf="%s" "$FILE_PATH")
+  FILE_SIZE=$(stat --printf="%s" "$FILE_PATH")
 fi
 
 FILE_EXTENSION="${FILE_PATH##*.}"
@@ -89,179 +89,184 @@ OPENSCAD_IMGSIZE="${RNGR_OPENSCAD_IMGSIZE:-1000,1000}"
 OPENSCAD_COLORSCHEME="${RNGR_OPENSCAD_COLORSCHEME:-Tomorrow Night}"
 
 handle_text() {
-	# if [ $FILE_SIZE -ge $HIGHLIGHT_SIZE_MAX ]; then
-	# 	head -c$HIGHLIGHT_SIZE_MAX "${FILE_PATH}" | bat --color && exit 5
-	# else
-	# jq --color-output . "${FILE_PATH}" && exit 5
-	bat --color=always --paging=never \
-		--style=plain \
-		--wrap=character \
-		--line-range :500 \
-		--terminal-width="${PREVIEW_WIDTH}" \
-		"${FILE_PATH}" && exit 5
-	# fi
+  # if [ $FILE_SIZE -ge $HIGHLIGHT_SIZE_MAX ]; then
+  # 	head -c$HIGHLIGHT_SIZE_MAX "${FILE_PATH}" | bat --color && exit 5
+  # else
+  # jq --color-output . "${FILE_PATH}" && exit 5
+  bat "$@" \
+    --color=always --paging=never \
+    --style=plain \
+    --wrap=character \
+    --line-range :500 \
+    --terminal-width="${PREVIEW_WIDTH}" \
+    "${FILE_PATH}" && exit 5
+  # fi
 }
 
 handle_image() {
-	if [ "$FILE_SIZE" -le 30000000 ]; then
-		## Preview as text conversion
-		# img2txt --gamma=0.6 --width="${PREVIEW_WIDTH}" -- "${FILE_PATH}" && exit 4
-		viu -b -w "${PREVIEW_WIDTH}" "${FILE_PATH}" && exit 4
-		# tiv "${FILE_PATH}" && exit 4
-	fi
-	exiftool "${FILE_PATH}" && exit 5
+  if [ "$FILE_SIZE" -le 30000000 ]; then
+    ## Preview as text conversion
+    # img2txt --gamma=0.6 --width="${PREVIEW_WIDTH}" -- "${FILE_PATH}" && exit 4
+    viu -b -w "${PREVIEW_WIDTH}" "${FILE_PATH}" && exit 4
+    # tiv "${FILE_PATH}" && exit 4
+  fi
+  exiftool "${FILE_PATH}" && exit 5
 }
 
 handle_extension() {
-	case "${FILE_EXTENSION_LOWER}" in
-	## Archive
-	a | ace | alz | arc | arj | bz | bz2 | cab | cpio | deb | gz | jar | lha | lz | lzh | lzma | lzo | \
-		rpm | rz | t7z | tar | tbz | tbz2 | tgz | tlz | txz | tZ | tzo | war | xpi | xz | Z | zip)
-		atool --list -- "${FILE_PATH}" && exit 5
-		bsdtar --list --file "${FILE_PATH}" && exit 5
-		exit 1
-		;;
-	rar)
-		## Avoid password prompt by providing empty password
-		unrar lt -p- -- "${FILE_PATH}" && exit 5
-		exit 1
-		;;
-	7z)
-		## Avoid password prompt by providing empty password
-		7z l -p -- "${FILE_PATH}" && exit 5
-		exit 1
-		;;
+  case "${FILE_EXTENSION_LOWER}" in
+  ## Archive
+  a | ace | alz | arc | arj | bz | bz2 | cab | cpio | deb | gz | jar | lha | lz | lzh | lzma | lzo | \
+    rpm | rz | t7z | tar | tbz | tbz2 | tgz | tlz | txz | tZ | tzo | war | xpi | xz | Z | zip)
+    atool --list -- "${FILE_PATH}" && exit 5
+    bsdtar --list --file "${FILE_PATH}" && exit 5
+    exit 1
+    ;;
+  rar)
+    ## Avoid password prompt by providing empty password
+    unrar lt -p- -- "${FILE_PATH}" && exit 5
+    exit 1
+    ;;
+  7z)
+    ## Avoid password prompt by providing empty password
+    7z l -p -- "${FILE_PATH}" && exit 5
+    exit 1
+    ;;
 
-		## PDF
-		## pdf)
-		## Preview as text conversion
-	##    pdftotext -l 10 -nopgbrk -q -- "${FILE_PATH}" - | \
-	##      fmt -w "${PREVIEW_WIDTH}" && exit 5
-	##    mutool draw -F txt -i -- "${FILE_PATH}" 1-10 | \
-	##      fmt -w "${PREVIEW_WIDTH}" && exit 5
-	##    exiftool "${FILE_PATH}" && exit 5
-	##    exit 1;;
+    ## PDF
+    ## pdf)
+    ## Preview as text conversion
+  ##    pdftotext -l 10 -nopgbrk -q -- "${FILE_PATH}" - | \
+  ##      fmt -w "${PREVIEW_WIDTH}" && exit 5
+  ##    mutool draw -F txt -i -- "${FILE_PATH}" 1-10 | \
+  ##      fmt -w "${PREVIEW_WIDTH}" && exit 5
+  ##    exiftool "${FILE_PATH}" && exit 5
+  ##    exit 1;;
 
-	## BitTorrent
-	torrent)
-		transmission-show -- "${FILE_PATH}" && exit 5
-		exit 1
-		;;
+  ## BitTorrent
+  torrent)
+    transmission-show -- "${FILE_PATH}" && exit 5
+    exit 1
+    ;;
 
-	## OpenDocument
-	odt | ods | odp | sxw)
-		## Preview as text conversion
-		odt2txt "${FILE_PATH}" && exit 5
-		## Preview as markdown conversion
-		pandoc -s -t markdown -- "${FILE_PATH}" && exit 5
-		exit 1
-		;;
+  ## OpenDocument
+  odt | ods | odp | sxw)
+    ## Preview as text conversion
+    odt2txt "${FILE_PATH}" && exit 5
+    ## Preview as markdown conversion
+    pandoc -s -t markdown -- "${FILE_PATH}" && exit 5
+    exit 1
+    ;;
 
-	## XLSX
-	xlsx)
-		## Preview as csv conversion
-		## Uses: https://github.com/dilshod/xlsx2csv
-		xlsx2csv -- "${FILE_PATH}" && exit 5
-		exit 1
-		;;
+  ## XLSX
+  xlsx)
+    ## Preview as csv conversion
+    ## Uses: https://github.com/dilshod/xlsx2csv
+    xlsx2csv -- "${FILE_PATH}" && exit 5
+    exit 1
+    ;;
 
-	## HTML
-	htm | html | xhtml)
-		## Preview as text conversion
-		w3m -dump "${FILE_PATH}" && exit 5
-		lynx -dump -- "${FILE_PATH}" && exit 5
-		elinks -dump "${FILE_PATH}" && exit 5
-		pandoc -s -t markdown -- "${FILE_PATH}" && exit 5
-		;;
+  ## HTML
+  htm | html | xhtml)
+    ## Preview as text conversion
+    w3m -dump "${FILE_PATH}" && exit 5
+    lynx -dump -- "${FILE_PATH}" && exit 5
+    elinks -dump "${FILE_PATH}" && exit 5
+    pandoc -s -t markdown -- "${FILE_PATH}" && exit 5
+    ;;
 
-	## JSON
-	json)
-		handle_text
-		;;
+  ## JSON
+  json)
+    handle_text
+    ;;
 
-	ipynb)
-		# jupyter-nbconvert "${FILE_PATH}" --to markdown --stdout | glow -s dracula - && exit 5
-		handle_text
-		;;
+  ipynb)
+    # jupyter-nbconvert "${FILE_PATH}" --to markdown --stdout | glow -s dracula - && exit 5
+    handle_text
+    ;;
 
-	toml | tmpl)
-		handle_text
-		;;
+  toml | tmpl)
+    handle_text
+    ;;
 
-	## Direct Stream Digital/Transfer (DSDIFF) and wavpack aren't detected
-	## by file(1).
-	dff | dsf | wv | wvc)
-		mediainfo "${FILE_PATH}" && exit 5
-		exiftool "${FILE_PATH}" && exit 5
-		;; # Continue with next handler on failure
-	esac
+  ## Direct Stream Digital/Transfer (DSDIFF) and wavpack aren't detected
+  ## by file(1).
+  dff | dsf | wv | wvc)
+    mediainfo "${FILE_PATH}" && exit 5
+    exiftool "${FILE_PATH}" && exit 5
+    ;; # Continue with next handler on failure
+  esac
 }
 
 handle_mime() {
-	local mimetype="${1}"
+  local mimetype="${1}"
 
-	case "${mimetype}" in
-	## RTF and DOC
-	text/rtf | *msword)
-		## Preview as text conversion
-		## note: catdoc does not always work for .doc files
-		## catdoc: http://www.wagner.pp.ru/~vitus/software/catdoc/
-		catdoc -- "${FILE_PATH}" && exit 5
-		exit 1
-		;;
+  case "${mimetype}" in
+  ## RTF and DOC
+  text/rtf | *msword)
+    ## Preview as text conversion
+    ## note: catdoc does not always work for .doc files
+    ## catdoc: http://www.wagner.pp.ru/~vitus/software/catdoc/
+    catdoc -- "${FILE_PATH}" && exit 5
+    exit 1
+    ;;
 
-	## DOCX, ePub, FB2 (using markdown)
-	## You might want to remove "|epub" and/or "|fb2" below if you have
-	## uncommented other methods to preview those formats
-	*wordprocessingml.document | */epub+zip | */x-fictionbook+xml)
-		## Preview as markdown conversion
-		pandoc -s -t markdown -- "${FILE_PATH}" && exit 5
-		exit 1
-		;;
+  ## DOCX, ePub, FB2 (using markdown)
+  ## You might want to remove "|epub" and/or "|fb2" below if you have
+  ## uncommented other methods to preview those formats
+  *wordprocessingml.document | */epub+zip | */x-fictionbook+xml)
+    ## Preview as markdown conversion
+    pandoc -s -t markdown -- "${FILE_PATH}" && exit 5
+    exit 1
+    ;;
 
-	## E-mails
-	message/rfc822)
-		## Parsing performed by mu: https://github.com/djcb/mu
-		mu view -- "${FILE_PATH}" && exit 5
-		exit 1
-		;;
+  ## E-mails
+  message/rfc822)
+    ## Parsing performed by mu: https://github.com/djcb/mu
+    mu view -- "${FILE_PATH}" && exit 5
+    exit 1
+    ;;
 
-	## XLS
-	*ms-excel)
-		## Preview as csv conversion
-		## xls2csv comes with catdoc:
-		##   http://www.wagner.pp.ru/~vitus/software/catdoc/
-		xls2csv -- "${FILE_PATH}" && exit 5
-		exit 1
-		;;
+  ## XLS
+  *ms-excel)
+    ## Preview as csv conversion
+    ## xls2csv comes with catdoc:
+    ##   http://www.wagner.pp.ru/~vitus/software/catdoc/
+    xls2csv -- "${FILE_PATH}" && exit 5
+    exit 1
+    ;;
 
-	## Text
-	text/* | */xml)
-		handle_text
-		exit 2
-		;;
+  text/* | */xml)
+    handle_text
+    exit 2
+    ;;
 
-	## DjVu
-	image/vnd.djvu)
-		## Preview as text conversion (requires djvulibre)
-		djvutxt "${FILE_PATH}" | fmt -w "${PREVIEW_WIDTH}" && exit 5
-		exiftool "${FILE_PATH}" && exit 5
-		exit 1
-		;;
+  */json)
+    handle_text -l json
+    exit 2
+    ;;
 
-	## Image
-	image/*)
-		handle_image
-		exit 1
-		;;
+  ## DjVu
+  image/vnd.djvu)
+    ## Preview as text conversion (requires djvulibre)
+    djvutxt "${FILE_PATH}" | fmt -w "${PREVIEW_WIDTH}" && exit 5
+    exiftool "${FILE_PATH}" && exit 5
+    exit 1
+    ;;
 
-	## Video and audio
-	video/* | audio/*)
-		mediainfo "${FILE_PATH}" && exit 5
-		exiftool "${FILE_PATH}" && exit 5
-		exit 1
-		;;
-	esac
+  ## Image
+  image/*)
+    handle_image
+    exit 1
+    ;;
+
+  ## Video and audio
+  video/* | audio/*)
+    mediainfo "${FILE_PATH}" && exit 5
+    exiftool "${FILE_PATH}" && exit 5
+    exit 1
+    ;;
+  esac
 }
 
 # Reset
@@ -338,41 +343,41 @@ On_ICyan='\033[0;106m'   # Cyan
 On_IWhite='\033[0;107m'  # White
 
 handle_chezmoi() {
-	# shellcheck disable=2086
-	diff="$(chezmoi diff $FILE_PATH)"
+  # shellcheck disable=2086
+  diff="$(chezmoi diff $FILE_PATH)"
 
-	# shellcheck disable=2181
-	if [ $? -gt 0 ]; then
-		# echo "chezmoi nomanaged"
-		:
-	elif [ -z "$diff" ]; then
-		echo -e "$BGreen---chezmoi clean---\n$Color_Off"
-	else
-		echo -e "$BRed---chezmoi diff---\n$Color_Off"
-	fi
+  # shellcheck disable=2181
+  if [ $? -gt 0 ]; then
+    # echo "chezmoi nomanaged"
+    :
+  elif [ -z "$diff" ]; then
+    echo -e "$BGreen---chezmoi clean---\n$Color_Off"
+  else
+    echo -e "$BRed---chezmoi diff---\n$Color_Off"
+  fi
 }
 
 echo_long_file_name() {
-	if [ ${#FILE_NAME} -gt 20 ]; then
-		echo -e "$UCyan$FILE_NAME\n$Color_Off" | fold -w "$PREVIEW_WIDTH"
-	fi
+  if [ ${#FILE_NAME} -gt 20 ]; then
+    echo -e "$UCyan$FILE_NAME\n$Color_Off" | fold -w "$PREVIEW_WIDTH"
+  fi
 }
 
 echo_stat() {
-	stat "${FILE_PATH}" | fold -w "$PREVIEW_WIDTH"
+  stat "${FILE_PATH}" | fold -w "$PREVIEW_WIDTH"
 }
 
 handle_fallback() {
-	[[ "$FILE_NAME" =~ ^\.[a-z]*rc$ ]] && handle_text
-	echo '----- File Type Classification -----' && file --dereference --brief -- "${FILE_PATH}" && echo
-	echo_stat && exit 5
-	exit 1
+  [[ "$FILE_NAME" =~ ^\.[a-z]*rc$ ]] && handle_text
+  echo '----- File Type Classification -----' && file --dereference --brief -- "${FILE_PATH}" && echo
+  echo_stat && exit 5
+  exit 1
 }
 
 if [ "$FILE_SIZE" -ge 30000000 ]; then
-	echo_long_file_name
-	echo_stat && exit 5
-	exit 1
+  echo_long_file_name
+  echo_stat && exit 5
+  exit 1
 fi
 
 echo_long_file_name

@@ -110,6 +110,9 @@ handle_extension() {
   svg)
     exec_command open_with_chrome
     ;;
+  uc!)
+    exec_command nc2mp3
+    ;;
   avif | bmp | gif | heic | jpeg | jpe | jpg | pgm | png | ppm | webp)
     handle_image
     ;;
