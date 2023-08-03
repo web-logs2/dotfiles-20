@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# shellcheck disable=2155,2034
+# shellcheck disable=2155,2034,2317
 FILE_PATH=""
 FILE_SIZE=0
 SELECT=false
@@ -29,18 +29,24 @@ FILE_NAME="${FILE_PATH##*/}"
 MIMETYPE=$(file --mime-type -Lb "${FILE_PATH}")
 
 ipynb_glow_preview() {
-  # shellcheck disable=2317
   jupyter-nbconvert "$FILE_PATH" --to markdown --stdout 2>/dev/null | glow -p && exit 0
 }
 
 open_with_chrome() {
-  # shellcheck disable=2317
   open -a 'Google Chrome' "$FILE_PATH"
 }
 
 xdg_open() {
-  # shellcheck disable=2317
   open "$FILE_PATH"
+}
+
+http_serve() {
+  local encode_path=$(python3 -c "from urllib.parse import quote; print(quote('$(basename "$FILE_PATH")'))")
+  local port=8000
+  echo 'Download on:'
+  (ifconfig || ip a) | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*' | xargs -I {} echo "  http://{}:$port/$encode_path"
+  python3 -m http.server "$port"
+  # http-server .
 }
 
 exec_command() {
@@ -71,19 +77,23 @@ exec_command() {
 }
 
 handle_audio() {
-  exec_command "ffplay -autoexit -nodisp" xdg_open open_with_chrome
+  exec_command xdg_open "ffplay -autoexit -nodisp" open_with_chrome http_serve
 }
 
 handle_text() {
-  exec_command "nvim" "code" "bat --paging=always"
+  exec_command nvim code "bat --paging=always"
 }
 
 handle_video() {
-  exec_command xdg_open open_with_chrome
+  exec_command xdg_open open_with_chrome http_serve
 }
 
 handle_image() {
-  exec_command xdg_open open_with_chrome
+  exec_command xdg_open open_with_chrome http_serve
+}
+
+handle_directory() {
+  exec_command code nvim xdg_open
 }
 
 handle_extension() {
@@ -128,6 +138,7 @@ handle_mime() {
   esac
 }
 
+[[ -d "$FILE_PATH" ]] && handle_directory
 handle_extension
 MIMETYPE="$(file --dereference --brief --mime-type -- "${FILE_PATH}")"
 handle_mime "${MIMETYPE}"
