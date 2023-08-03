@@ -54,8 +54,10 @@ general_default = [{ command = "open_file" }]
 
 ipynb.inherit = "general_default"
 pcm.inherit = "general_default"
+ncm.inherit = "general_default"
 svg.inherit = "general_default"
 pdf.inherit = "general_default"
+fish.inherit = "text_default"
 
 ## image formats
 avif.inherit = "image_default"
@@ -141,8 +143,6 @@ vim.inherit = "text_default"
 xml.inherit = "text_default"
 yaml.inherit = "text_default"
 yml.inherit = "text_default"
-## customer
-fish.inherit = "text_default"
 
 # archive formats
 7z.app_list = [
@@ -238,6 +238,5 @@ inherit = "video_default"
 [mimetype.text]
 inherit = "text_default"
 
-# text/*
 [mimetype.video]
 inherit = "video_default"

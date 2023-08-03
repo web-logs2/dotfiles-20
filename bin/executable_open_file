@@ -27,32 +27,51 @@ FILE_EXTENSION="${FILE_PATH##*.}"
 FILE_EXTENSION_LOWER="$(printf "%s" "${FILE_EXTENSION}" | tr '[:upper:]' '[:lower:]')"
 FILE_NAME="${FILE_PATH##*/}"
 MIMETYPE=$(file --mime-type -Lb "${FILE_PATH}")
-XDG_OPEN="open"
 
 ipynb_glow_preview() {
   # shellcheck disable=2317
-  jupyter-nbconvert "${FILE_PATH}" --to markdown --stdout 2>/dev/null | glow -p && exit 0
+  jupyter-nbconvert "$FILE_PATH" --to markdown --stdout 2>/dev/null | glow -p && exit 0
 }
 
 open_with_chrome() {
+  # shellcheck disable=2317
   open -a 'Google Chrome' "$FILE_PATH"
 }
 
+xdg_open() {
+  # shellcheck disable=2317
+  open "$FILE_PATH"
+}
+
 exec_command() {
-  set -e
+  try_exec() {
+    while [ "$#" -gt 0 ]; do
+      $1 "$FILE_PATH"
+      if [ "$?" -eq 127 ]; then
+        # if this command not found, try next command
+        shift
+        continue
+      else
+        return
+      fi
+    done
+    exit 1
+  }
   if ! $SELECT; then
-    $1 "$FILE_PATH"
+    try_exec "$@"
   elif [[ $# -gt 1 ]]; then
-    cmd=$(gum choose "$@")
-    $cmd "$FILE_PATH"
+    local cmd=$(gum choose "$@")
+    if [ -n "$cmd" ]; then
+      $cmd "$FILE_PATH"
+    fi
   else
-    $1 "$FILE_PATH"
+    try_exec "$@"
   fi
   exit 0
 }
 
 handle_audio() {
-  exec_command "ffplay -autoexit -nodisp" "$XDG_OPEN" open_with_chrome
+  exec_command "ffplay -autoexit -nodisp" xdg_open open_with_chrome
 }
 
 handle_text() {
@@ -60,11 +79,11 @@ handle_text() {
 }
 
 handle_video() {
-  exec_command $XDG_OPEN open_with_chrome
+  exec_command xdg_open open_with_chrome
 }
 
 handle_image() {
-  exec_command $XDG_OPEN open_with_chrome
+  exec_command xdg_open open_with_chrome
 }
 
 handle_extension() {
@@ -74,6 +93,9 @@ handle_extension() {
     ;;
   pcm)
     exec_command "ffplay -f s16le -ar 22k -ac 1 -autoexit -nodisp"
+    ;;
+  ncm)
+    exec_command ncmdump
     ;;
   svg)
     exec_command open_with_chrome
@@ -85,7 +107,7 @@ handle_extension() {
     handle_audio
     ;;
   odt | odf | ods | odp | doc | docx | xls | xlsx | ppt | pptx)
-    exec_command $XDG_OPEN
+    exec_command xdg_open
     ;;
   avi | av1 | flv | mkv | m4v | mov | mp4 | webm | wmv)
     handle_video
@@ -109,4 +131,4 @@ handle_mime() {
 handle_extension
 MIMETYPE="$(file --dereference --brief --mime-type -- "${FILE_PATH}")"
 handle_mime "${MIMETYPE}"
-open "FILE_PATH" && exit 0
+exec_command xdg_open

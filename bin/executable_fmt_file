@@ -22,9 +22,23 @@ while [ "$#" -gt 0 ]; do
   esac
 done
 
+detect_lang() {
+  if IFS= read -r line <"$FILE_NAME"; then
+    case $line in
+    "#!"*"fish") LANG=fish ;;
+    "#!"*"bash") LANG=bash ;;
+    "#!"*"node") LANG=js ;;
+    "#!"*"python") LANG=python ;;
+    "#!"*"sh") LANG="sh" ;;
+    esac
+  fi
+}
+
 FILE_EXTENSION="${FILE_NAME##*.}"
+[[ $(basename "$FILE_NAME") -eq "$FILE_EXTENSION" ]] && FILE_EXTENSION=""
 FILE_EXTENSION_LOWER="$(printf "%s" "${FILE_EXTENSION}" | tr '[:upper:]' '[:lower:]')"
 [[ -n $FILE_EXTENSION_LOWER ]] && [[ -z $LANG ]] && LANG="$FILE_EXTENSION_LOWER"
+[[ -z $LANG ]] && detect_lang
 [[ -z $FILE_NAME ]] && [[ -n $LANG ]] && FILE_NAME="_stdin_file.$LANG"
 
 print_fmt() {

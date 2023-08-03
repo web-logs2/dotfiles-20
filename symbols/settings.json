@@ -111,7 +111,9 @@
     "CloudIDE_182780": "linux",
     "cloudide-wq61rox65v6v83": "linux",
     "mac.home.lubui.com": "macOS",
-    "pc.home.lubui.com": "linux"
+    "pc.home.lubui.com": "linux",
+    "cloudide_231252": "linux",
+    "cloudide-ws086518efa8354bf4aaad7019783be954": "linux"
   },
   "byted-ide.settings-sync.includedExtensions": [],
   "workbench.startupEditor": "none",
