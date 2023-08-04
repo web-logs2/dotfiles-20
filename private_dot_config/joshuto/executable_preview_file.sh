@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+q#!/usr/bin/env bash
 # shellcheck disable=2034
 
 set -o noclobber -o noglob -o nounset -o pipefail
@@ -116,6 +116,20 @@ handle_image() {
   exiftool "${FILE_PATH}" && exit 5
 }
 
+handle_audio() {
+  ffprobe -select_streams a:0 \
+    -show_entries format=bit_rate:stream=codec_name,sample_rate,channels,duration,bits_per_raw_sample:format_tags \
+    -sexagesimal -v quiet -of flat "${FILE_PATH}" | bat -l ini && exit 5
+}
+
+handle_video() {
+  # mediainfo "${FILE_PATH}" && exit 5
+  #   exiftool "${FILE_PATH}" && exit 5
+  ffprobe -select_streams v:0 \
+    -show_entries format=duration,bit_rate:stream=codec_name,width,height,avg_frame_rate,r_frame_rate,display_aspect_ratio,duration:format_tags \
+    -sexagesimal -v quiet -of flat "${FILE_PATH}" | bat -l ini && exit 5
+}
+
 handle_extension() {
   case "${FILE_EXTENSION_LOWER}" in
   ## Archive
@@ -136,9 +150,14 @@ handle_extension() {
     exit 1
     ;;
 
-  mp3 | flac | wav)
+  mp3 | flac | wav | m4a)
     # exiftool "$FILE_PATH" && exit 5
-    ffprobe -loglevel error -show_entries format_tags "${FILE_PATH}" && exit 5
+    handle_audio
+    exit 1
+    ;;
+
+  mp4 | mkv)
+    handle_video
     exit 1
     ;;
 
@@ -274,10 +293,13 @@ handle_mime() {
     exit 1
     ;;
 
-  ## Video and audio
-  video/* | audio/*)
-    mediainfo "${FILE_PATH}" && exit 5
-    exiftool "${FILE_PATH}" && exit 5
+  video/*)
+    handle_video
+    exit 1
+    ;;
+
+  audio/*)
+    handle_audio
     exit 1
     ;;
   esac
