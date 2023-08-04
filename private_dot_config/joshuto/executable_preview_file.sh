@@ -97,7 +97,16 @@ bat() {
     --terminal-width="${PREVIEW_WIDTH}"
 }
 
+exit_if_size_gt() {
+  if [ "$FILE_SIZE" -ge "$1"000 ]; then
+    echo '文件过大，跳过预览'
+    echo_stat
+    exit 5
+  fi
+}
+
 handle_text() {
+  exit_if_size_gt 500
   # if [ $FILE_SIZE -ge $HIGHLIGHT_SIZE_MAX ]; then
   # 	head -c$HIGHLIGHT_SIZE_MAX "${FILE_PATH}" | bat --color && exit 5
   # else
@@ -107,16 +116,13 @@ handle_text() {
 }
 
 handle_image() {
-  if [ "$FILE_SIZE" -le 30000000 ]; then
-    ## Preview as text conversion
-    # img2txt --gamma=0.6 --width="${PREVIEW_WIDTH}" -- "${FILE_PATH}" && exit 4
-    viu -b -w "${PREVIEW_WIDTH}" "${FILE_PATH}" && exit 4
-    # tiv "${FILE_PATH}" && exit 4
-  fi
+  exit_if_size_gt 50000
+  viu -b -w "${PREVIEW_WIDTH}" "${FILE_PATH}" && exit 4
   exiftool "${FILE_PATH}" && exit 5
 }
 
 handle_audio() {
+  exit_if_size_gt 100000
   ffprobe -select_streams a:0 \
     -show_entries format=bit_rate:stream=codec_name,sample_rate,channels,duration,bits_per_raw_sample:format_tags \
     -sexagesimal -v quiet -of flat "${FILE_PATH}" | bat -l ini && exit 5
@@ -196,6 +202,7 @@ handle_extension() {
 
   ## HTML
   htm | html | xhtml)
+    exit_if_size_gt 3000
     ## Preview as text conversion
     w3m -dump "${FILE_PATH}" && exit 5
     lynx -dump -- "${FILE_PATH}" && exit 5
@@ -395,7 +402,7 @@ handle_chezmoi() {
 
 echo_long_file_name() {
   if [ ${#FILE_NAME} -gt 20 ]; then
-    echo -e "$UCyan$FILE_NAME\n$Color_Off" | fold -w "$PREVIEW_WIDTH"
+    echo "$UCyan$FILE_NAME\n$Color_Off" | fold -w "$PREVIEW_WIDTH"
   fi
 }
 
@@ -405,18 +412,12 @@ echo_stat() {
 
 handle_fallback() {
   [[ "$FILE_NAME" =~ ^\.[a-z]*rc$ ]] && handle_text
-  echo -e "----- File Type Classification -----\n$MIMETYPE\n\n"
+  echo "----- File Type Classification -----\n$MIMETYPE\n\n"
   echo_stat && exit 5
   exit 1
 }
 
 echo_long_file_name
-
-if [ "$FILE_SIZE" -ge 30000000 ]; then
-  echo_stat && exit 5
-  exit 1
-fi
-
 handle_chezmoi
 MIMETYPE="$(file --dereference --brief --mime-type -- "${FILE_PATH}")"
 handle_extension
