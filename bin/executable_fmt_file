@@ -35,7 +35,7 @@ detect_lang() {
 }
 
 FILE_EXTENSION="${FILE_NAME##*.}"
-[[ $(basename "$FILE_NAME") -eq "$FILE_EXTENSION" ]] && FILE_EXTENSION=""
+[[ "$(basename "$FILE_NAME")" == "$FILE_EXTENSION" ]] && FILE_EXTENSION=""
 FILE_EXTENSION_LOWER="$(printf "%s" "${FILE_EXTENSION}" | tr '[:upper:]' '[:lower:]')"
 [[ -n $FILE_EXTENSION_LOWER ]] && [[ -z $LANG ]] && LANG="$FILE_EXTENSION_LOWER"
 [[ -z $LANG ]] && detect_lang

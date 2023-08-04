@@ -88,18 +88,21 @@ PYGMENTIZE_STYLE="${PYGMENTIZE_STYLE:-autumn}"
 OPENSCAD_IMGSIZE="${RNGR_OPENSCAD_IMGSIZE:-1000,1000}"
 OPENSCAD_COLORSCHEME="${RNGR_OPENSCAD_COLORSCHEME:-Tomorrow Night}"
 
+bat() {
+  command bat "$@" \
+    --color=always --paging=never \
+    --style=plain \
+    --wrap=character \
+    --line-range :500 \
+    --terminal-width="${PREVIEW_WIDTH}"
+}
+
 handle_text() {
   # if [ $FILE_SIZE -ge $HIGHLIGHT_SIZE_MAX ]; then
   # 	head -c$HIGHLIGHT_SIZE_MAX "${FILE_PATH}" | bat --color && exit 5
   # else
   # jq --color-output . "${FILE_PATH}" && exit 5
-  bat "$@" \
-    --color=always --paging=never \
-    --style=plain \
-    --wrap=character \
-    --line-range :500 \
-    --terminal-width="${PREVIEW_WIDTH}" \
-    "${FILE_PATH}" && exit 5
+  bat "$@" "${FILE_PATH}" && exit 5
   # fi
 }
 
@@ -130,6 +133,11 @@ handle_extension() {
   7z)
     ## Avoid password prompt by providing empty password
     7z l -p -- "${FILE_PATH}" && exit 5
+    exit 1
+    ;;
+
+  mp3 | flac | wav)
+    ffprobe -loglevel error -show_entries format_tags "${FILE_PATH}" && exit 5
     exit 1
     ;;
 
@@ -195,6 +203,11 @@ handle_extension() {
     mediainfo "${FILE_PATH}" && exit 5
     exiftool "${FILE_PATH}" && exit 5
     ;; # Continue with next handler on failure
+
+  uc!)
+    nc2mp3 --info "$FILE_PATH" | bat -l json
+    exit 5
+    ;;
   esac
 }
 
