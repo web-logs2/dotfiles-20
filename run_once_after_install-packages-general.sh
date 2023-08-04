@@ -30,6 +30,7 @@ brew "neovim"
 brew "python"
 brew "pipx"
 brew "pyenv"
+brew "pipenv"
 brew "zellij"
 brew "cmake"
 brew "go"
@@ -203,6 +204,7 @@ install_go_pkg() {
     echo has no go, skip install go pkg
     return 0
   fi
+  ! hasCommand ncmdump && cd ~/workspace/go/ncmdump/ && go mod tidy && go install
   hasCommand lazygit || go install github.com/jesseduffield/lazygit@latest
   hasCommand lazydocker || go install github.com/jesseduffield/lazydocker@latest
   hasCommand lego || go install github.com/go-acme/lego/v4/cmd/lego@latest
@@ -241,7 +243,7 @@ install_python_pkg() {
     python -m pipx ensurepath
   fi
 
-  hasCommand pipenv || pip install --user pipenv
+  hasCommand pipenv || python -m pip install --user pipenv
   hasCommand mycli || pipx install mycli
   hasCommand tldr || pipx install tldr
   hasCommand jupyter-nbconvert || pipx install nbconvert
@@ -268,6 +270,7 @@ install_node_pkg() {
 
   fi
 
+  ! hasCommand nc2mp3 && cd ~/workspace/js/nc2mp3/ && npm link
   hasCommand pnpm || npm install -g pnpm
   hasCommand http-server || pnpm install -g http-server
 }
