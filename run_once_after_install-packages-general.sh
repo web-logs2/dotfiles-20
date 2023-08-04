@@ -116,6 +116,7 @@ install_for_arch() {
     rsync \
     github-cli \
     glow \
+    perl-image-exiftool \
     zoxide
 
   if ! hasCommand yay; then

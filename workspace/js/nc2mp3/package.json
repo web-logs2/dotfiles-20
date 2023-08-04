@@ -1,0 +1,21 @@
+{
+  "name": "nc2mp3",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "bin": "npm link",
+    "bin:remove": "npm un -g nc2mp3"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "browser-id3-writer": "^6.0.0",
+    "image-thumbnail": "^1.0.15",
+    "NeteaseCloudMusicApi": "^4.9.0"
+  },
+  "bin": {
+    "nc2mp3": "nc2mp3.mjs"
+  }
+}

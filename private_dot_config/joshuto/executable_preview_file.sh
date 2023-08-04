@@ -137,6 +137,7 @@ handle_extension() {
     ;;
 
   mp3 | flac | wav)
+    # exiftool "$FILE_PATH" && exit 5
     ffprobe -loglevel error -show_entries format_tags "${FILE_PATH}" && exit 5
     exit 1
     ;;
@@ -382,18 +383,18 @@ echo_stat() {
 
 handle_fallback() {
   [[ "$FILE_NAME" =~ ^\.[a-z]*rc$ ]] && handle_text
-  echo '----- File Type Classification -----' && file --dereference --brief -- "${FILE_PATH}" && echo
+  echo -e "----- File Type Classification -----\n$MIMETYPE\n\n"
   echo_stat && exit 5
   exit 1
 }
 
+echo_long_file_name
+
 if [ "$FILE_SIZE" -ge 30000000 ]; then
-  echo_long_file_name
   echo_stat && exit 5
   exit 1
 fi
 
-echo_long_file_name
 handle_chezmoi
 MIMETYPE="$(file --dereference --brief --mime-type -- "${FILE_PATH}")"
 handle_extension
