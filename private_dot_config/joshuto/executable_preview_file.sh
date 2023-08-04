@@ -1,4 +1,4 @@
-q#!/usr/bin/env bash
+#!/usr/bin/env bash
 # shellcheck disable=2034
 
 set -o noclobber -o noglob -o nounset -o pipefail
@@ -402,7 +402,7 @@ handle_chezmoi() {
 
 echo_long_file_name() {
   if [ ${#FILE_NAME} -gt 20 ]; then
-    echo "$UCyan$FILE_NAME\n$Color_Off" | fold -w "$PREVIEW_WIDTH"
+    echo -e "$UCyan$FILE_NAME\n$Color_Off" | fold -w "$PREVIEW_WIDTH"
   fi
 }
 
@@ -412,7 +412,7 @@ echo_stat() {
 
 handle_fallback() {
   [[ "$FILE_NAME" =~ ^\.[a-z]*rc$ ]] && handle_text
-  echo "----- File Type Classification -----\n$MIMETYPE\n\n"
+  echo -e "----- File Type Classification -----\n$MIMETYPE\n\n"
   echo_stat && exit 5
   exit 1
 }
