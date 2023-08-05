@@ -1,23 +1,30 @@
-ignored_dir*
-symbols*
-.vscode*
+ignored_dir/**
+symbols/**
+.vscode/**
 README.md
-
-{{ if ne .chezmoi.os "darwin" }}
-*/yabai*
-*/skhd*
-Library*
-{{ end }}
-
-{{ if ne .chezmoi.os "linux" }}
-{{ end }}
-
-{{ if eq .chezmoi.username "bytedance" "yangrui.0" }}
-.gitconfig
-{{ end }}
-
-{{ if ne .chezmoi.fqdnHostname "home.lubui.com" }}
-app*
-{{ end }}
-
 key.txt.age
+Makefile
+
+{{- if ne .osid "darwin" }}
+.chezmoiscripts/darwin/**
+*/yabai/**
+*/skhd/**
+Library/**
+{{ end -}}
+
+{{- if ne .osid "linux-arch" }}
+.chezmoiscripts/linux-arch/**
+{{ end -}}
+
+{{- if ne .osid "linux-ubuntu" }}
+.chezmoiscripts/linux-ubuntu/**
+{{ end -}}
+
+{{- if not .personal }}
+.gitconfig
+.chezmoiscripts/personal/**
+{{ end -}}
+
+{{- if not .headless }}
+app/**
+{{ end -}}

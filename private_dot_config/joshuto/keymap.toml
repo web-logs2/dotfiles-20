@@ -15,6 +15,11 @@ keymap = [
     "q",
   ], command = "shell diskutil umount /Volumes/mnt/homeserver/" },
   { keys = [
+    "m",
+    "n",
+    "w",
+  ], command = "shell mount_webdav -s -i https://dav.home.lubui.com:8443/ /Volumes/mnt/homeserver/" },
+  { keys = [
     "b",
     "a",
   ], command = "add_bookmark" },

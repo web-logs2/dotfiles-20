@@ -5,7 +5,27 @@
       {
         "language": "yaml",
         "path": "./yaml.json"
-      }
+      },
+      {
+        "language": "go",
+        "path": "./go.json"
+      },
+      {
+        "language": "sh",
+        "path": "./shellscript.json"
+      },
+      {
+        "language": "template",
+        "path": "./gotmpl.json"
+      },
+      {
+        "language": "javascript",
+        "path": "./javascript.json"
+      },
+      {
+        "language": "typescript",
+        "path": "./javascript.json"
+      },
     ]
   }
 }

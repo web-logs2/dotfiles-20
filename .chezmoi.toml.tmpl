@@ -1,7 +1,47 @@
+{{/* boolean feature tags */}}
+{{- $ephemeral := false -}}{{/* true if this machine is ephemeral, e.g. a cloud or VM instance */}}
+{{- $headless := false -}}{{/* true if this machine does not have a screen and keyboard */}}
+{{- $personal := false -}}
+{{- "" -}}
+
+{{- $osID := .chezmoi.os -}}
+{{- if (and (eq .chezmoi.os "linux") (hasKey .chezmoi.osRelease "id")) -}}
+{{-   $osID = printf "%s-%s" .chezmoi.os .chezmoi.osRelease.id -}}
+{{- end -}}
+
+{{/* detect GitHub codespaces, VSCode remote containers, Docker containers, Multipass VMs, and Vagrant boxes */}}
+{{- if or (env "CODESPACES") (env "REMOTE_CONTAINERS_IPC") (eq .chezmoi.username "root" "ubuntu" "vagrant" "vscode") -}}
+{{-   $ephemeral = true -}}
+{{-   $headless = true -}}
+{{- end -}}
+
+{{/* work around unreliable hostname on darwin */}}
+{{- $hostname := .chezmoi.hostname -}}
+{{- if eq .chezmoi.os "darwin" -}}
+{{-   $hostname := output "scutil" "--get" "ComputerName" | trim -}}
+{{- end -}}
+
+{{- if eq .chezmoi.os "windows" -}}
+{{-   $ephemeral = true -}}
+{{- end -}}
+
+{{- if not $ephemeral -}}
+{{-   if stdinIsATTY -}}
+{{-     $headless = promptBoolOnce . "headless" "this machine is headless" -}}
+{{-     $ephemeral = promptBoolOnce . "ephemeral" "this machine is ephemeral" -}}
+{{-     $personal = promptBoolOnce . "personal" "this machine is personal" -}}
+{{-   else -}}
+{{-     $ephemeral = true -}}
+{{-     $headless = true -}}
+{{-   end -}}
+{{- end -}}
+
+{{- if $personal }}
 encryption = "age"
 [age]
 identity = "~/key.txt"
 recipient = "age1lacrnhydjj82temf2d48khrerws0dedyentgyz2qc04huh9vlczsxl8zsa"
+{{- end }}
 
 [git]
 autoCommit = false
@@ -9,21 +49,18 @@ autoPush = false
 
 [diff]
 pager = "delta"
+exclude = ["scripts"]
 
 [merge]
 command = "nvim"
-args = ["-d", "{{ "{{" }} .Destination {{ "}}" }}", "{{ "{{" }} .Source {{ "}}" }}", "{{ "{{" }} .Target {{ "}}" }}"]
+args = ["-d", {{ print "\"{{ .Destination }}\", \"{{ .Source }}\", \"{{ .Target }}\"" }}]
+
+[scriptEnv]
+BASH_UTIL_PATH = "{{- .chezmoi.sourceDir -}}/.chezmoiscripts/run_once_util.sh"
 
 [data]
-
-{{ if eq .chezmoi.fqdnHostname "C02DT7HGMD6R" }}
-skhd.disableFocus = true
-{{ end }}
-
-{{ if eq .chezmoi.fqdnHostname "home.lubui.com" }}
-alacritty.fontSize = 12.0
-{{ end }}
-
-{{ if eq .chezmoi.fqdnHostname "yangruideMac-mini.local" }}
-
-{{ end }}
+ephemeral = {{ $ephemeral }}
+headless = {{ $headless }}
+hostname = {{ $hostname | quote }}
+personal = {{ $personal }}
+osid = {{ $osID | quote }}

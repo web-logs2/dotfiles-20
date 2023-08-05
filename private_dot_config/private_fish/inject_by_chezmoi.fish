@@ -1,4 +1,4 @@
-function hasCommand
+function has_command
     command -v $argv[1] >/dev/null 2>&1
 end
 
@@ -19,7 +19,7 @@ function my_key_bindings
 end
 
 function set_fzf_option
-    if hasCommand fd
+    if has_command fd
         set -gx FZF_DEFAULT_COMMAND "fd --strip-cwd-prefix --follow --exclude node_modules"
         set -gx FZF_DEFAULT_OPTS "--height 40% --layout=reverse --border"
 
@@ -38,7 +38,7 @@ function conda-init
     if test (uname) = Darwin; and test (uname -m) = arm64
         conda env config vars set CONDA_SUBDIR=osx-arm64
     end
-    if hasCommand fzf
+    if has_command fzf
         conda activate (conda env list | grep -vE '^\s*#' | grep -vE '^$' | fzf --bind "enter:become(echo {1})")
     end
 end
@@ -56,9 +56,9 @@ function tm
     else if set -q TMUX
         echo already in tmux session
         return 1
-    else if hasCommand zellij
+    else if has_command zellij
         zellij attach -c
-    else if hasCommand tmux
+    else if has_command tmux
         tmux attach; or tmux new
     else
         echo 'zellij/tmux command not found'
@@ -66,7 +66,7 @@ function tm
 end
 
 function editor-detect
-    if hasCommand code
+    if has_command code
         if not set -q SSH_CONNECTION; or set -q VSCODE_GIT_IPC_HANDLE
             set -gx EDITOR "code -w"
         end
@@ -75,7 +75,7 @@ function editor-detect
 end
 
 if status is-interactive
-    if hasCommand zellij; and set -q SSH_CONNECTION; and not set -q VSCODE_GIT_IPC_HANDLE; and not set -q NVIM
+    if has_command zellij; and set -q SSH_CONNECTION; and not set -q VSCODE_GIT_IPC_HANDLE; and not set -q NVIM
         set ZELLIJ_AUTO_ATTACH true
         # set ZELLIJ_AUTO_EXIT true
         eval (zellij setup --generate-auto-start fish | string collect)
@@ -96,8 +96,8 @@ if status is-interactive
     alias cz="chezmoi"
 
     # Commands to run in interactive sessions can go here
-    # hasCommand pyenv; and pyenv init - | source
-    hasCommand zoxide; and zoxide init fish | source
+    # has_command pyenv; and pyenv init - | source
+    has_command zoxide; and zoxide init fish | source
 
     # pnpm
     set -gx PNPM_HOME "$HOME/.local/share/pnpm"
@@ -106,7 +106,7 @@ if status is-interactive
     end
     # pnpm end
 
-    if hasCommand joshuto
+    if has_command joshuto
         function r
             set ID %self
             mkdir -p /tmp/$USER
