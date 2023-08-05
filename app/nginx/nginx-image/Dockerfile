@@ -21,13 +21,15 @@ RUN export NGINX_ARGS=$(nginx -V 2>&1 | sed -n -e 's/^.*arguments: //p') \
   make \
   && rm -rf /var/cache/apt \
   && wget -q "http://nginx.org/download/nginx-${NGINX_VERSION}.tar.gz" \
-  && tar -C /usr/src -xzvf "nginx-${NGINX_VERSION}.tar.gz" \
-  && git clone https://github.com/arut/nginx-dav-ext-module.git /srv/nginx-dav-ext-module \
-  && bash -c "./configure --add-dynamic-module=/srv/nginx-dav-ext-module ${NGINX_ARGS}" && \
+  && tar -C /usr/src -xzvf "nginx-${NGINX_VERSION}.tar.gz"
+# cache above
+RUN git clone https://github.com/arut/nginx-dav-ext-module.git /srv/nginx-dav-ext-module \
+  && git clone https://github.com/openresty/headers-more-nginx-module.git /srv/headers-more-nginx-module \
+  && bash -c "./configure --with-compat --add-dynamic-module=/srv/nginx-dav-ext-module --add-dynamic-module=/srv/headers-more-nginx-module ${NGINX_ARGS}" && \
   make modules
 
 FROM nginx:${NGINX_VERSION}
 COPY nginx.conf /etc/nginx/nginx.conf
-COPY --from=build /usr/src/nginx-${NGINX_VERSION}/objs/ngx_http_dav_ext_module.so /usr/lib/nginx/modules/
+COPY --from=build /usr/src/nginx-${NGINX_VERSION}/objs/*.so /usr/lib/nginx/modules/
 RUN usermod -u 1000 -o nginx && groupmod -g 1000 -o nginx
 
