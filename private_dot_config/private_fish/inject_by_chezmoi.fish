@@ -2,7 +2,16 @@ function has_command
     command -v $argv[1] >/dev/null 2>&1
 end
 
-for dir in "$HOME/go/bin" /opt/homebrew/bin /opt/homebrew/sbin "$HOME/bin" "$HOME/.cargo/bin" "$HOME/.local/bin" "$HOME/.pyenv/bin" "$HOME/.local/share/pnpm" "$HOME/.local/share/nvim/mason/bin"
+for dir in "$HOME/go/bin" \
+    /opt/homebrew/bin \
+    /opt/homebrew/sbin \
+    "$HOME/bin" \
+    "$HOME/bin/darwin" \
+    "$HOME/.cargo/bin" \
+    "$HOME/.local/bin" \
+    "$HOME/.pyenv/bin" \
+    "$HOME/.local/share/pnpm" \
+    "$HOME/.local/share/nvim/mason/bin"
     if test -e "$dir"
         set -gx PATH "$dir" "$PATH"
     end

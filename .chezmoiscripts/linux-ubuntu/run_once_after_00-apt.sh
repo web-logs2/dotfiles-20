@@ -12,6 +12,7 @@ sudo apt install -y \
   fd-find \
   ripgrep \
   cmake \
+  translate-shell \
   software-properties-common
 
 if has_command fdfind && ! has_command fd; then

@@ -139,6 +139,7 @@ alt - 0x33 : yabai -m window --focus recent
 # alt - 0x18 : yabai -m window --focus next
 alt - t : open -n -a Alacritty
 alt - s : open -a 'Google Chrome' https://www.google.com/search\?q\="$(pbpaste)"
+alt - z : translate
 
 # 增加窗口大小
 # shift + alt - w : yabai -m window --resize top:0:-20

@@ -10,6 +10,7 @@ Makefile
 */yabai/**
 */skhd/**
 Library/**
+bin/darwin/**
 {{ end -}}
 
 {{- if ne .osid "linux-arch" }}

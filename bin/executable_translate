@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+to_lang="en"
+src_text="$(pbpaste)"
+[[ "$src_text" =~ ^[[:space:]]*[[:alnum:]] ]] && to_lang="zh"
+res="$(trans -engine auto -brief -target "$to_lang" "$src_text")"
+echo -n "$res" | pbcopy
+osascript -e 'display notification (the clipboard) with title "翻译结果"'

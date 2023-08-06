@@ -45,6 +45,7 @@ brew "m-cli"
 brew "scrcpy"
 brew "node"
 brew "glow"
+brew "translate-shell"
 
 cask "font-fira-mono-nerd-font"
 cask "alacritty"
