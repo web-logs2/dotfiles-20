@@ -2,6 +2,7 @@
 {{- $ephemeral := false -}}{{/* true if this machine is ephemeral, e.g. a cloud or VM instance */}}
 {{- $headless := false -}}{{/* true if this machine does not have a screen and keyboard */}}
 {{- $personal := false -}}
+{{- $prefer_zsh := false -}}
 {{- "" -}}
 
 {{- $osID := .chezmoi.os -}}
@@ -30,6 +31,7 @@
 {{-     $headless = promptBoolOnce . "headless" "this machine is headless" -}}
 {{-     $ephemeral = promptBoolOnce . "ephemeral" "this machine is ephemeral" -}}
 {{-     $personal = promptBoolOnce . "personal" "this machine is personal" -}}
+{{-     $prefer_zsh = promptBoolOnce . "prefer_zsh" "this machine use zsh" -}}
 {{-   else -}}
 {{-     $ephemeral = true -}}
 {{-     $headless = true -}}
@@ -67,3 +69,4 @@ headless = {{ $headless }}
 hostname = {{ $hostname | quote }}
 personal = {{ $personal }}
 osid = {{ $osID | quote }}
+prefer_zsh = {{ $prefer_zsh }}
