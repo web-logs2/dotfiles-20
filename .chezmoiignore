@@ -11,6 +11,7 @@ Makefile
 */skhd/**
 Library/**
 bin/darwin/**
+.hammerspoon/**
 {{ end -}}
 
 {{- if ne .osid "linux-arch" }}

@@ -34,6 +34,15 @@ done 2>/dev/null &
 # 打开减少动画
 defaults write com.apple.universalaccess reduceMotion -int 1
 
+# 输入法自动调整
+defaults write com.apple.HIToolbox AppleGlobalTextInputProperties -dict TextInputGlobalPropertyPerContextInput 1
+
+# 短按大写锁定切换输入法
+defaults write com.apple.HIToolbox AppleCapsLockPressAndHoldToggleOff -int 0
+
+# 小鹤双拼方案
+defaults write com.apple.inputmethod.CoreChineseEngineFramework shuangpinLayout -int 4
+
 # Disable the sound effects on boot
 sudo nvram SystemAudioVolume=" "
 
@@ -224,14 +233,14 @@ sudo ln -sf "/Applications/Xcode.app/Contents/Developer/Applications/Simulator (
 # modifier:
 # shift: 131072 Control: 262144 option: 524288 cmd: 1048576
 # Top left screen corner
-defaults write com.apple.dock wvous-tl-corner -int 13
+defaults write com.apple.dock wvous-tl-corner -int 2
 defaults write com.apple.dock wvous-tl-modifier -int 1048576
 # Top right screen corner
 defaults write com.apple.dock wvous-tr-corner -int 10
 defaults write com.apple.dock wvous-tr-modifier -int 1048576
 # Bottom left screen corner
 defaults write com.apple.dock wvous-bl-corner -int 11
-defaults write com.apple.dock wvous-bl-modifier -int 0
+defaults write com.apple.dock wvous-bl-modifier -int 1048576
 # Bottom right screen corner
 defaults write com.apple.dock wvous-br-corner -int 14 # 默认值：快速备忘录
 
