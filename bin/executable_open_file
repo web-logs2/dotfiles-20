@@ -134,7 +134,7 @@ handle_mime() {
   case "${mimetype}" in
 
   ## Text
-  text/* | */xml)
+  text/* | */xml | */json)
     handle_text
     ;;
 
