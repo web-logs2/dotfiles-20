@@ -14,11 +14,11 @@ if ! has_command node; then
   # shellcheck disable=1091
   [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
   if ! has_command node; then
-    nvm install node --lts # install latest node
+    nvm install node --lts # install latest node, if debian 9, use v16.20.1
     nvm use --lts          # use latest node
 
     # shellcheck disable=2016
-    echo $'\n'"set -gx PATH '$NVM_BIN' "'$PATH'$'\n' >>~/.config/fish/custom.fish # add nvm to fish
+    echo $'\n'"set -gx PATH '$NVM_BIN' "'$PATH'$'\n' >>~/.config/fish/config.fish # add nvm to fish
   fi
 
 fi
@@ -27,4 +27,4 @@ fi
 has_command pnpm || npm install -g pnpm
 has_command http-server || pnpm install -g http-server
 
-echo "node package install done"
+echo "node package install done "

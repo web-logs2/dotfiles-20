@@ -30,3 +30,7 @@ bin/darwin/**
 {{- if not .headless }}
 app/**
 {{ end -}}
+
+{{- if .prefer_zsh }}
+*/*.fish
+{{ end -}}
