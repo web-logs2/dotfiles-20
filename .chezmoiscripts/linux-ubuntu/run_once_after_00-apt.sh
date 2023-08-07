@@ -13,6 +13,7 @@ sudo apt install -y \
   ripgrep \
   cmake \
   translate-shell \
+  ca-certificates \
   software-properties-common
 
 if has_command fdfind && ! has_command fd; then
@@ -33,12 +34,6 @@ fi
 if ! has_command go; then
   sudo add-apt-repository -y ppa:longsleep/golang-backports
   sudo apt-get install -y golang-go
-  # curl -sSL https://raw.githubusercontent.com/voidint/g/master/install.sh | bash
-  # unalias g
-  # source "$HOME/.g/env"
-  # export G_MIRROR=https://golang.google.cn/dl/
-  # TODO
-  # install golang complete
   go version
   go env -w GO111MODULE=on
   go env -w GOPROXY=https://goproxy.cn/,direct

@@ -40,6 +40,13 @@ needed_extension=(
   zxh404.vscode-proto3
 )
 
+installed_extension="$(code --list-extensions)"
+
 for ext in "${needed_extension[@]}"; do
-  code --install-extension "$ext"
+  regex="[[:<:]]${ext}[[:>:]]"
+  if [[ "${installed_extension}" =~ $regex ]]; then
+    echo "skipping: ${ext} already installed"
+  else
+    code --install-extension "$ext"
+  fi
 done

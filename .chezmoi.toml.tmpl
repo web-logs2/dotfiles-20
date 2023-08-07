@@ -36,7 +36,7 @@
 {{-   end -}}
 {{- end -}}
 
-{{- if $personal }}
+{{- if true }}
 encryption = "age"
 [age]
 identity = "~/key.txt"
@@ -57,6 +57,7 @@ args = ["-d", {{ print "\"{{ .Destination }}\", \"{{ .Source }}\", \"{{ .Target 
 
 [scriptEnv]
 BASH_UTIL_PATH = "{{- .chezmoi.sourceDir -}}/.chezmoiscripts/run_once_util.sh"
+CHEZMOI_OS_ID = "{{ $osID | quote }}"
 
 [data]
 ephemeral = {{ $ephemeral }}
