@@ -29,6 +29,7 @@ bin/darwin/**
 {{- if not .personal }}
 .gitconfig
 .chezmoiscripts/personal/**
+.ssh/**
 {{ end -}}
 
 {{- if not .headless }}
