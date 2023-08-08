@@ -43,5 +43,6 @@ has_command jupyter-nbconvert || pipx install nbconvert
 has_command black || pipx install "black[jupyter,d]"
 has_command isort || pipx install isort
 has_command nginxfmt || pipx install nginxfmt
+has_command aws || pipx install awscli
 
 echo "python package install done"
