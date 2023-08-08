@@ -1,9 +1,35 @@
+typeset -U path
+path=(
+  "$HOME/go/bin"
+  /opt/homebrew/bin
+  /opt/homebrew/sbin
+  "$HOME/bin"
+  "$HOME/bin/darwin"
+  "$HOME/.cargo/bin"
+  "$HOME/.local/bin"
+  "$HOME/.pyenv/bin"
+  "$HOME/.local/share/pnpm"
+  "$HOME/.local/share/nvim/mason/bin"
+  $path
+)
+export PATH
+
+has_command() {
+  command -v "$1" >/dev/null 2>&1
+}
+
+if has_command zellij && [[ -n $SSH_CONNECTION ]] &&
+  [[ -z $VSCODE_GIT_IPC_HANDLE ]] && [[ -z $NVIM ]]; then
+  ZELLIJ_AUTO_ATTACH=true
+  eval "$(zellij setup --generate-auto-start zsh)"
+fi
+
 function zcompile-many() {
   local f
   for f; do zcompile -R -- "$f".zwc "$f"; done
 }
 
-export ZSH_CONFIG_PATH="$HOME/.config/zsh"
+ZSH_CONFIG_PATH="$HOME/.config/zsh"
 
 mkdir -p "$ZSH_CONFIG_PATH"
 
@@ -21,10 +47,15 @@ if [[ ! -e "${ZSH_CONFIG_PATH}"/powerlevel10k ]]; then
   make -C "${ZSH_CONFIG_PATH}"/powerlevel10k pkg
 fi
 
+function source_if_exist() {
+  local fp="$1"
+  if [[ -f $fp ]]; then
+    source "$fp"
+  fi
+}
+
 # Activate Powerlevel10k Instant Prompt.
-if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-fi
+source_if_exist "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 
 # Enable the "new" completion system (compsys).
 autoload -Uz compinit && compinit
@@ -37,13 +68,13 @@ ZSH_AUTOSUGGEST_MANUAL_REBIND=1
 source "${ZSH_CONFIG_PATH}"/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source "${ZSH_CONFIG_PATH}"/zsh-autosuggestions/zsh-autosuggestions.zsh
 source "${ZSH_CONFIG_PATH}"/powerlevel10k/powerlevel10k.zsh-theme
-source "${ZSH_CONFIG_PATH}"/.p10k.zsh
+source "${ZSH_CONFIG_PATH}"/powerlevel10k/config/p10k-robbyrussell.zsh
 
 unset ZSH_CONFIG_PATH
 
-has_command() {
-  command -v "$1" >/dev/null 2>&1
-}
+export XDG_CONFIG_HOME="$HOME/.config"
+export EDITOR=nvim
+export PNPM_HOME="$HOME/.local/share/pnpm"
 
 conda-init() {
   conda shell.zsh hook | source
@@ -86,19 +117,18 @@ editor-detect() {
 
 if has_command joshuto; then
   r() {
-    ID="$$"
+    local ID="$$"
     mkdir -p /tmp/$USER
-    OUTPUT_FILE="/tmp/$USER/joshuto-cwd-$ID"
+    local OUTPUT_FILE="/tmp/$USER/joshuto-cwd-$ID"
     env joshuto --output-file "$OUTPUT_FILE" $@
-    exit_code=$?
+    local exit_code=$?
 
     case "$exit_code" in
     # regular exit
     0) ;;
     # output contains current directory
     101)
-      JOSHUTO_CWD=$(cat "$OUTPUT_FILE")
-      cd "$JOSHUTO_CWD"
+      cd "$(cat "$OUTPUT_FILE")"
       ;;
     # output selected files
     102) ;;
@@ -109,50 +139,23 @@ if has_command joshuto; then
   }
 fi
 
-for dir in "$HOME/go/bin" \
-  /opt/homebrew/bin \
-  /opt/homebrew/sbin \
-  "$HOME/bin" \
-  "$HOME/bin/darwin" \
-  "$HOME/.cargo/bin" \
-  "$HOME/.local/bin" \
-  "$HOME/.pyenv/bin" \
-  "$HOME/.local/share/pnpm" \
-  "$HOME/.local/share/nvim/mason/bin"; do
-  if [[ -d "$dir" ]]; then
-    export PATH="$dir:$PATH"
-  fi
-done
-
-export XDG_CONFIG_HOME="$HOME/.config"
-export EDITOR=nvim
-export PNPM_HOME="$HOME/.local/share/pnpm"
-
-my_key_bindings() {
-  :
-}
-
-set_fzf_option() {
+# set fzf option
+function() {
   export FZF_DEFAULT_COMMAND="fd --strip-cwd-prefix --follow --exclude node_modules"
   export FZF_DEFAULT_OPTS="--height 40% --layout=reverse --border"
   local FZF_CTRL_D_COMMAND="$FZF_DEFAULT_COMMAND --type d"
   local FZF_CTRL_F_COMMAND="$FZF_DEFAULT_COMMAND --type f"
   export FZF_CTRL_T_OPTS="$FZF_DEFAULT_OPTS \
-    --prompt 'All> ' \
-    --bind \"ctrl-d:change-prompt(Directories> )+reload($FZF_CTRL_D_COMMAND)\" \
-    --bind \"ctrl-f:change-prompt(Files> )+reload($FZF_CTRL_F_COMMAND)\" \
-    --bind \"ctrl-a:change-prompt(All> )+reload($FZF_DEFAULT_COMMAND)\""
+      --prompt 'All> ' \
+      --bind \"ctrl-d:change-prompt(Directories> )+reload($FZF_CTRL_D_COMMAND)\" \
+      --bind \"ctrl-f:change-prompt(Files> )+reload($FZF_CTRL_F_COMMAND)\" \
+      --bind \"ctrl-a:change-prompt(All> )+reload($FZF_DEFAULT_COMMAND)\""
 }
 
-if has_command zellij && [[ -n $SSH_CONNECTION ]] &&
-  [[ -z $VSCODE_GIT_IPC_HANDLE ]] && [[ -z $NVIM ]]; then
-  export ZELLIJ_AUTO_ATTACH=true
-  eval "$(zellij setup --generate-auto-start zsh)"
-fi
-
-set_fzf_option
-
-my_key_bindings
+# set vi keybind
+set -o vi
+source_if_exist ~/.config/zsh/fzf-key-bindings.zsh
+source_if_exist ~/.config/zsh/fzf-completion.zsh
 
 alias ..="cd .."
 alias lzd=lazydocker
@@ -162,10 +165,15 @@ alias svc="sudo systemctl"
 alias vi="nvim"
 alias cz="chezmoi"
 
+if has_command joshuto; then
+  alias sudor="sudo env JOSHUTO_CONFIG_HOME=$HOME/.config/joshuto joshuto"
+fi
+
 if has_command zoxide; then
   eval "$(zoxide init zsh)"
 fi
 
-if has_command joshuto; then
-  alias sudor="sudo env JOSHUTO_CONFIG_HOME=$HOME/.config/joshuto joshuto"
-fi
+# enable zsh history
+HISTFILE=~/.zsh_history
+HISTSIZE=10000
+SAVEHIST=10000

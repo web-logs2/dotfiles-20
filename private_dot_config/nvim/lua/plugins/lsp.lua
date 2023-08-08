@@ -66,7 +66,6 @@ return {
           "typescriptreact",
           "yaml",
           "toml",
-          "fish",
           "go",
           "vue",
           "css",
@@ -81,6 +80,7 @@ return {
           "nginx",
         }, "$FILEEXT"),
         make_my_source({ "sh" }, "sh"),
+        make_my_source({ "zsh" }, "zsh"),
         make_my_source({ "fish" }, "fish"),
       }
 
