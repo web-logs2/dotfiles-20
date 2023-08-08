@@ -37,8 +37,8 @@ fish_config_inject() {
 }
 
 zsh_config_inject() {
-  inject_to_file_bottom "${HOME}/.zshrc" "source ~/.zsh/inject_by_chezmoi.zshrc"
-  inject_to_file_bottom "${HOME}/.zshenv" "source ~/.zsh/inject_by_chezmoi.zshenv"
+  inject_to_file_bottom "${HOME}/.zshrc" "source ~/.config/zsh/zshrc_inject_by_chezmoi.zsh"
+  inject_to_file_bottom "${HOME}/.zshenv" "source ~/.config/zsh/zshenv_inject_by_chezmoi.zsh"
 }
 
 ssh_config_inject

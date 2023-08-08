@@ -22,6 +22,10 @@ bin/darwin/**
 .chezmoiscripts/linux-ubuntu/**
 {{ end -}}
 
+{{- if ne .osid "linux-debian" }}
+.chezmoiscripts/linux-debian/**
+{{ end -}}
+
 {{- if not .personal }}
 .gitconfig
 .chezmoiscripts/personal/**
@@ -31,6 +35,3 @@ bin/darwin/**
 app/**
 {{ end -}}
 
-{{- if .prefer_zsh }}
-*/*.fish
-{{ end -}}
