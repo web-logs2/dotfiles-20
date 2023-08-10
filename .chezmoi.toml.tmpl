@@ -58,6 +58,8 @@ args = ["-d", {{ print "\"{{ .Destination }}\", \"{{ .Source }}\", \"{{ .Target 
 [scriptEnv]
 BASH_UTIL_PATH = "{{- .chezmoi.sourceDir -}}/.chezmoiscripts/run_once_util.sh"
 CHEZMOI_OS_ID = {{ $osID | quote }}
+CHEZMOI_PERSONAL = "{{ $personal }}"
+CHEZMOI_HEADLESS = "{{ $headless }}"
 
 [data]
 ephemeral = {{ $ephemeral }}

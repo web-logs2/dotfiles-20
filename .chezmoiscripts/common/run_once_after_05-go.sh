@@ -15,5 +15,6 @@ has_command lazygit || go install github.com/jesseduffield/lazygit@latest
 has_command lazydocker || go install github.com/jesseduffield/lazydocker@latest
 has_command lego || go install github.com/go-acme/lego/v4/cmd/lego@latest
 has_command checkmake || go install github.com/mrtazz/checkmake/cmd/checkmake@latest
+has_command gum || go install github.com/charmbracelet/gum@latest
 
 echo "go package install done"

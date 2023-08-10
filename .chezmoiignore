@@ -11,6 +11,7 @@ Makefile
 */skhd/**
 Library/**
 bin/darwin/**
+.hammerspoon/**
 {{ end -}}
 
 {{- if ne .osid "linux-arch" }}
@@ -21,11 +22,17 @@ bin/darwin/**
 .chezmoiscripts/linux-ubuntu/**
 {{ end -}}
 
+{{- if ne .osid "linux-debian" }}
+.chezmoiscripts/linux-debian/**
+{{ end -}}
+
 {{- if not .personal }}
 .gitconfig
 .chezmoiscripts/personal/**
+.ssh/**
 {{ end -}}
 
 {{- if not .headless }}
 app/**
 {{ end -}}
+

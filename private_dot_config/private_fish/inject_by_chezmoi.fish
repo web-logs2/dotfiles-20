@@ -19,6 +19,7 @@ end
 
 set -gx XDG_CONFIG_HOME "$HOME/.config"
 set -gx EDITOR nvim
+set -gx PNPM_HOME "$HOME/.local/share/pnpm"
 
 function my_key_bindings
     fish_vi_key_bindings
@@ -44,7 +45,8 @@ end
 
 function conda-init
     conda shell.fish hook | source
-    if test (uname) = Darwin; and test (uname -m) = arm64
+    if test (uname) = Darwin
+        and test (uname -m) = arm64
         conda env config vars set CONDA_SUBDIR=osx-arm64
     end
     if has_command fzf
@@ -55,20 +57,21 @@ end
 function pyenv-init
     pyenv init - | source
     pyenv versions
-    echo "exec `python -V`: $(python -V)"
+    echo -n "exec `python -V`: "
+    python -V
 end
 
 function tm
     if set -q ZELLIJ
-        echo already in zellij session
+        echo "already in zellij session"
         return 1
     else if set -q TMUX
-        echo already in tmux session
+        echo "already in tmux session"
         return 1
     else if has_command zellij
         zellij attach -c
     else if has_command tmux
-        tmux attach; or tmux new
+        tmux attach or tmux new
     else
         echo 'zellij/tmux command not found'
     end
@@ -76,7 +79,8 @@ end
 
 function editor-detect
     if has_command code
-        if not set -q SSH_CONNECTION; or set -q VSCODE_GIT_IPC_HANDLE
+        if not set -q SSH_CONNECTION
+            or set -q VSCODE_GIT_IPC_HANDLE
             set -gx EDITOR "code -w"
         end
     end
@@ -84,7 +88,10 @@ function editor-detect
 end
 
 if status is-interactive
-    if has_command zellij; and set -q SSH_CONNECTION; and not set -q VSCODE_GIT_IPC_HANDLE; and not set -q NVIM
+    if has_command zellij
+        and set -q SSH_CONNECTION
+        and not set -q VSCODE_GIT_IPC_HANDLE
+        and not set -q NVIM
         set ZELLIJ_AUTO_ATTACH true
         # set ZELLIJ_AUTO_EXIT true
         eval (zellij setup --generate-auto-start fish | string collect)
@@ -100,20 +107,10 @@ if status is-interactive
     alias dc=docker-compose
     alias svc="sudo systemctl"
     alias vi="nvim"
-    alias code-note='code --folder-uri "vscode-remote://ssh-remote+home.lubui.com/home/urie/workspace/ts/code-notes-vitepress/docs"'
-    # alias code-home="code --remote ssh-remote+home.lubui.com ~"
     alias cz="chezmoi"
 
-    # Commands to run in interactive sessions can go here
-    # has_command pyenv; and pyenv init - | source
-    has_command zoxide; and zoxide init fish | source
-
-    # pnpm
-    set -gx PNPM_HOME "$HOME/.local/share/pnpm"
-    if not string match -q -- $PNPM_HOME $PATH
-        set -gx PATH "$PNPM_HOME" $PATH
-    end
-    # pnpm end
+    has_command zoxide
+    and zoxide init fish | source
 
     if has_command joshuto
         function r

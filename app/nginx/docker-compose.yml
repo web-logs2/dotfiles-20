@@ -9,7 +9,7 @@ services:
     environment:
       TZ: Asia/Shanghai
     network_mode: host
-    restart: unless-stopped
+    restart: always
     volumes:
       - ./conf.d:/etc/nginx/conf.d
       - ~/.lego/certificates/:/etc/nginx/certs
