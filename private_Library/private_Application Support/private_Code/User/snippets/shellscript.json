@@ -1,10 +1,6 @@
 {
   "bash": {
-    "prefix": [
-      "bash",
-      "#!",
-      "shebang"
-    ],
+    "prefix": ["bash", "#!", "shebang"],
     "body": "${1|#!/bin/bash,#!/usr/bin/env bash|}\n",
     "description": [
       "Option 1:\n",
