@@ -84,7 +84,7 @@ conda-init() {
 }
 
 pyenv-init() {
-  pyenv init - | source
+  eval "$(pyenv init -)"
   pyenv versions
   echo -n "exec $(python -V): "
   python -V

@@ -64,9 +64,22 @@ configure_wifi() {
   curl 'http://192.168.43.1:8989/api/configwifi' --data-raw '{"ssid":"asdasd","secure":"WPA","password":"asdasdasdasdasdasd"}'
 }
 
+bind_r1() {
+  # change aios-home.hivoice.cn dns
+  while true; do
+    nc -l 19999 <<EOF
+HTTP/1.1 200 OK
+Content-Length: 15
+
+{"status":"0"}
+EOF
+  done
+}
+
 get_device_info() {
   adb shell getprop
 }
 
 # stop_pkg
-disable_all
+# disable_all
+bind_r1
