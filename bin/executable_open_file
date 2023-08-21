@@ -134,7 +134,7 @@ handle_mime() {
   case "${mimetype}" in
 
   ## Text
-  text/* | */xml | */json)
+  text/* | */xml | */json | */javascript)
     handle_text
     ;;
 
@@ -145,4 +145,5 @@ handle_mime() {
 handle_extension
 MIMETYPE="$(file --dereference --brief --mime-type -- "${FILE_PATH}")"
 handle_mime "${MIMETYPE}"
+echo "${MIMETYPE}"
 exec_command xdg_open
