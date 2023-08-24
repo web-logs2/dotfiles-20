@@ -366,7 +366,9 @@ defaults write com.apple.ActivityMonitor "IconType" -int "0"     # Dock 只需�
 
 # 各种各样的
 defaults write NSGlobalDomain "ApplePressAndHoldEnabled" -bool "false" # 长时间按住某个键时的行为: 重复该键
-defaults write com.apple.LaunchServices "LSQuarantine" -bool "false"   # 关闭“从互联网下载的应用程序”隔离警告
+defaults delete -g ApplePressAndHoldEnabled
+
+defaults write com.apple.LaunchServices "LSQuarantine" -bool "false" # 关闭“从互联网下载的应用程序”隔离警告
 
 echo "Done. Note that some of these changes require a logout/restart to take effect."
 
