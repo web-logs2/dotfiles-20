@@ -20,6 +20,7 @@ EOF
 inject_to_file_bottom() {
   local file_path="$1"
   local inject_content="$2"
+  mkdir -p "$(dirname "$file_path")"
   [ ! -f "$file_path" ] && touch "$file_path"
   if ! grep 'chezmoi injection' "$file_path" >/dev/null; then
     cat <<EOF >>"$file_path"
