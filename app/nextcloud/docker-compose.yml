@@ -14,6 +14,8 @@ services:
       NEXTCLOUD_ADMIN_USER:
       NEXTCLOUD_ADMIN_PASSWORD:
       NEXTCLOUD_TRUSTED_DOMAINS: home.lubui.com:${PORT}
+      # OVERWRITECLIURL: https://cloud.home.lubui.com:8443
+      OVERWRITEPROTOCOLP: https
       MYSQL_HOST:
       MYSQL_DATABASE:
       MYSQL_USER:

@@ -1,0 +1,14 @@
+services:
+  tiktokweb:
+    container_name: tiktokweb
+    image: johnserfseed/tiktokweb:latest
+    environment:
+      PUID: 1000
+      PGID: 1000
+      TZ: Asia/Shanghai
+      VIRTUAL_HOST: tiktokweb.home.lubui.com
+      VIRTUAL_PORT: 4000
+    network_mode: host
+    restart: unless-stopped
+    labels:
+      - com.centurylinklabs.watchtower.enable=true

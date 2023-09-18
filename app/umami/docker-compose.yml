@@ -7,8 +7,8 @@ services:
       PGID: 1000
       TZ: Asia/Shanghai
       VIRTUAL_HOST: umami.home.lubui.com
-      VIRTUAL_PORT: 3003
-      PORT: 3003
+      VIRTUAL_PORT: 3013
+      PORT: 3013
       DATABASE_URL:
       DATABASE_TYPE: mysql
       APP_SECRET:

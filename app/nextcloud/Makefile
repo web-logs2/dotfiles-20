@@ -25,7 +25,8 @@ temp:
 	$(OCC_COMMAND) maintenance:mode --off
 
 copy:
-	sudo cp ./nextcloud/config/config.php .
+	# sudo cp ./nextcloud/config/config.php .
+	sudo cp ./config.php ./nextcloud/config/
 	sudo chown "$$(id -u)" ./config.php
 
 token:
