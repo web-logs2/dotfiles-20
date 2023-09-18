@@ -14,7 +14,7 @@ bin/darwin/**
 .hammerspoon/**
 {{ end -}}
 
-{{- if ne .osid "linux-arch" }}
+{{- if not (eq .osid "linux-arch" "linux-archarm") }}
 .chezmoiscripts/linux-arch/**
 {{ end -}}
 
