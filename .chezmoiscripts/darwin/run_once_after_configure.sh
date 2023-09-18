@@ -365,7 +365,7 @@ defaults write com.apple.ActivityMonitor "UpdatePeriod" -int "5" # 活动监视�
 defaults write com.apple.ActivityMonitor "IconType" -int "0"     # Dock 只需显示应用程序的常规图标即可
 
 # 各种各样的
-defaults write NSGlobalDomain "ApplePressAndHoldEnabled" -bool "false" # 长时间按住某个键时的行为: 重复该键
+defaults write NSGlobalDomain "ApplePressAndHoldEnabled" -bool "true" # 长时间按住某个键时的行为: 重复该键
 defaults delete -g ApplePressAndHoldEnabled
 
 defaults write com.apple.LaunchServices "LSQuarantine" -bool "false" # 关闭“从互联网下载的应用程序”隔离警告
