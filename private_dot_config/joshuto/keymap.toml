@@ -185,12 +185,6 @@ keymap = [
     "end",
   ], command = "cursor_move_end" },
   { keys = [
-    "page_up",
-  ], command = "cursor_move_page_up" },
-  { keys = [
-    "page_down",
-  ], command = "cursor_move_page_down" },
-  { keys = [
     "ctrl+u",
   ], command = "cursor_move_page_up 0.5" },
   { keys = [
@@ -226,10 +220,10 @@ keymap = [
     "M",
   ], command = "cursor_move_page_end" },
   { keys = [
-    "[",
+    "page_up",
   ], command = "preview_cursor_move_up 10" },
   { keys = [
-    "]",
+    "page_down",
   ], command = "preview_cursor_move_down 10" },
   { keys = [
     "c",
