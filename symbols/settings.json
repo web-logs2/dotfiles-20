@@ -114,7 +114,8 @@
     "pc.home.lubui.com": "linux",
     "cloudide_231252": "linux",
     "cloudide-ws086518efa8354bf4aaad7019783be954": "linux",
-    "cloudide_182780": "linux"
+    "cloudide_182780": "linux",
+    "cloudide-ws2bbe5a70d28a4ed4b71876e8490700ba": "linux"
   },
   "byted-ide.settings-sync.includedExtensions": [],
   "workbench.startupEditor": "none",
@@ -198,4 +199,5 @@
   "resmon.show.battery": false,
   "resmon.show.disk": false,
   "resmon.show.cputemp": false,
+  "window.commandCenter": true,
 }

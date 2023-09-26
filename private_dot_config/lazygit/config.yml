@@ -12,3 +12,10 @@ git:
     pager: delta --dark --paging=never
 disableStartupPopups: true
 notARepository: 'quit' # one of: 'prompt' | 'create' | 'skip' | 'quit'
+
+os:
+  edit: 'open_file -s {{filename}}'
+  editAtLine: 'open_file -s {{filename}}'
+  editAtLineAndWait: 'open_file -s {{filename}}'
+  editInTerminal: true
+  openDirInEditor: 'nvim {{dir}}'

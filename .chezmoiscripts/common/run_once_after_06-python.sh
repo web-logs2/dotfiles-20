@@ -44,5 +44,7 @@ has_command black || pipx install "black[jupyter,d]"
 has_command isort || pipx install isort
 has_command nginxfmt || pipx install nginxfmt
 has_command aws || pipx install awscli
+has_command dtrx || pipx install dtrx
+has_command trash-list || pipx install trash-cli
 
 echo "python package install done"

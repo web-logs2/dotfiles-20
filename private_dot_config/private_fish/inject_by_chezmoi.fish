@@ -77,16 +77,6 @@ function tm
     end
 end
 
-function editor-detect
-    if has_command code
-        if not set -q SSH_CONNECTION
-            or set -q VSCODE_GIT_IPC_HANDLE
-            set -gx EDITOR "code -w"
-        end
-    end
-    env | grep EDITOR
-end
-
 if status is-interactive
     if has_command zellij
         and set -q SSH_CONNECTION
@@ -108,6 +98,8 @@ if status is-interactive
     alias svc="sudo systemctl"
     alias vi="nvim"
     alias cz="chezmoi"
+
+    set -g EDITOR "open_file -s"
 
     has_command zoxide
     and zoxide init fish | source

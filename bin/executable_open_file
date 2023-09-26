@@ -96,6 +96,10 @@ handle_directory() {
   exec_command code nvim xdg_open
 }
 
+handle_compress() {
+  exec_command dtrx
+}
+
 handle_extension() {
   case "${FILE_EXTENSION_LOWER}" in
   ipynb)
@@ -109,6 +113,9 @@ handle_extension() {
     ;;
   svg)
     exec_command open_with_chrome
+    ;;
+  gz | zip | tar | rar)
+    handle_compress
     ;;
   uc!)
     exec_command nc2mp3

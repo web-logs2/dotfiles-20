@@ -139,6 +139,7 @@ alt - 0x33 : yabai -m window --focus recent
 # alt - 0x18 : yabai -m window --focus next
 cmd + shift - t : open -n -a Alacritty
 cmd + ctrl - f5 : open -a 'Google Chrome' 'https://www.google.com/search?q='"$(pbpaste)"
+cmd + ctrl + shift - f5 : open -a 'Google Chrome' 'https://github.com/search?type=repositories&q='"$(pbpaste)"
 cmd + ctrl - f4 : translate
 cmd + ctrl + shift - f3 : open -a 'Google Chrome' 'https://cloud.bytedance.net/argos/streamlog/info_overview/log_id_search?logId='"$(pbpaste)"
 cmd + ctrl - f3 : open -a 'Google Chrome' 'https://cloud-boe.bytedance.net/argos/streamlog/info_overview/log_id_search?logId='"$(pbpaste)"
